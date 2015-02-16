@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{28b41cc6-eb58-49fc-8158-fea0367f5d78}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{d5cc0071-1fa2-4ffa-b572-71d31b7158f1}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\Library">
+      <UniqueIdentifier>{13bdcdfd-4903-4626-b771-842f57808f16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Library">
+      <UniqueIdentifier>{ce4b70d0-10b4-4537-b9d0-156e836b849b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interface">
+      <UniqueIdentifier>{d1daf74d-2525-4553-a562-7f55b0f2c633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interface">
+      <UniqueIdentifier>{518c9959-2106-42e3-82e6-08a72b4cccf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Testing">
+      <UniqueIdentifier>{89959653-b6df-41db-adee-a3177ec110cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Testing">
+      <UniqueIdentifier>{71eb5dfc-20a9-41e9-ac0f-2430b71812b7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\Debug\moc_imageclassifierwindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_imageclassifierwindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_imageclassifierwindow.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imageclassifierwindow.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageClassifier.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageClass.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageClassifierBasic.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="QCategoryDisplayer.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="QWheelDisplay.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryDisplayer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QWheelDisplay.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageConversion.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="QImageDisplayer.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QImageDisplayer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageClassifierGMM.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="Histograms.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="QCategoryView.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageClassifierRF.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="RFTest.cpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="NodePositioner.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="NewNodePositioner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="imageclassifierwindow.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="imageclassifierwindow.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\ui_imageclassifierwindow.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Image.h">
+      <Filter>Header Files\Library</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ImageClass.h">
+      <Filter>Header Files\Library</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ImageClassifier.h">
+      <Filter>Header Files\Library</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ImageClassifierBasic.h">
+      <Filter>Header Files\Library</Filter>
+    </CustomBuild>
+    <CustomBuild Include="imageclassifierwindow.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Graph.h">
+      <Filter>Header Files\Library</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QCategoryDisplayer.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QWheelDisplay.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QCategoryView.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="NodePositioner.h">
+      <Filter>Header Files\Library</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImageConversion.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="QImageDisplayer.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageClassifierGMM.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="Histograms.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageClassifierRF.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="RFTest.h">
+      <Filter>Header Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeProperties.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="NewNodePositioner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

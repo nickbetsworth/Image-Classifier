@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ImageClassifierWindowClass</class>
+ <widget class="QMainWindow" name="ImageClassifierWindowClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1125</width>
+    <height>646</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ImageClassifierWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QCategoryView" name="view"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1125</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionAddImage"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <action name="actionAddImage">
+   <property name="text">
+    <string>Insert Image(s)</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QCategoryView</class>
+   <extends>QGraphicsView</extends>
+   <header>QCategoryView.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="imageclassifierwindow.qrc"/>
+ </resources>
+ <connections/>
+</ui>

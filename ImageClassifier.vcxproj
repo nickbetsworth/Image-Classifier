@@ -78,7 +78,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NewNodePositioner.cpp" />
     <ClCompile Include="NodePositioner.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_imageclassifierwindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -110,7 +109,6 @@
     <ClCompile Include="QImageDisplayer.cpp" />
     <ClCompile Include="QWheelDisplay.cpp" />
     <ClCompile Include="RFTest.cpp" />
-    <ClCompile Include="TreeItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="imageclassifierwindow.h">
@@ -316,11 +314,9 @@
     <ClInclude Include="ImageClassifierGMM.h" />
     <ClInclude Include="ImageClassifierRF.h" />
     <ClInclude Include="ImageConversion.h" />
-    <ClInclude Include="NewNodePositioner.h" />
     <ClInclude Include="NodeProperties.h" />
     <ClInclude Include="QImageDisplayer.h" />
     <ClInclude Include="RFTest.h" />
-    <ClInclude Include="TreeItem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

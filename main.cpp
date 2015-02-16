@@ -39,7 +39,7 @@ void test_graph() {
 	g.add_edge(3, 4, 1);
 	g.add_edge(4, 5, 4);
 	//cout << "Edge weight: " << g.get_edge_weight(4, 2);
-	auto spanning_tree_edges = g.get_minimum_spanning_tree(2);
+	auto spanning_tree_edges = g.get_minimum_spanning_tree();
 	for (auto edge : spanning_tree_edges) {
 		cout << edge.first << " to " << edge.second << endl;
 	}

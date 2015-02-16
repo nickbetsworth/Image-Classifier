@@ -34,22 +34,8 @@ public:
 	NodePositioner(vector<NodeProperties*> nodes);
 	virtual ~NodePositioner();
 
-	/**
-	 * @fn	map<NodeProperties*, Point> NodePositioner::get_class_positions(NodeProperties* root_node);
-	 *
-	 * @brief	Calculates a map from an NodeProperties, to its respective position on screen.
-	 *
-	 * @author	Nick
-	 * @date	09/11/2014
-	 *
-	 * @param 	root_node	The root node of the graph.
-	 *
-	 * @return	A mapping from NodeProperties to its position on screen.
-	 */
+	map<NodeProperties*, Point> NodePositioner::get_node_positions(double graph_scale = 1.0);
 
-	map<NodeProperties*, Point> NodePositioner::get_node_positions_MST(NodeProperties* root_node, double graph_scale = 1.0);
-	map<NodeProperties*, Point> NodePositioner::get_node_positions_graph(NodeProperties* root_node, double edge_threshold, double graph_scale = 1.0);
-	map<NodeProperties*, Point> NodePositioner::get_node_positions_graph2(NodeProperties* root_node, double edge_length);
 	/**
 	 * @fn	vector<Edge> NodePositioner::get_edges()
 	 *

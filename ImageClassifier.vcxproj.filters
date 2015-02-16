@@ -119,12 +119,6 @@
     <ClCompile Include="NodePositioner.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="NewNodePositioner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TreeItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="imageclassifierwindow.ui">
@@ -188,12 +182,6 @@
     </ClInclude>
     <ClInclude Include="NodeProperties.h">
       <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="NewNodePositioner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TreeItem.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

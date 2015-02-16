@@ -3,7 +3,6 @@
 #include <set>
 #include <vector>
 #include <ogdf\energybased\FMMMLayout.h>
-#include <ogdf\\misclayout\BalloonLayout.h>
 #include <opencv\cv.h>
 #include <ctime>
 
@@ -38,19 +37,18 @@ public:
 	}
 
 	/**
-	 * @fn	multimap<T, T> Graph::get_minimum_spanning_tree(T root_node)
+	 * @fn	multimap<T, T> Graph::get_minimum_spanning_tree()
 	 *
 	 * @brief	Calculates a minimum spanning tree from the current graph.
 	 *
 	 * @author	Nick
 	 * @date	30/10/2014
 	 *
-	 * @param	root_node	The root node of the spanning tree.
 	 *
 	 * @return	A multimap from a single node to its connected nodes.
 	 */
 
-	multimap<T, T> get_minimum_spanning_tree(T root_node) {
+	multimap<T, T> get_minimum_spanning_tree() {
 		// Normalize our set of edges
 		AdjacencyMatrix norm_mat = this->normalize(1);
 
@@ -59,17 +57,17 @@ public:
 
 		// Construct a new list containing all nodes in the graph (converts from set to vector)
 		vector<T> remaining_nodes(m_nodes.begin(), m_nodes.end());
-		// Randomly choose a starting node
-		//int index = rand() % remaining_nodes.size();
-		//T start_node = remaining_nodes.at(index);
+		// Choose the starting node (first node)
+		int index = 0;
+		T start_node = remaining_nodes.at(index);
 		// Remove the node we just selected from the list of remaining nodes
-		remaining_nodes.erase(find(remaining_nodes.begin(), remaining_nodes.end(), root_node));
+		remaining_nodes.erase(find(remaining_nodes.begin(), remaining_nodes.end(), start_node));
 		//remaining_nodes.erase(remaining_nodes.begin() + index);
 
 		// Create a list to store nodes that have already been visited
 		vector<T> visited_nodes;
 		// We have already visited the starting node
-		visited_nodes.push_back(root_node);
+		visited_nodes.push_back(start_node);
 		double total_distance = 0;
 		
 		// While there are still nodes remaining
@@ -130,30 +128,6 @@ public:
 
 		cout << "Total distance in MST: " << total_distance << endl;
 		
-		return edge_map;
-	}
-
-	multimap<T, T> get_graph(T root_node, double edge_threshold) {
-		// Normalize our set of edges
-		AdjacencyMatrix norm_mat = this->normalize(1);
-
-		// Create a multimap to store the spanning tree
-		multimap<T, T> edge_map;
-
-		for (auto v = m_nodes.begin(); v != m_nodes.end() - 1; v++) {
-			for (auto k = v + 1; k != m_nodes.end(); k++) {
-				T node1 = *v;
-				T node2 = *k;
-
-				//double weight = get_edge_weight(node1, node2);
-				double weight = norm_mat[node1][node2];
-				cout << "Weight: " << weight << endl;
-				if (weight <= edge_threshold) {
-					edge_map.insert(pair<T, T>(node1, node2));
-				}
-			}
-		}
-
 		return edge_map;
 	}
 
@@ -261,9 +235,9 @@ public:
 	 * @return	The calculated node positions.
 	 */
 
-	map<T, cv::Point> calculate_node_positions(T root_node, double graph_scale) {
+	map<T, cv::Point> calculate_node_positions(double graph_scale) {
 		// Calculate the minimum spanning tree
-		multimap<T, T> spanning_tree = get_minimum_spanning_tree(root_node);
+		multimap<T, T> spanning_tree = get_minimum_spanning_tree();
 
 		return calculate_node_positions(spanning_tree, graph_scale);
 	}

@@ -35,8 +35,8 @@ ImageClassifierWindow::ImageClassifierWindow(QWidget *parent)
 
 	cout << "Loading images.." << endl;
 
-	QDir dir = QDir("C:/data/ProjectImages/FlickrDownloads/");
-	//QDir dir = QDir("C:/data/ProjectImages/Test/");
+	//QDir dir = QDir("C:/data/ProjectImages/FlickrDownloads/");
+	QDir dir = QDir("C:/data/ProjectImages/Test/");
 	//QDir dir = QDir("C:/data/ProjectImages/GGImages/");
 	QStringList filters;
 	filters << "*.png" << "*.jpg" << "*.gif";
@@ -165,7 +165,7 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	}
 	NodePositioner* positioner = new NodePositioner(node_props);
 	//map<NodeProperties*, Point> positions = positioner->get_node_positions_graph(node_props.front(), 0.3, 3);
-	map<NodeProperties*, Point> positions = positioner->get_node_positions_MST(node_props.front(), 0.5);
+	map<NodeProperties*, Point> positions = positioner->get_node_positions(0.5);
 	// Position each image displayer
 	for (QImageDisplayer* displayer : m_image_displayers) {
 		Image* displayer_class = m_displayer_to_image[displayer];
@@ -274,7 +274,7 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 		connect(cat, SIGNAL(categoryClicked(ImageClass*)), this, SLOT(categoryClicked(ImageClass*)));
 	}
 
-	map<NodeProperties*, Point> positions = m_cp->get_node_positions_MST(root_class, 0.8);
+	map<NodeProperties*, Point> positions = m_cp->get_node_positions(0.8);
 
 	// Position each category
 	for (QWheelDisplay* wheel : m_wheels) {

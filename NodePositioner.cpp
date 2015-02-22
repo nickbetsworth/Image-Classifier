@@ -12,7 +12,7 @@ NodePositioner::~NodePositioner()
 {
 }
 
-map<NodeProperties*, Point> NodePositioner::get_node_positions(double graph_scale) {
+map<NodeProperties*, Point> NodePositioner::get_node_positions(NodeProperties* root_node, double graph_scale) {
 	for (NodeProperties* node : get_nodes()) {
 		// Create a new node in the graph
 		m_graph.add_node(node);
@@ -21,17 +21,17 @@ map<NodeProperties*, Point> NodePositioner::get_node_positions(double graph_scal
 	// Generate the adjacency matrix and provide it to the graph class
 	m_graph.set_adjacency_matrix(get_adjacency_matrix());
 	
-	auto graph_edges = m_graph.get_minimum_spanning_tree();
+	auto graph_edges = m_graph.get_minimum_spanning_tree(root_node);
 
 	// Store the spanning tree as a list of edges, for later use
 	m_edges = multimap_to_vector(graph_edges);
 
-	map<NodeProperties*, Point> class_positions = m_graph.calculate_node_positions(graph_edges, graph_scale);
+	map<NodeProperties*, Point> class_positions = m_graph.calculate_node_positions(root_node, graph_edges, graph_scale);
 
 	return class_positions;
 }
 
-AdjacencyMatrix NodePositioner::get_adjacency_matrix(double edge_threshold) {
+AdjacencyMatrix NodePositioner::get_adjacency_matrix(float edge_threshold) {
 	// Store all of the classes we will be comparing
 	vector<NodeProperties*> nodes = get_nodes();
 	// Define our adjacency matrix
@@ -41,7 +41,7 @@ AdjacencyMatrix NodePositioner::get_adjacency_matrix(double edge_threshold) {
 	for (auto v = nodes.begin(); v != nodes.end() - 1; v++) {
 		for (auto k = v + 1; k != nodes.end(); k++) {
 			// Calculate the difference between the classes' histograms
-			double weight = compare_histograms((*v)->get_histogram_norm(), (*k)->get_histogram_norm());
+			float weight = (*v)->calculate_distance(*k);
 			// If the weight is not within the threshold, then we will not consider this edge in the graph
 			if (weight > edge_threshold) 
 				weight = -1.0;

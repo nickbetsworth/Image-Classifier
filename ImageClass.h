@@ -68,10 +68,11 @@ public:
 	 * @return	A list of images that belong to this class.
 	 */
 
-	vector<Image*> get_images() { return m_images; };
+	vector<Image*>& get_images() { return m_images; };
 
 	
 	Image* get_icon();
+	vector<Image*> get_nearest_neighbours(int n);
 private:
 	/** @brief	Stores all images belonging to this class. */
 	vector<Image*> m_images;

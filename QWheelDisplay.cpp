@@ -16,9 +16,14 @@ QWheelDisplay::QWheelDisplay(QCategoryDisplayer* category_displayer) : QGraphics
 	m_rad_scale = 1.0;
 
 	ImageClass* image_class = m_category_displayer->get_image_class();
-	for (Image* image : image_class->get_images()) {
-
-		QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_image_data()));
+	//image_class->get_nearest_neighbours(2);
+	int c = get_max_images();
+	if (c > image_class->get_images().size()) {
+		c = image_class->get_images().size() - 1;
+	}
+	auto it = image_class->get_images().begin();
+	for (auto k = it; k != it + c; ++k) {
+		QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap((*k)->get_image_data()));
 		QPixmap* pm_resized = new QPixmap(pm->scaled(QSize(m_diameter, m_diameter), Qt::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));
 		delete pm;
 
@@ -55,7 +60,7 @@ void QWheelDisplay::show() {
 	show_anim->setDuration(400);
 	show_anim->setStartValue(0.0);
 	show_anim->setEndValue(1.0);
-	show_anim->setEasingCurve(QEasingCurve::OutQuart);
+	show_anim->setEasingCurve(QEasingCurve::OutExpo);
 	show_anim->start(QAbstractAnimation::DeleteWhenStopped);
 }
 

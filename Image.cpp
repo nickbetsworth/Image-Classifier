@@ -14,9 +14,8 @@ Image::Image(const string &filepath)
 	m_image_data = imread(filepath);
 
 	// Do our histogram calculation before resizing
-	m_histogram = get_1d_histogram(m_image_data, HIST_BINS);
-	this->set_histogram(m_histogram);
-
+	this->set_histogram(get_1d_histogram(m_image_data, HIST_BINS));
+	this->add_flag(Property::Histogram);
 	// Resize our image to a thumbnail size
 	resize(m_image_data, m_image_data, Size(THUMB_WIDTH, THUMB_HEIGHT));
 }

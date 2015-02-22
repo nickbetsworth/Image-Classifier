@@ -15,21 +15,20 @@ Mat get_1d_histogram(Mat image_data, int bins = 8) {
 	Mat temp;
 	for (int c = 0; c < num_channels; c++) {
 		// Calculate the histogram for the current color channel
-		calcHist(&image_data, 1, &channels[c], mask, temp, dims, sizes, &ranges[c], true, true);
+		calcHist(&image_data, 1, &channels[c], mask, temp, dims, &sizes[c], &ranges[c], true, false);
 		// Append the current channel's histogram
 		hist.push_back(temp);
 		//cout << hist;
 	}
 
-	normalize(hist, hist);
+	normalize(hist, hist, 1.0, 0.0, NORM_L1);
 	return hist;
 }
 
-double compare_histograms(Mat hist1, Mat hist2) {
-	// Normalize each of the histograms
-	Mat norm_hist1, norm_hist2;
-	normalize(hist1, norm_hist1);
-	normalize(hist2, norm_hist2);
+float compare_histograms(Mat hist1, Mat hist2) {
+	// Make a copy of the histograms as we will be adding columns
+	Mat hist1copy = hist1.clone();
+	Mat hist2copy = hist2.clone();
 
 	// Append an index of the corresponding row of each histogram bin, for EMD
 	Mat emd_cols = Mat::zeros(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
@@ -37,11 +36,8 @@ double compare_histograms(Mat hist1, Mat hist2) {
 		emd_cols.at<float>(i, 0) = i + 1;
 	}
 
-	hconcat(norm_hist1, emd_cols, norm_hist1);
-	hconcat(norm_hist2, emd_cols, norm_hist2);
+	hconcat(hist1copy, emd_cols, hist1copy);
+	hconcat(hist2copy, emd_cols, hist2copy);
 
-	double val = EMD(norm_hist1, norm_hist2, CV_DIST_L1);
-	//cout << "EMD Value: " << val << endl;
-
-	return val;
+	return EMD(hist1copy, hist2copy, CV_DIST_L1);;
 }

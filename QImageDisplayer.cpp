@@ -19,6 +19,7 @@ QImageDisplayer::QImageDisplayer(Image* image, int diameter) {
 
 	// The user is not currently hovering over this icon
 	m_hovering = false;
+	m_highlighted = false;
 	// Enable hover events to be sent when a user hovers over the category
 	setAcceptHoverEvents(true);
 }
@@ -29,7 +30,12 @@ QImageDisplayer::~QImageDisplayer()
 }
 
 QRectF QImageDisplayer::boundingRect() const {
-	return QRectF(-m_diameter / 2, -m_diameter / 2, m_diameter, m_diameter);
+	if (is_highlighted()) {
+		return QRectF(-(m_diameter / 2 + HIGHLIGHT_SIZE), -(m_diameter / 2 + HIGHLIGHT_SIZE), m_diameter + HIGHLIGHT_SIZE * 2, m_diameter + HIGHLIGHT_SIZE * 2);
+	}
+	else {
+		return QRectF(-m_diameter / 2, -m_diameter / 2, m_diameter, m_diameter);
+	}
 }
 
 QPainterPath QImageDisplayer::shape() const {
@@ -42,22 +48,25 @@ void QImageDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 	// Turn AA on to smooth the edges
 	painter->setRenderHint(QPainter::RenderHint::Antialiasing, true);
 
-	// If the user is hovering over this icon
-	// Ensure it is as the front of the foreground
-	if (m_hovering) {
-		setZValue(10);
-	}
-	else {
-		setZValue(0);
-	}
+	QRectF pixmapRect = boundingRect();
 
+	if (is_highlighted() && !is_hovering()) {
+		QBrush brush = QBrush(Qt::SolidPattern);
+		brush.setColor(QColor(255, 60, 60));
+		painter->setBrush(brush);
+		painter->setPen(Qt::PenStyle::NoPen);
+		painter->drawEllipse(boundingRect().toRect());
+
+		// Make the pixmap smaller accordingly
+		pixmapRect.adjust(HIGHLIGHT_SIZE, HIGHLIGHT_SIZE, -HIGHLIGHT_SIZE, -HIGHLIGHT_SIZE);
+	}
 
 	QPainterPath path;
 
-	path.addEllipse(boundingRect());
+	path.addEllipse(pixmapRect);
 	painter->setClipPath(path);
 
-	painter->drawPixmap(boundingRect().toRect(), *m_pixmap);
+	painter->drawPixmap(pixmapRect.toRect(), *m_pixmap);
 }
 
 void QImageDisplayer::mousePressEvent(QGraphicsSceneMouseEvent* event) {
@@ -78,8 +87,10 @@ void QImageDisplayer::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
 }
 
 void QImageDisplayer::set_hovering(bool hovering) {
+	this->prepareGeometryChange();
 	m_hovering = hovering;
 
+	// If the user is hovering over the image, bring it to the front
 	if (hovering) {
 		this->setZValue(10);
 		emit(mouseEntered());
@@ -89,5 +100,13 @@ void QImageDisplayer::set_hovering(bool hovering) {
 		emit(mouseLeft());
 	}
 
+	// Let the renderer know the size of the image is about to change
+	
+}
+
+void QImageDisplayer::set_highlighted(bool highlighted) {
 	this->prepareGeometryChange();
+	m_highlighted = highlighted;
+	// Let the renderer know the size of the image is about to change
+	
 }

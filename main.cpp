@@ -1,6 +1,9 @@
 #include "imageclassifierwindow.h"
+#include "ImageSelector.h"
+#include "LoadingScreen.h"
 #include <QtWidgets/QApplication>
 #include <QMessageBox>
+#include <QWidget>
 #include <opencv\cv.h>
 #include <opencv\highgui.h>
 // Include Windows.h to temporarily display console
@@ -39,7 +42,7 @@ void test_graph() {
 	g.add_edge(3, 4, 1);
 	g.add_edge(4, 5, 4);
 	//cout << "Edge weight: " << g.get_edge_weight(4, 2);
-	auto spanning_tree_edges = g.get_minimum_spanning_tree();
+	auto spanning_tree_edges = g.get_minimum_spanning_tree(0);
 	for (auto edge : spanning_tree_edges) {
 		cout << edge.first << " to " << edge.second << endl;
 	}
@@ -51,9 +54,13 @@ int main(int argc, char *argv[])
 	ShowConsole();
 	
 	QApplication a(argc, argv);
-	ImageClassifierWindow w;
-	w.show();
-	w.showMaximized();
+	ImageSelector selector;
+	selector.show();
+	
+
+	//ImageClassifierWindow w;
+	//w.show();
+	//w.showMaximized();
 
 	return a.exec();
 }

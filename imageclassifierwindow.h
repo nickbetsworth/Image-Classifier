@@ -20,12 +20,10 @@ class ImageClassifierWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	ImageClassifierWindow(QWidget *parent = 0);
+	ImageClassifierWindow(QStringList image_list, QWidget *parent = 0);
 	~ImageClassifierWindow();
 public slots:
-	/**
-	
-	 */
+
 	void imageClicked(Image* image, bool rightClick);
 	void categoryClicked(ImageClass* root_class);
 	void menuBarClicked(QAction* action);
@@ -37,7 +35,7 @@ private:
 	Ui::ImageClassifierWindowClass ui;
 
 	vector<ImageClass*> m_classes;
-	ImageClass* m_current_class;
+	ImageClass* m_current_class = 0;
 
 	/** @brief	Stores all graphics items which display the relationship between classes. */
 	QGraphicsScene* m_scene_classes;
@@ -68,10 +66,15 @@ private:
 	map<Image*, QImageDisplayer*> m_image_to_displayer;
 	map<QImageDisplayer*, Image*> m_displayer_to_image;
 
+	// Stores a map from each class to the list of new images
+	QMap<ImageClass*, QList<Image*>> m_new_image_map;
+
 	QPointF m_scene_classes_pos;
 	QPointF m_scene_class_pos;
 
+	Image* clicked_img1 = 0;
 	void setup_classes(ImageClass* root_class);
+	void highlight_classes();
 };
 
 #endif // IMAGECLASSIFIERWINDOW_H

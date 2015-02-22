@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -12,88 +12,138 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <RootNamespace>ImageClassifier</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>..\Win32\Debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>ImageClassifier</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>..\Win32\Debug\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>ImageClassifier</PrimaryOutput>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
     <Import Project="OpenCV.props" />
     <Import Project="OGDF.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Win32\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ImageClassifier</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Win32\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ImageClassifier</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;C:\Qt\Qt5.3.2\5.3\msvc2013\include;.\GeneratedFiles\$(ConfigurationName);C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtCore;C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtGui;C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>GeneratedFiles;.;GeneratedFiles\Debug;C:\Qt\Qt5.3.2\5.3\msvc2013\include;C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtWidgets;C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtGui;C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtANGLE;C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtCore;GeneratedFiles\debug;C:\Qt\Qt5.3.2\5.3\msvc2013\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_DLL;QT_WIDGETS_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_ES_2;QT_OPENGL_ES_2_ANGLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalDependencies>C:\Qt\Qt5.3.2\5.3\msvc2013\lib\qtmaind.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Widgetsd.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Guid.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Cored.lib;libEGLd.lib;libGLESv2d.lib;gdi32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Qt\Qt5.3.2\5.3\msvc2013\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Qt\Qt5.3.2\5.3\msvc2013\lib\qtmaind.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Cored.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Guid.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\ImageClassifier.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_DLL;QT_WIDGETS_LIB;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_ES_2;QT_OPENGL_ES_2_ANGLE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;C:\Qt\Qt5.3.2\5.3\msvc2013\include;.\GeneratedFiles\$(ConfigurationName);C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtCore;C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtGui;C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat />
+      <AdditionalIncludeDirectories>"GeneratedFiles";".";"GeneratedFiles\Debug";"C:\Qt\Qt5.3.2\5.3\msvc2013\include";"C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtWidgets";"C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtGui";"C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtANGLE";"C:\Qt\Qt5.3.2\5.3\msvc2013\include\QtCore";"GeneratedFiles\release";"GeneratedFiles";C:\Qt\Qt5.3.2\5.3\msvc2013\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_DLL;QT_WIDGETS_LIB;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_ES_2;QT_OPENGL_ES_2_ANGLE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalDependencies>C:\Qt\Qt5.3.2\5.3\msvc2013\lib\qtmain.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Widgets.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Gui.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Core.lib;libEGL.lib;libGLESv2.lib;gdi32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Qt\Qt5.3.2\5.3\msvc2013\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Qt\Qt5.3.2\5.3\msvc2013\lib\qtmain.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Core.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Gui.lib;C:\Qt\Qt5.3.2\5.3\msvc2013\lib\Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\ImageClassifier.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;WIN64;QT_DLL;QT_WIDGETS_LIB;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_ES_2;QT_OPENGL_ES_2_ANGLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NodePositioner.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_imageclassifierwindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryDisplayer.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_QImageDisplayer.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_QWheelDisplay.cpp" />
-    <ClCompile Include="GeneratedFiles\qrc_imageclassifierwindow.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_imageclassifierwindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="ClassifierMananger.cpp" />
+    <ClCompile Include="EMDTest.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_ImageSelector.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_LoadingScreen.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_QImageLister.cpp" />
+    <ClCompile Include="GraphedImageClass.cpp" />
     <ClCompile Include="Histograms.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageClass.cpp" />
@@ -101,229 +151,180 @@
     <ClCompile Include="ImageClassifierBasic.cpp" />
     <ClCompile Include="ImageClassifierGMM.cpp" />
     <ClCompile Include="ImageClassifierRF.cpp" />
-    <ClCompile Include="imageclassifierwindow.cpp" />
     <ClCompile Include="ImageConversion.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ImageSelector.cpp" />
+    <ClCompile Include="LoadingScreen.cpp" />
+    <ClCompile Include="NodePositioner.cpp" />
+    <ClCompile Include="NodeProperties.cpp" />
+    <ClCompile Include="NodePropertiesFlagTest.cpp" />
+    <ClCompile Include="ProgramManager.cpp" />
     <ClCompile Include="QCategoryDisplayer.cpp" />
     <ClCompile Include="QCategoryView.cpp" />
     <ClCompile Include="QImageDisplayer.cpp" />
+    <ClCompile Include="QImageLister.cpp" />
     <ClCompile Include="QWheelDisplay.cpp" />
     <ClCompile Include="RFTest.cpp" />
+    <ClCompile Include="imageclassifierwindow.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="imageclassifierwindow.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing imageclassifierwindow.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB  "-I.\GeneratedFiles" "-I." "-IC:\Qt\Qt5.3.2\5.3\msvc2013\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-IC:\Qt\Qt5.3.2\5.3\msvc2013\include\QtCore" "-IC:\Qt\Qt5.3.2\5.3\msvc2013\include\QtGui" "-IC:\Qt\Qt5.3.2\5.3\msvc2013\include\QtWidgets" "-IC:\OGDF" "-IC:\opencv249\build\include" "-I$(NOINHERIT)\."</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing imageclassifierwindow.h...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-IC:\Qt\Qt5.3.2\5.3\msvc2013\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-IC:\Qt\Qt5.3.2\5.3\msvc2013\include\QtCore" "-IC:\Qt\Qt5.3.2\5.3\msvc2013\include\QtGui" "-IC:\Qt\Qt5.3.2\5.3\msvc2013\include\QtWidgets"</Command>
+    <ClInclude Include="ClassifierMananger.h" />
+    <ClInclude Include="GeneratedFiles\ui_ImageSelector.h" />
+    <ClInclude Include="GeneratedFiles\ui_LoadingScreen.h" />
+    <ClInclude Include="Graph.h" />
+    <ClInclude Include="EMDTest.h" />
+    <ClInclude Include="GraphedImageClass.h" />
+    <ClInclude Include="Histograms.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="ImageClass.h" />
+    <ClInclude Include="ImageClassifier.h" />
+    <ClInclude Include="ImageClassifierBasic.h" />
+    <ClInclude Include="ImageClassifierGMM.h" />
+    <ClInclude Include="ImageClassifierRF.h" />
+    <ClInclude Include="ImageConversion.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </AdditionalInputs>
+    </ClInclude>
+    <CustomBuild Include="ImageSelector.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore ImageSelector.h -o GeneratedFiles\debug\moc_ImageSelector.cpp</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_ImageSelector.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ImageSelector.h</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ImageSelector.h;%(AdditionalInputs)</AdditionalInputs>
     </CustomBuild>
+    <CustomBuild Include="LoadingScreen.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore LoadingScreen.h -o GeneratedFiles\debug\moc_LoadingScreen.cpp</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC LoadingScreen.h</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_LoadingScreen.cpp;%(Outputs)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="NodePositioner.h" />
+    <ClInclude Include="NodeProperties.h" />
+    <CustomBuild Include="QCategoryDisplayer.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QCategoryDisplayer.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QCategoryDisplayer.h -o GeneratedFiles\debug\moc_QCategoryDisplayer.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC QCategoryDisplayer.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_QCategoryDisplayer.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">QCategoryDisplayer.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QCategoryDisplayer.h -o GeneratedFiles\release\moc_QCategoryDisplayer.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC QCategoryDisplayer.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\release\moc_QCategoryDisplayer.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="NodePropertiesFlagTest.h" />
+    <ClInclude Include="ProgramManager.h" />
+    <ClInclude Include="QCategoryView.h" />
+    <CustomBuild Include="QImageDisplayer.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QImageDisplayer.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QImageDisplayer.h -o GeneratedFiles\debug\moc_QImageDisplayer.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC QImageDisplayer.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_QImageDisplayer.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">QImageDisplayer.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QImageDisplayer.h -o GeneratedFiles\release\moc_QImageDisplayer.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC QImageDisplayer.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\release\moc_QImageDisplayer.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="QWheelDisplay.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QWheelDisplay.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QWheelDisplay.h -o GeneratedFiles\debug\moc_QWheelDisplay.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC QWheelDisplay.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_QWheelDisplay.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">QWheelDisplay.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QWheelDisplay.h -o GeneratedFiles\release\moc_QWheelDisplay.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC QWheelDisplay.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\release\moc_QWheelDisplay.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="QImageLister.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QImageLister.h -o GeneratedFiles\debug\moc_QImageLister.cpp</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_QImageLister.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC QImageLister.h</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QImageLister.h;%(AdditionalInputs)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="RFTest.h" />
+    <CustomBuild Include="imageclassifierwindow.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">imageclassifierwindow.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore imageclassifierwindow.h -o GeneratedFiles\debug\moc_imageclassifierwindow.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC imageclassifierwindow.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_imageclassifierwindow.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">imageclassifierwindow.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore imageclassifierwindow.h -o GeneratedFiles\release\moc_imageclassifierwindow.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC imageclassifierwindow.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\release\moc_imageclassifierwindow.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\debug\moc_QCategoryDisplayer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\release\moc_QCategoryDisplayer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\debug\moc_QImageDisplayer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\release\moc_QImageDisplayer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\debug\moc_QWheelDisplay.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\release\moc_QWheelDisplay.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\debug\moc_imageclassifierwindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\release\moc_imageclassifierwindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_imageclassifierwindow.cpp" />
+    <ClInclude Include="GeneratedFiles\ui_imageclassifierwindow.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="imageclassifierwindow.ui">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"C:\Qt\Qt5.3.2\5.3\msvc2013\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Uic%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"C:\Qt\Qt5.3.2\5.3\msvc2013\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="GeneratedFiles\ui_imageclassifierwindow.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="Image.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="ImageClass.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="ImageClassifier.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="ImageClassifierBasic.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">imageclassifierwindow.ui;QCategoryView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\uic.exe imageclassifierwindow.ui -o GeneratedFiles\ui_imageclassifierwindow.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC imageclassifierwindow.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\ui_imageclassifierwindow.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">imageclassifierwindow.ui;QCategoryView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\uic.exe imageclassifierwindow.ui -o GeneratedFiles\ui_imageclassifierwindow.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC imageclassifierwindow.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\ui_imageclassifierwindow.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="imageclassifierwindow.qrc">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Rcc%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\qrc_%(Filename).cpp;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"C:\Qt\Qt5.3.2\5.3\msvc2013\bin\rcc.exe" -name "%(Filename)" -no-compress "%(FullPath)" -o .\GeneratedFiles\qrc_%(Filename).cpp</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Rcc%27ing %(Identity)...</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\qrc_%(Filename).cpp;%(Outputs)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"C:\Qt\Qt5.3.2\5.3\msvc2013\bin\rcc.exe" -name "%(Filename)" -no-compress "%(FullPath)" -o .\GeneratedFiles\qrc_%(Filename).cpp</Command>
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">imageclassifierwindow.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\rcc.exe -name imageclassifierwindow imageclassifierwindow.qrc -o GeneratedFiles\qrc_imageclassifierwindow.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">RCC imageclassifierwindow.qrc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\qrc_imageclassifierwindow.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">imageclassifierwindow.qrc;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\rcc.exe -name imageclassifierwindow imageclassifierwindow.qrc -o GeneratedFiles\qrc_imageclassifierwindow.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">RCC imageclassifierwindow.qrc</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\qrc_imageclassifierwindow.cpp;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="NodePositioner.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="Graph.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="QCategoryDisplayer.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp "-I$(QTDIR)\include\QtGui""</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="QCategoryView.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
-    </CustomBuild>
-    <CustomBuild Include="QWheelDisplay.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </AdditionalInputs>
+    <CustomBuild Include="ImageSelector.ui">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\uic.exe ImageSelector.ui -o GeneratedFiles\ui_ImageSelector.h</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\ui_ImageSelector.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building ImageSelector.ui</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ImageSelector.ui;%(AdditionalInputs)</AdditionalInputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Histograms.h" />
-    <ClInclude Include="ImageClassifierGMM.h" />
-    <ClInclude Include="ImageClassifierRF.h" />
-    <ClInclude Include="ImageConversion.h" />
-    <ClInclude Include="NodeProperties.h" />
-    <ClInclude Include="QImageDisplayer.h" />
-    <ClInclude Include="RFTest.h" />
+    <CustomBuild Include="LoadingScreen.ui">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\uic.exe LoadingScreen.ui -o GeneratedFiles\ui_LoadingScreen.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building LoadingScreen.ui</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\ui_LoadingScreen.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LoadingScreen.ui;%(AdditionalInputs)</AdditionalInputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" MocOptions="" />
-    </VisualStudio>
-  </ProjectExtensions>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

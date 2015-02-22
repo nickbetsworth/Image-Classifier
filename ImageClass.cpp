@@ -6,7 +6,7 @@ ImageClass::ImageClass()
 	// Initialise the property sheet histogram before adding to 
 	Mat hist = Mat::zeros(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
 	this->set_histogram(hist);
-
+	this->add_flag(Property::Histogram);
 	m_icon = 0;
 }
 
@@ -50,6 +50,7 @@ void ImageClass::remove_image(Image* image) {
 	}*/
 }
 
+// Calculates the icon
 void ImageClass::calculate_icon() {
 	int dims = Image::HIST_BINS * Image::NUM_CHANNELS;
 	// Find min and max out of all images, for each dimension
@@ -119,4 +120,10 @@ Image* ImageClass::get_icon() {
 	}
 
 	return m_icon;
+}
+
+vector<Image*> ImageClass::get_nearest_neighbours(int n) {
+	vector<Image*> nn;
+	get_icon()->calculate_distance(get_icon());
+	return nn;
 }

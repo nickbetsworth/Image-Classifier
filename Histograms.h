@@ -3,5 +3,7 @@
 #include <opencv\cv.h>
 #include "Image.h"
 
+// Calculates a histogram with the given number of bins, from the matrix provided.
 Mat get_1d_histogram(Mat image_data, int bins);
-double compare_histograms(Mat hist1, Mat hist2);
+// Compares two histograms via EMD.
+float compare_histograms(Mat hist1, Mat hist2);

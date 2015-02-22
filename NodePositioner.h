@@ -12,7 +12,7 @@
  * @date	28/10/2014
  */
 
-typedef map<NodeProperties*, map<NodeProperties*, double>> AdjacencyMatrix;
+typedef map<NodeProperties*, map<NodeProperties*, float>> AdjacencyMatrix;
 class NodePositioner
 {
 	
@@ -34,7 +34,7 @@ public:
 	NodePositioner(vector<NodeProperties*> nodes);
 	virtual ~NodePositioner();
 
-	map<NodeProperties*, Point> NodePositioner::get_node_positions(double graph_scale = 1.0);
+	map<NodeProperties*, Point> NodePositioner::get_node_positions(NodeProperties* root_node, double graph_scale = 1.0);
 
 	/**
 	 * @fn	vector<Edge> NodePositioner::get_edges()
@@ -64,7 +64,7 @@ protected:
 	 */
 	// Any value below threshold will be considered an edge
 	// Any value above will be given an edge length of -1
-	AdjacencyMatrix get_adjacency_matrix(double threshold = numeric_limits<double>::max());
+	AdjacencyMatrix get_adjacency_matrix(float threshold = numeric_limits<float>::max());
 private:
 	/** @brief	Stores the nodes being used */
 	vector<NodeProperties*> m_nodes;

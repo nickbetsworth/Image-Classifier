@@ -18,7 +18,7 @@
 #include <QScrollBar>
 
 
-ImageClassifierWindow::ImageClassifierWindow(QWidget *parent)
+ImageClassifierWindow::ImageClassifierWindow(QStringList image_list, QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -34,7 +34,8 @@ ImageClassifierWindow::ImageClassifierWindow(QWidget *parent)
 	m_state = BrowseState::CLASSES;
 
 	cout << "Loading images.." << endl;
-
+	vector<Image*> images;
+	/*
 	//QDir dir = QDir("C:/data/ProjectImages/FlickrDownloads/");
 	QDir dir = QDir("C:/data/ProjectImages/Test/");
 	//QDir dir = QDir("C:/data/ProjectImages/GGImages/");
@@ -43,9 +44,18 @@ ImageClassifierWindow::ImageClassifierWindow(QWidget *parent)
 
 	QFileInfoList list = dir.entryInfoList(filters);
 
-	vector<Image*> images;
+	
 	for (QFileInfo info : list) {
 		string filepath = info.absoluteFilePath().toStdString();
+		Image* image = new Image(filepath);
+		if (image->has_loaded())
+			images.push_back(image);
+		else
+			cout << "Unable to load image: " << filepath << endl;
+	}*/
+
+	for (QString image_file : image_list) {
+		string filepath = image_file.toStdString();
 		Image* image = new Image(filepath);
 		if (image->has_loaded())
 			images.push_back(image);
@@ -115,14 +125,27 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 		}
 	}
 	else {
+		if (clicked_img1 == 0) {
+			clicked_img1 = image;
+		}
+		else {
+			cout << clicked_img1->get_filepath() << ": " << clicked_img1->get_histogram() << endl;
+			cout << image->get_filepath() << ": "  << image->get_histogram() << endl;
+			double val = clicked_img1->calculate_distance(image);
+			cout << "Distance: " << val << endl;
+			clicked_img1 = 0;
+		}
+	}
+	/*
+	else {
 		m_scene_image->clear();
 
-		/* DEBUGGING MESSAGES
+		// DEBUGGING MESSAGES
 		cout << image->get_filepath() << endl;
 		Mat hist = get_1d_histogram(image->get_image_data(), Image::HIST_BINS);
 		Mat hist_t = hist.t();
 		cout << "Hist: " << hist_t << endl;
-		/* END OF DEBUGGING MESSAGES */
+		// END OF DEBUGGING MESSAGES
 
 		QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_fullres_image()));
 		QGraphicsItem* item = new QGraphicsPixmapItem(*pm);
@@ -130,7 +153,7 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 		m_scene_image->addItem(item);
 
 		setState(BrowseState::IMAGE);
-	}
+	}*/
 
 	
 }
@@ -152,6 +175,11 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	// Loop through each of the images in the category that was clicked
 	for (Image* img : class_clicked->get_images()) {
 		QImageDisplayer* displayer = new QImageDisplayer(img);
+		if (m_new_image_map[class_clicked].contains(img)) {
+			displayer->set_highlighted(true);
+			cout << "Highlighting!" << endl;
+		}
+
 		connect(displayer, SIGNAL(imageClicked(Image*, bool)), this, SLOT(imageClicked(Image*, bool)));
 		m_image_to_displayer[img] = displayer;
 		m_displayer_to_image[displayer] = img;
@@ -165,7 +193,7 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	}
 	NodePositioner* positioner = new NodePositioner(node_props);
 	//map<NodeProperties*, Point> positions = positioner->get_node_positions_graph(node_props.front(), 0.3, 3);
-	map<NodeProperties*, Point> positions = positioner->get_node_positions(0.5);
+	map<NodeProperties*, Point> positions = positioner->get_node_positions(class_clicked->get_icon(), 0.5);
 	// Position each image displayer
 	for (QImageDisplayer* displayer : m_image_displayers) {
 		Image* displayer_class = m_displayer_to_image[displayer];
@@ -238,13 +266,19 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	anim_group->start(QAbstractAnimation::DeleteWhenStopped);
 	
 	// Get the graphics item for the root node
-	//QGraphicsItem* root_node_gfx = m_image_to_displayer[class_clicked->get_images().front()];
+	QGraphicsItem* root_node_gfx = m_image_to_displayer[class_clicked->get_images().front()];
 	// Center the view on the root node
-	//ui.view->centerOn(root_node_gfx);
+	ui.view->centerOn(root_node_gfx);
 	// Perform some clean up
 	delete positioner;
 
 	m_current_class = class_clicked;
+
+
+	// Get the bounding rect of the scene
+	QRectF sceneRect = m_scene_class->itemsBoundingRect();
+	sceneRect.adjust(-1000, -1000, 1000, 1000);
+	ui.view->setSceneRect(sceneRect);
 }
 
 void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
@@ -254,7 +288,8 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 	for (ImageClass* image_class : m_classes) {
 		// Create the icon for the category
 		QCategoryDisplayer* cat = new QCategoryDisplayer(image_class);
-
+		// If this category contains a new image
+		
 		// Create the wheel that is displayed on mouse over
 		QWheelDisplay* wheel = new QWheelDisplay(cat);
 
@@ -274,11 +309,12 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 		connect(cat, SIGNAL(categoryClicked(ImageClass*)), this, SLOT(categoryClicked(ImageClass*)));
 	}
 
-	map<NodeProperties*, Point> positions = m_cp->get_node_positions(0.8);
+	map<NodeProperties*, Point> positions = m_cp->get_node_positions(m_classes.front(), 1);
 
 	// Position each category
 	for (QWheelDisplay* wheel : m_wheels) {
 		QCategoryDisplayer* displayer = wheel->get_category_displayer();
+
 		Point cv_pos = positions[displayer->get_image_class()];
 		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
 		displayer->setPos(pos);
@@ -314,6 +350,8 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 		m_scene_classes->addItem(line);
 		m_edges.push_back(line);
 	}
+
+	
 }
 
 
@@ -364,9 +402,17 @@ void ImageClassifierWindow::setState(BrowseState state) {
 	else {
 		// If the new state is the classes scene 
 		if (state == BrowseState::CLASSES) {
+			// Remove highlights from all images inside class we were just in
+			if (m_current_class != 0) {
+				m_new_image_map[m_current_class].clear();
+				m_class_to_displayer[m_current_class]->set_highlighted(false);
+			}
+
+			ui.view->setSceneRect(QRectF());
 			new_scene = m_scene_classes;
 			new_position = m_scene_classes_pos;
 		}
+		// If the new state is inside a class
 		else if (state == BrowseState::CLASS) {
 			new_scene = m_scene_class;
 			new_position = m_scene_class_pos;
@@ -399,10 +445,24 @@ void ImageClassifierWindow::menuBarClicked(QAction* action) {
 			// Check that the image has successfully loaded
 			if (image->has_loaded()) {
 				ImageClass* predicted_class = m_rf_classifier->predict(image);
+
+				m_new_image_map[predicted_class].push_back(image);
+
 				predicted_class->add_image(image);
 			}
 		}
 
+		// Highlight all classes necessary
+		highlight_classes();
+
 		cout << image_files.size() << " new images were added" << endl;
+	}
+}
+
+void ImageClassifierWindow::highlight_classes() {
+	for (ImageClass* image_class : m_classes) {
+		if (!m_new_image_map[image_class].isEmpty()) {
+			m_class_to_displayer[image_class]->set_highlighted(true);
+		}
 	}
 }

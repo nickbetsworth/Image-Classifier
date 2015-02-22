@@ -3,6 +3,8 @@
 #include <set>
 #include <vector>
 #include <ogdf\energybased\FMMMLayout.h>
+#include <ogdf\tree\RadialTreeLayout.h>
+#include <ogdf\tree\TreeLayout.h>
 #include <opencv\cv.h>
 #include <ctime>
 
@@ -23,10 +25,10 @@ using namespace std;
 template <class T> class Graph
 {
 public:
-	typedef map<T, map<T, double>> AdjacencyMatrix;
+	typedef map<T, map<T, float>> AdjacencyMatrix;
 	struct Edge {	T first;
 					T second;
-					double weight; };
+					float weight; };
 
 	Graph() {
 
@@ -39,18 +41,14 @@ public:
 	/**
 	 * @fn	multimap<T, T> Graph::get_minimum_spanning_tree()
 	 *
-	 * @brief	Calculates a minimum spanning tree from the current graph.
-	 *
-	 * @author	Nick
-	 * @date	30/10/2014
-	 *
+	 * @brief	Gets minimum spanning tree.
 	 *
 	 * @return	A multimap from a single node to its connected nodes.
 	 */
 
-	multimap<T, T> get_minimum_spanning_tree() {
+	multimap<T, T> get_minimum_spanning_tree(T root_node) {
 		// Normalize our set of edges
-		AdjacencyMatrix norm_mat = this->normalize(1);
+		//AdjacencyMatrix norm_mat = this->normalize(1);
 
 		// Create a multimap to store the spanning tree
 		multimap<T, T> edge_map;
@@ -58,17 +56,16 @@ public:
 		// Construct a new list containing all nodes in the graph (converts from set to vector)
 		vector<T> remaining_nodes(m_nodes.begin(), m_nodes.end());
 		// Choose the starting node (first node)
-		int index = 0;
-		T start_node = remaining_nodes.at(index);
+		//int index = 0;
+		T start_node = root_node;
 		// Remove the node we just selected from the list of remaining nodes
 		remaining_nodes.erase(find(remaining_nodes.begin(), remaining_nodes.end(), start_node));
-		//remaining_nodes.erase(remaining_nodes.begin() + index);
 
 		// Create a list to store nodes that have already been visited
 		vector<T> visited_nodes;
 		// We have already visited the starting node
 		visited_nodes.push_back(start_node);
-		double total_distance = 0;
+		float total_distance = 0;
 		
 		// While there are still nodes remaining
 		while (remaining_nodes.size() > 0) {
@@ -89,7 +86,8 @@ public:
 				// and search for the edge with the smallest weight
 				vector<T>::iterator it;
 				for (it = remaining_nodes.begin(); it != remaining_nodes.end(); ++it) {
-					double weight = norm_mat[n][*it];
+					//double weight = norm_mat[n][*it];
+					float weight = get_edge_weight(n, *it);
 
 					// If this edge has the lowest weight yet
 					// And does not equal -1 (indicates this edge is to be ignored, or no edge exists)
@@ -132,19 +130,18 @@ public:
 	}
 
 	/**
-	 * @fn	map<T, cv::Point> Graph::calculate_node_positions(multimap<T, T> spanning_tree)
+	 * @fn	map<T, cv::Point> Graph::calculate_node_positions(T root_node, multimap<T, T> spanning_tree, double graph_scale)
 	 *
 	 * @brief	Calculates the positions of a set of nodes given a spanning tree connecting all nodes.
 	 *
-	 * @author	Nick
-	 * @date	09/11/2014
-	 *
+	 * @param	root_node	 	The root node.
 	 * @param	spanning_tree	The spanning tree.
+	 * @param	graph_scale  	The scale of the graph.
 	 *
 	 * @return	The calculated node positions.
 	 */
 
-	map<T, cv::Point> calculate_node_positions(multimap<T, T> spanning_tree, double graph_scale) {
+	map<T, cv::Point> calculate_node_positions(T root_node, multimap<T, T> spanning_tree, double graph_scale) {
 		// Normalize our set of edges
 		AdjacencyMatrix norm_mat = this->normalize(1);
 
@@ -175,23 +172,28 @@ public:
 		ga.setAllWidth(200 * graph_scale);
 		ga.setAllHeight(200 * graph_scale);
 
+		int count1 = 0;
+		int count2 = 0;
 		// Now add all of the edges to the ogdf graph
 		for (T n : m_nodes) {
 			pair<multimap<T, T>::iterator, multimap<T, T>::iterator> node_it = spanning_tree.equal_range(n);
 
 			for (auto it = node_it.first; it != node_it.second; ++it) {
-				// The two nodes which form an edge
 				T node1 = it->first;
-				T node2 = it->second;
+				T node2 = it->second;;
 
 				ogdf::edge e = g.newEdge(node_to_ogdf_map[node1], node_to_ogdf_map[node2]);
 				weight[e] = norm_mat[node1][node2] * graph_scale;
 			}
 		}
-
 		
+		ogdf::TreeLayout layout;
+		//layout.rootSelection(ogdf::RadialTreeLayout::rootIsSource);
+		//layout.connectedComponentDistance(0.5);
+		//layout.levelDistance(0.5);
+		layout.call(ga);
 		// Use a FMMM layout to calculate the node positions
-		ogdf::FMMMLayout fm;
+		/*ogdf::FMMMLayout fm;
 		fm.useHighLevelOptions(true);
 		// Do not use a new initial placement each time,
 		// this makes the graph deterministic
@@ -207,7 +209,7 @@ public:
 		for (T n : m_nodes) {
 			ogdf::node v = node_to_ogdf_map[n];
 			double x = ga.x(v);
-			double y = ga.y(v);
+			double y = -ga.y(v);
 			
 			pos_map[n] = cv::Point(x, y);
 			
@@ -235,27 +237,24 @@ public:
 	 * @return	The calculated node positions.
 	 */
 
-	map<T, cv::Point> calculate_node_positions(double graph_scale) {
+	//map<T, cv::Point> calculate_node_positions(double graph_scale) {
 		// Calculate the minimum spanning tree
-		multimap<T, T> spanning_tree = get_minimum_spanning_tree();
+		//multimap<T, T> spanning_tree = get_minimum_spanning_tree();
 
-		return calculate_node_positions(spanning_tree, graph_scale);
-	}
+		//return calculate_node_positions(spanning_tree, graph_scale);
+	//}
 
 	/**
-	 * @fn	void Graph::add_edge(T node1, T node2, double weight);
+	 * @fn	void Graph::add_edge(T node1, T node2, double weight)
 	 *
 	 * @brief	Adds a new edge to the graph.
-	 *
-	 * @author	Nick
-	 * @date	30/10/2014
 	 *
 	 * @param	node1 	The first node.
 	 * @param	node2 	The second node.
 	 * @param	weight	The weight of the edge.
 	 */
 
-	void add_edge(T node1, T node2, double weight) {
+	void add_edge(T node1, T node2, float weight) {
 		m_mat[node1][node2] = weight;
 		m_mat[node2][node1] = weight;
 	}
@@ -264,9 +263,6 @@ public:
 	 * @fn	void Graph::add_node(T node)
 	 *
 	 * @brief	Adds a new node to the graph.
-	 *
-	 * @author	Nick
-	 * @date	30/10/2014
 	 *
 	 * @param	node	The new node.
 	 */
@@ -280,9 +276,6 @@ public:
 	 *
 	 * @brief	Sets the adjacency matrix.
 	 *
-	 * @author	Nick
-	 * @date	30/10/2014
-	 *
 	 * @param	mat	The weigthed adjacency matrix.
 	 */
 
@@ -293,9 +286,6 @@ public:
 	 *
 	 * @brief	Gets the weight of an edge within the graph.
 	 *
-	 * @author	Nick
-	 * @date	30/10/2014
-	 *
 	 * @param	node1	The first node.
 	 * @param	node2	The second node.
 	 *
@@ -304,10 +294,20 @@ public:
 
 	double get_edge_weight(T node1, T node2) { return m_mat[node1][node2]; };
 
-	AdjacencyMatrix normalize(double new_max) {
+	/**
+	 * @fn	AdjacencyMatrix Graph::normalize(double new_max)
+	 *
+	 * @brief	Normalizes the current adjacency matrix.
+	 *
+	 * @param	new_max	The new maximum.
+	 *
+	 * @return	A normalized adjacency matrix.
+	 */
+
+	AdjacencyMatrix normalize(float new_max) {
 		AdjacencyMatrix norm_mat;
 
-		double max = -1 * numeric_limits<double>::max();
+		float max = -1 * numeric_limits<float>::max();
 		
 		// Find the minimum and maximum edge values
 		for (auto v = m_nodes.begin(); v != m_nodes.end() - 1; v++) {
@@ -315,7 +315,7 @@ public:
 				T node1 = *v;
 				T node2 = *k;
 
-				double weight = get_edge_weight(node1, node2);
+				float weight = get_edge_weight(node1, node2);
 
 				if (weight > max) {
 					max = weight;
@@ -331,8 +331,8 @@ public:
 				T node1 = *v;
 				T node2 = *k;
 
-				double weight = get_edge_weight(node1, node2);
-				double normalized_weight = ((weight) / max) * new_max;
+				float weight = get_edge_weight(node1, node2);
+				float normalized_weight = ((weight) / max) * new_max;
 				norm_mat[node1][node2] = normalized_weight;
 				norm_mat[node2][node1] = normalized_weight;
 				//cout << "Normalized " << weight << " to " << normalized_weight << endl;
@@ -341,8 +341,6 @@ public:
 
 		return norm_mat;
 	}
-protected:
-
 private:
 	/** @brief	Stores the list of nodes */
 	vector<T> m_nodes;

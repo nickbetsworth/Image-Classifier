@@ -54,45 +54,44 @@ void ImageClass::remove_image(Image* image) {
 void ImageClass::calculate_icon() {
 	int dims = Image::HIST_BINS * Image::NUM_CHANNELS;
 	// Find min and max out of all images, for each dimension
-	float* min = new float[dims];
-	float* max = new float[dims];
+	Mat min = Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
+	Mat max = Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
 	// Holds the center point of each dimension
-	float* centers = new float[dims];
+	Mat centers = Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
 
 	Image* center_image = 0;
 	float closest_distance = numeric_limits<float>::max();
 
 	// Initialise min and max arrays
 	for (int i = 0; i < dims; i++) {
-		min[i] = numeric_limits<float>::max();
-		max[i] = numeric_limits<float>::lowest();
+		min.at<float>(i) = numeric_limits<float>::max();
+		max.at<float>(i) = numeric_limits<float>::lowest();
 	}
 	for (Image* image : m_images) {
 		Mat hist = image->get_histogram();
 		for (int i = 0; i < dims; i++) {
 			float val = hist.at<float>(i);
 
-			if (val > max[i])
-				max[i] = val;
-			if (val < min[i])
-				min[i] = val;
+			if (val > max.at<float>(i))
+				max.at<float>(i) = val;
+			if (val < min.at<float>(i))
+				min.at<float>(i) = val;
 		}
 	}
 
 	// Now calculate the center point of each dimension
 	for (int i = 0; i < dims; i++) {
-		centers[i] = (max[i] + min[i]) / 2;
+		centers.at<float>(i) = (max.at<float>(i) + min.at<float>(i)) / 2;
 	}
 
+	// Create a node which represents the center of this cluster
+	NodeProperties* center_node = new NodeProperties();
+	center_node->set_histogram(centers);
 	// For each image, calculate the distance to the center point
 	// And determine if it is the closest image to the center point
 	for (Image* image : m_images) {
 		Mat hist = image->get_histogram();
-		float distance = 0;
-
-		for (int i = 0; i < dims; i++) {
-			distance += powf(centers[i] - hist.at<float>(i), 2);
-		}
+		float distance = center_node->calculate_distance(image);
 
 		//cout << "Distance: " << distance << endl;
 		if (distance < closest_distance) {
@@ -101,12 +100,11 @@ void ImageClass::calculate_icon() {
 		}
 	}
 
-	//cout << "Closest distance squared found: " << closest_distance << endl;
-
 	// Free up all allocated memory
-	delete[] min;
-	delete[] max;
-	delete[] centers;
+	min.release();
+	max.release();
+	centers.release();
+	delete center_node;
 
 	// Store the image which is closest to the center point of each dimension
 	m_icon = center_image;

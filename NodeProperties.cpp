@@ -2,18 +2,24 @@
 #include "Histograms.h"
 
 void NodeProperties::set_histogram(Mat hist) {
-
+	// If this is not an empty histogram, set the histogram flag to true
+	// Otherwise set the histogram flag to false
+	if (!hist.empty())
+		add_flag(Property::Histogram);
+	else
+		remove_flag(Property::Histogram);
+	
 	m_histogram = hist;
 }
 
 Mat NodeProperties::get_histogram() {
-	return m_histogram;
-}
-
-Mat NodeProperties::get_histogram_norm() {
-	Mat hist_norm;
-	normalize(m_histogram, hist_norm);
-	return hist_norm;
+	if (has_flag(Property::Histogram)) {
+		return m_histogram;
+	}
+	else {
+		cout << "Error: attempted to retrieve histogram from NodeProperties whilst histogram flag is disabled" << endl;
+		return Mat();
+	}
 }
 
 Mat NodeProperties::get_feature_vector() {

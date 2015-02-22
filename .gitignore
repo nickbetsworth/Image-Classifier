@@ -2,3 +2,8 @@ Debug/
 GeneratedFiles/
 OGDF.props
 OpenCV.props
+Makefile
+Makefile.Debug
+Makefile.Release
+ImageClassifier.pro
+ImageClassifier.pri

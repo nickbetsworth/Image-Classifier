@@ -32,8 +32,6 @@ public:
 
 	Mat get_histogram();
 
-	Mat get_histogram_norm();
-
 	Mat get_feature_vector();
 
 	float calculate_distance_histogram(NodeProperties* node2);

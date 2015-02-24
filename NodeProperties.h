@@ -20,12 +20,6 @@ inline int operator&(const Property a, const Property b) {
 
 class NodeProperties
 {
-	/**
-	 * @enum	Feature
-	 *
-	 * @brief	Enum that represents which properties a node may hold
-	 */
-
 	
 public:
 	void set_histogram(Mat hist);

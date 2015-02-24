@@ -119,9 +119,3 @@ Image* ImageClass::get_icon() {
 
 	return m_icon;
 }
-
-vector<Image*> ImageClass::get_nearest_neighbours(int n) {
-	vector<Image*> nn;
-	get_icon()->calculate_distance(get_icon());
-	return nn;
-}

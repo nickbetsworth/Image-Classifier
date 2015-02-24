@@ -172,8 +172,6 @@ public:
 		ga.setAllWidth(200 * graph_scale);
 		ga.setAllHeight(200 * graph_scale);
 
-		int count1 = 0;
-		int count2 = 0;
 		// Now add all of the edges to the ogdf graph
 		for (T n : m_nodes) {
 			pair<multimap<T, T>::iterator, multimap<T, T>::iterator> node_it = spanning_tree.equal_range(n);

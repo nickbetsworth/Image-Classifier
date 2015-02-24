@@ -72,7 +72,6 @@ public:
 
 	
 	Image* get_icon();
-	vector<Image*> get_nearest_neighbours(int n);
 private:
 	/** @brief	Stores all images belonging to this class. */
 	vector<Image*> m_images;

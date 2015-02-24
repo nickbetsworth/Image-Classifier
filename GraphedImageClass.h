@@ -11,8 +11,11 @@
 
 class GraphedImageClass : public ImageClass
 {
+	typedef map<Image*, map<Image*, float>> AdjacencyMatrix;
 public:
 	GraphedImageClass();
 	~GraphedImageClass();
+	void add_node(Image* node);
+	void add_edge(Image* nodeA, Image* nodeB);
 };
 

@@ -38,7 +38,7 @@ void NodeProperties::remove_flag(Property flags) {
 
 float NodeProperties::calculate_distance_histogram(NodeProperties* node2) {
 	// Earth movers distance
-	return compare_histograms(this->get_histogram(), node2->get_histogram());;
+	return compare_histograms(this->get_histogram(), node2->get_histogram());
 }
 
 float NodeProperties::calculate_distance(NodeProperties* node2) {

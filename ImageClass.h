@@ -1,6 +1,7 @@
 #pragma once
 #include "Image.h"
 #include "NodeProperties.h"
+#include "NodePropertiesGraph.h"
 #include <opencv\cv.h>
 #include <vector>
 /**
@@ -62,21 +63,27 @@ public:
 	 *
 	 * @brief	Returns a list of all images that belong to this class.
 	 *
-	 * @author	Nick
-	 * @date	30/10/2014
-	 *
 	 * @return	A list of images that belong to this class.
 	 */
 
 	vector<Image*>& get_images() { return m_images; };
 
+	NodePropertiesGraph* get_graph() { return m_graph; };
+
+	AdjacencyMatrix& get_adjacency_matrix() {
+		return m_graph->get_adjacency_matrix();
+	};
 	
 	Image* get_icon();
+	void calculate_icon();
 private:
 	/** @brief	Stores all images belonging to this class. */
 	vector<Image*> m_images;
 	Image* m_icon;
 
-	void calculate_icon();
+	// Manages the adjacency matrix between nodes of this class
+	NodePropertiesGraph* m_graph;
+
+	
 };
 

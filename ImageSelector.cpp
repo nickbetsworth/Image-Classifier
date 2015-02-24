@@ -3,6 +3,7 @@
 #include "LoadingScreen.h"
 #include <QFileDialog>
 #include <QErrorMessage>
+#include <QtConcurrent/QtConcurrentRun>
 #include <iostream>
 
 using namespace std;
@@ -12,6 +13,7 @@ ImageSelector::ImageSelector(QWidget *parent) : QWidget(parent)
 	ui.setupUi(this);
 	this->setWindowTitle("Image Selection");
 
+	ui.lstImages->setIconSize(QSize(60, 60));
 	ui.lstImages->setViewMode(QListView::ViewMode::ListMode);
 	
 	//ui.lstImages->addAction(deleteAction);
@@ -34,20 +36,8 @@ void ImageSelector::addImageClicked() {
 	addingStarted();
 
 	QStringList image_files = QFileDialog::getOpenFileNames(this, "Select images for clustering process", "C:/data/ProjectImages/FlickrDownloads/", "Images(*.png *.jpg *.gif)");
-	//ui.lstImages->
-	bool duplicates = false;
-	for (QString image_file : image_files) {
-		// Try to add the image and if it does not succeed
-		// It must already exist in the list
-		if (!ui.lstImages->add_file(image_file)) {
-			duplicates = true;
-		}
-	}
-
-	if (duplicates) {
-		QErrorMessage* exist_error = new QErrorMessage(this);
-		exist_error->showMessage("At least one of the selected images were already on the list");
-	}
+	QtConcurrent::run(ui.lstImages, &QImageLister::add_files, image_files);
+	//ui.lstImages->add_files(image_files)
 
 	addingFinished();
 }

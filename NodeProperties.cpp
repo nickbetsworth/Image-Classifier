@@ -26,6 +26,10 @@ Mat NodeProperties::get_feature_vector() {
 	return get_histogram();
 }
 
+//int get_feature_length(Property flags) {
+	//if ()
+//}
+
 bool NodeProperties::has_flag(Property flags) const {
 	return (m_properties & flags) == flags;
 }

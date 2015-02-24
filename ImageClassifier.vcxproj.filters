@@ -149,11 +149,17 @@
     <ClCompile Include="NodePropertiesFlagTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="NodePropertiesGraph.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="NPGTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Testing.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graph.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
     <ClInclude Include="Histograms.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
@@ -209,6 +215,15 @@
       <Filter>Header Files\Library</Filter>
     </ClInclude>
     <ClInclude Include="NodePropertiesFlagTest.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="NodePropertiesGraph.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="NPGTest.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="Testing.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
   </ItemGroup>

@@ -143,7 +143,7 @@ public:
 
 	map<T, cv::Point> calculate_node_positions(T root_node, multimap<T, T> spanning_tree, double graph_scale) {
 		// Normalize our set of edges
-		AdjacencyMatrix norm_mat = this->normalize(1);
+		AdjacencyMatrix norm_mat = m_mat;
 
 		//std::clock_t    start;
 

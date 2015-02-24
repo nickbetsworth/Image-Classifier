@@ -8,6 +8,8 @@ ImageClass::ImageClass()
 	this->set_histogram(hist);
 	this->add_flag(Property::Histogram);
 	m_icon = 0;
+
+	m_graph = new NodePropertiesGraph();
 }
 
 ImageClass::ImageClass(vector<Image*> images) : ImageClass()
@@ -28,6 +30,7 @@ bool ImageClass::add_image(Image* image)
 	if (image->has_loaded()) {
 		// Add up the histogram to the property sheet's total
 		//this->set_histogram(this->get_histogram() + image->get_histogram());
+		m_graph->add_node(image);
 		m_images.push_back(image);
 		return true;
 	}
@@ -39,6 +42,7 @@ bool ImageClass::add_image(Image* image)
 
 void ImageClass::remove_image(Image* image) {
 	//int initial_size = m_images.size();
+	m_graph->remove_node(image);
 	m_images.erase(remove(m_images.begin(), m_images.end(), image), m_images.end());
 	/*int size_difference = m_images.size() - initial_size;
 	// If the size has changed (the image existed in the class)

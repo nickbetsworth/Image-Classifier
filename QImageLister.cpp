@@ -6,6 +6,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QErrorMessage>
+#include <QtConcurrent/QtConcurrentRun>
 #include <iostream>
 
 using namespace std;
@@ -65,6 +66,43 @@ void QImageLister::deleteClicked() {
 	m_delete_action->setData(QModelIndex());
 }
 
+void QImageLister::add_files(QStringList file_paths) {
+	emit addingStarted();
+	// Stores whether any duplicates are found
+	bool duplicates = false;
+	// Stores whether a file of the incorrect type was provided
+	bool incorrect_type = false;
+
+	for (QString file_path : file_paths) {
+		if (file_path.endsWith(".jpg", Qt::CaseInsensitive) ||
+			file_path.endsWith(".png", Qt::CaseInsensitive) ||
+			file_path.endsWith(".gif", Qt::CaseInsensitive)) {
+
+			// Try to add the file
+			// If this fails then the file already exists
+			if (!add_file(file_path))
+				duplicates = true;
+
+		}
+		else {
+			incorrect_type = true;
+		}
+	}
+
+	if (duplicates) {
+		QErrorMessage* exist_error = new QErrorMessage(this);
+		exist_error->showMessage("At least one of the dropped files were already on the list");
+	}
+	if (incorrect_type) {
+		QErrorMessage* exist_error = new QErrorMessage(this);
+		exist_error->showMessage("At least one of the dropped files were of the wrong format");
+	}
+
+	
+
+	emit addingFinished();
+}
+
 bool QImageLister::add_file(QString file_path) {
 	// If the file already exists in the list, don't add it
 	if (m_image_files.contains(file_path)) {
@@ -74,9 +112,12 @@ bool QImageLister::add_file(QString file_path) {
 		m_image_files.push_back(file_path);
 
 		// Load the image's icon
-		//QIcon image_icon = QIcon(file_path);
+		QPixmap image = QPixmap(file_path);
+		QPixmap thumbnail = image.scaled(QSize(49, 49), Qt::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
+
+		QIcon image_icon = QIcon(thumbnail);
 		// Create a new list item with the icon and file path
-		QListWidgetItem* item = new QListWidgetItem(file_path, this);
+		QListWidgetItem* item = new QListWidgetItem(image_icon, file_path, this);
 
 		// Let other classes know that the contents of the list has changed
 		emit listChanged();
@@ -105,45 +146,15 @@ void QImageLister::dragMoveEvent(QDragMoveEvent *e) {
 
 void QImageLister::dropEvent(QDropEvent *e) {
 	if (e->mimeData()->hasUrls()) {
-		
-		emit addingStarted();
-
 		QList<QUrl> urls = e->mimeData()->urls();
-		// Stores whether any duplicates are found
-		bool duplicates = false;
-		// Stores whether a file of the incorrect type was provided
-		bool incorrect_type = false;
-
+		QStringList file_paths;
+		
 		for (QUrl url : urls) {
-			QString file_path = url.toLocalFile();
-			// Ensure that the file is of a image type
-			if (file_path.endsWith(".jpg", Qt::CaseInsensitive) ||
-				file_path.endsWith(".png", Qt::CaseInsensitive) ||
-				file_path.endsWith(".gif", Qt::CaseInsensitive)) {
-				
-				// Try to add the file
-				// If this fails then the file already exists
-				if (!add_file(file_path))
-					duplicates = true;
-
-			}
-			else {
-				incorrect_type = true;
-			}
-			
+			file_paths.push_back(url.toLocalFile());
 		}
 
-		if (duplicates) {
-			QErrorMessage* exist_error = new QErrorMessage(this);
-			exist_error->showMessage("At least one of the dropped files were already on the list");
-		}
-		if (incorrect_type) {
-			QErrorMessage* exist_error = new QErrorMessage(this);
-			exist_error->showMessage("At least one of the dropped files were of the wrong format");
-		}
-
+		QtConcurrent::run(this, &QImageLister::add_files, file_paths);
+		//add_files(file_paths);
 		e->acceptProposedAction();
-
-		emit addingFinished();
 	}
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "ImageClassifier.h"
 #include "NodeProperties.h"
+#include "NodePropertiesGraph.h"
 #include "Graph.h"
 
 /**
@@ -12,7 +13,6 @@
  * @date	28/10/2014
  */
 
-typedef map<NodeProperties*, map<NodeProperties*, float>> AdjacencyMatrix;
 class NodePositioner
 {
 	
@@ -31,7 +31,7 @@ public:
 		NodeProperties* node2;
 	};
 
-	NodePositioner(vector<NodeProperties*> nodes);
+	NodePositioner(NodePropertiesGraph* n);
 	virtual ~NodePositioner();
 
 	map<NodeProperties*, Point> NodePositioner::get_node_positions(NodeProperties* root_node, double graph_scale = 1.0);
@@ -49,27 +49,10 @@ public:
 
 	vector<Edge> get_edges() { return m_edges; };
 protected:
-	vector<NodeProperties*> get_nodes() { return m_nodes; };
-
-	/**
-	 * @fn	virtual AdjacencyMatrix NodePositioner::get_adjacency_matrix() = 0;
-	 *
-	 * @brief	Calculates a matrix of weighted edges using a set of features derived from each node.
-	 * 			The edges are stored as an adjacency matrix.
-	 *
-	 * @author	Nick
-	 * @date	28/10/2014
-	 *
-	 * @return	A weighted adjacency matrix.
-	 */
-	// Any value below threshold will be considered an edge
-	// Any value above will be given an edge length of -1
-	AdjacencyMatrix get_adjacency_matrix(float threshold = numeric_limits<float>::max());
 private:
-	/** @brief	Stores the nodes being used */
-	vector<NodeProperties*> m_nodes;
-	/** @brief	Stores the graph of relations between NodePropertieses. */
-	Graph<NodeProperties*> m_graph;
+	NodePropertiesGraph* m_graph;
+	/** @brief	Stores the graph of relations between NodeProperties. */
+	//Graph<NodeProperties*> m_graph;
 	/** @brief	Stores a list of edges calculated via the spanning tree. */
 	vector<Edge> m_edges;
 

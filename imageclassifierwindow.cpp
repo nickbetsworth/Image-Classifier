@@ -79,14 +79,11 @@ ImageClassifierWindow::ImageClassifierWindow(QStringList image_list, QWidget *pa
 	//RFTest rft = RFTest(m_classes);
 	//rft.perform_test(20);
 
-	ImageClass* first = m_classifier->get_image_classes().front();
-	NodeProperties* conv = first;
-
 	vector<NodeProperties*> node_props;
 	for (NodeProperties* node : m_classifier->get_image_classes()) {
 		node_props.push_back(node);
 	}
-	m_cp = new NodePositioner(node_props);
+	
 	this->setup_classes(m_classes.front());
 
 	// Set it so that we can drag through the scene with the mouse
@@ -101,7 +98,6 @@ ImageClassifierWindow::ImageClassifierWindow(QStringList image_list, QWidget *pa
 
 ImageClassifierWindow::~ImageClassifierWindow()
 {
-	delete m_cp;
 	delete m_classifier;
 }
 
@@ -177,7 +173,6 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 		QImageDisplayer* displayer = new QImageDisplayer(img);
 		if (m_new_image_map[class_clicked].contains(img)) {
 			displayer->set_highlighted(true);
-			cout << "Highlighting!" << endl;
 		}
 
 		connect(displayer, SIGNAL(imageClicked(Image*, bool)), this, SLOT(imageClicked(Image*, bool)));
@@ -191,9 +186,9 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	for (NodeProperties* node : class_clicked->get_images()) {
 		node_props.push_back(node);
 	}
-	NodePositioner* positioner = new NodePositioner(node_props);
-	//map<NodeProperties*, Point> positions = positioner->get_node_positions_graph(node_props.front(), 0.3, 3);
-	map<NodeProperties*, Point> positions = positioner->get_node_positions(class_clicked->get_icon(), 0.5);
+	NodePositioner* positioner = new NodePositioner(class_clicked->get_graph());
+
+	map<NodeProperties*, Point> positions = positioner->get_node_positions(class_clicked->get_icon(), 0.6);
 	// Position each image displayer
 	for (QImageDisplayer* displayer : m_image_displayers) {
 		Image* displayer_class = m_displayer_to_image[displayer];
@@ -284,8 +279,12 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 	m_scene_classes->clear();
 
+	NodePropertiesGraph* graph = new NodePropertiesGraph();
+
 	// For each image category, create a component to display itself
 	for (ImageClass* image_class : m_classes) {
+		image_class->calculate_icon();
+		graph->add_node(image_class);
 		// Create the icon for the category
 		QCategoryDisplayer* cat = new QCategoryDisplayer(image_class);
 		// If this category contains a new image
@@ -309,7 +308,8 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 		connect(cat, SIGNAL(categoryClicked(ImageClass*)), this, SLOT(categoryClicked(ImageClass*)));
 	}
 
-	map<NodeProperties*, Point> positions = m_cp->get_node_positions(m_classes.front(), 1);
+	NodePositioner* positioner = new NodePositioner(graph);
+	map<NodeProperties*, Point> positions = positioner->get_node_positions(m_classes.front(), 1);
 
 	// Position each category
 	for (QWheelDisplay* wheel : m_wheels) {
@@ -337,7 +337,7 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 	// Draw all new edge lines
 	// Turn on anti-aliasing for the lines
 	ui.view->setRenderHints(QPainter::Antialiasing);
-	for (NodePositioner::Edge e : m_cp->get_edges()) {
+	for (NodePositioner::Edge e : positioner->get_edges()) {
 		ImageClass* image_class1 = static_cast<ImageClass*>(e.node1);
 		ImageClass* image_class2 = static_cast<ImageClass*>(e.node2);
 		QCategoryDisplayer* class1 = m_class_to_displayer[image_class1];
@@ -351,7 +351,7 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 		m_edges.push_back(line);
 	}
 
-	
+	delete positioner;
 }
 
 

@@ -48,8 +48,6 @@ private:
 	ImageClassifierRF* m_rf_classifier;
 	/** @brief	In charge of classifying images. */
 	ImageClassifier* m_classifier;
-	/** @brief	In charge of positioning the classes on screen. */
-	NodePositioner* m_cp;
 
 	/** @brief	Stores the UI elements that represent each ImageClass. */
 	//vector<QCategoryDisplayer*> m_displayers;

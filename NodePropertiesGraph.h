@@ -5,16 +5,23 @@
 #include <map>
 
 using namespace std;
+typedef NodeProperties* Node;
+typedef map<Node, map<Node, float>> AdjacencyMatrix;
+typedef multimap<Node, Node> SpanningTree;
+typedef unordered_set<Node> NodeList;
 class NodePropertiesGraph
 {
-	typedef map<NodeProperties*, map<NodeProperties*, float>> AdjacencyMatrix;
 public:
+	static const int NO_EDGE = -1;
 	NodePropertiesGraph();
 	virtual ~NodePropertiesGraph();
-	bool add_node(NodeProperties* node);
-	bool remove_node(NodeProperties* node);
+	bool add_node(Node node);
+	bool remove_node(Node node);
 	AdjacencyMatrix get_adjacency_matrix() { return m_mat; };
-	unordered_set<NodeProperties*> get_nodes() { return m_nodes; };
+	SpanningTree get_minimum_spanning_tree(Node root_node = 0);
+	float get_edge_weight(Node node1, Node node2);
+
+	NodeList get_nodes() { return m_nodes; };
 private:
 
 	/**
@@ -26,7 +33,7 @@ private:
 	 * @param [in,out]	node	The new node.
 	 */
 
-	void calculate_edges(NodeProperties* node);
+	void calculate_edges(Node node);
 
 	/**
 	 * @fn	void NodePropertiesGraph::remove_edges(NodeProperties* node);
@@ -35,10 +42,24 @@ private:
 	 *
 	 * @param [in,out]	node	The node that has been removed.
 	 */
+	
+	void remove_edges(Node node);
 
-	void remove_edges(NodeProperties* node);
+	void cache_minimum_spanning_tree(SpanningTree& st, Node root_node);
+	// Specifies that the graph has changed, so we can not used cache data for MST
+	void remove_cache() { m_has_changed = true; };
+	// Stores whether or not the graph has changed since last MST calculation
+	bool has_graph_changed() { return m_has_changed; }
+	
+	void set_previous_root(Node root_node) { m_previous_root = root_node; };
+	// Specifies if the root of the last MST is different to the one specified
+	bool is_previous_root(Node root_node) { return root_node == m_previous_root; };
 
-	unordered_set<NodeProperties*> m_nodes;
+	NodeList m_nodes;
 	AdjacencyMatrix m_mat;
+	// Determines whether or not it is suitable to used cached data about this graph
+	bool m_has_changed;
+	Node m_previous_root;
+	SpanningTree m_cached_spanning_tree;
 };
 

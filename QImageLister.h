@@ -20,6 +20,7 @@ public:
 	QImageLister(QWidget *parent = 0);
 	~QImageLister();
 	bool add_file(QString file_path);
+	void add_files(QStringList file_paths);
 
 	/**
 	 * @fn	QStringList QImageLister::get_image_files()

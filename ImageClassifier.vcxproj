@@ -200,8 +200,9 @@
     </CustomBuild>
     <CustomBuild Include="LoadingScreen.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore LoadingScreen.h -o GeneratedFiles\debug\moc_LoadingScreen.cpp</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC LoadingScreen.h</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LoadingScreen.h;%(Outputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_LoadingScreen.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LoadingScreen.h;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC LoadingScreen.h</Message>
     </CustomBuild>
     <ClInclude Include="NodePositioner.h" />
     <ClInclude Include="NodeProperties.h" />

@@ -33,7 +33,7 @@ void ImageClassifierRF::train(vector<ImageClass*> training_data) {
 	for (ImageClass* image_class : training_data) 
 		num_images += image_class->get_images().size();
 
-	cout << "Training forest with " << num_images << " images" << endl;
+	//cout << "Training forest with " << num_images << " images" << endl;
 	// Construct the training data from the Image Classes
 	int feature_vec_length = Image::HIST_BINS * Image::NUM_CHANNELS;
 	Mat trainData = Mat(num_images, feature_vec_length, CV_32FC1);

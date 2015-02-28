@@ -1,9 +1,11 @@
 #include "ImageSelector.h"
 #include "imageclassifierwindow.h"
 #include "LoadingScreen.h"
+#include "ClassifierMananger.h"
 #include <QFileDialog>
 #include <QErrorMessage>
 #include <QtConcurrent/QtConcurrentRun>
+#include <QSplashScreen>
 #include <iostream>
 
 using namespace std;
@@ -51,9 +53,33 @@ void ImageSelector::runClicked() {
 	QApplication::processEvents();
 
 	if (ui.lstImages->get_image_files().size() > 0) {
-		ImageClassifierWindow* win = new ImageClassifierWindow(ui.lstImages->get_image_files());
-		win->showMaximized();
+		// Convert the QStringList to a vector<string>, as the image library
+		// has no Qt dependency
+		vector<string> std_file_paths;
+		
+		for (QString qs_file_path : ui.lstImages->get_image_files()) {
+			std_file_paths.push_back(qs_file_path.toStdString());
+		}
+
+		ClassifierMananger* manager = new ClassifierMananger(std_file_paths);
+		QPixmap splash_image = QPixmap("C:/Users/Nick/Desktop/b3.png");
+		QSplashScreen* loading_screen = new QSplashScreen(splash_image);
 		this->hide();
+		loading_screen->show();
+		loading_screen->showMessage("Loading Images..", Qt::AlignCenter, Qt::white);
+		QApplication::processEvents();
+		manager->load_images();
+		loading_screen->showMessage("Clustering Images..", Qt::AlignCenter, Qt::white);
+		QApplication::processEvents();
+		manager->cluster_images(6);
+		loading_screen->showMessage("Training Classifier..", Qt::AlignCenter, Qt::white);
+		QApplication::processEvents();
+		manager->train_classifier();
+		ImageClassifierWindow* win = new ImageClassifierWindow(ui.lstImages->get_image_files());
+		loading_screen->finish(win);
+		//
+		win->showMaximized();
+		//
 	}
 	else {
 

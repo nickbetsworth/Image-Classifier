@@ -25,6 +25,9 @@ ImageSelector::ImageSelector(QWidget *parent) : QWidget(parent)
 	connect(ui.lstImages, SIGNAL(addingStarted()), this, SLOT(addingStarted()));
 	connect(ui.lstImages, SIGNAL(addingFinished()), this, SLOT(addingFinished()));
 	connect(ui.lstImages, SIGNAL(listChanged()), this, SLOT(listChanged()));
+
+	connect(ui.lstImages, SIGNAL(incorrectFormat()), this, SLOT(incorrectFormat()));
+	connect(ui.lstImages, SIGNAL(duplicateImage()), this, SLOT(duplicateImage()));
 }
 
 ImageSelector::~ImageSelector()
@@ -37,7 +40,7 @@ void ImageSelector::addImageClicked() {
 
 	QStringList image_files = QFileDialog::getOpenFileNames(this, "Select images for clustering process", "C:/data/ProjectImages/FlickrDownloads/", "Images(*.png *.jpg *.gif)");
 	QtConcurrent::run(ui.lstImages, &QImageLister::add_files, image_files);
-	//ui.lstImages->add_files(image_files)
+	//ui.lstImages->add_files(image_files);
 
 	addingFinished();
 }
@@ -45,7 +48,7 @@ void ImageSelector::addImageClicked() {
 void ImageSelector::runClicked() {
 	ui.btnRun->setDisabled(true);
 	ui.btnRun->setText("Clustering Images..");
-	ui.btnRun->update();
+	QApplication::processEvents();
 
 	if (ui.lstImages->get_image_files().size() > 0) {
 		ImageClassifierWindow* win = new ImageClassifierWindow(ui.lstImages->get_image_files());
@@ -63,15 +66,28 @@ void ImageSelector::addingStarted() {
 	// And rename it to let the user know images are being added
 	ui.btnAdd->setText("Adding images..");
 	ui.btnAdd->setDisabled(true);
+	ui.btnRun->setDisabled(true);
 }
 
 void ImageSelector::listChanged() {
 	// Update the image counter
 	ui.lblImageCount->setText("Image Count: " + QString::number(ui.lstImages->get_image_files().size()));
+	//QApplication::processEvents();
 }
 
 void ImageSelector::addingFinished() {
 	// Re-enable the button
 	ui.btnAdd->setText("Add Images");
 	ui.btnAdd->setDisabled(false);
+	ui.btnRun->setDisabled(false);
+}
+
+void ImageSelector::incorrectFormat() {
+	QErrorMessage* exist_error = new QErrorMessage(this);
+	exist_error->showMessage("At least one of the dropped files was of the wrong format");
+}
+
+void ImageSelector::duplicateImage() {
+	QErrorMessage* exist_error = new QErrorMessage(this);
+	exist_error->showMessage("At least one of the dropped files was already on the list");
 }

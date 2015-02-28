@@ -8,7 +8,7 @@ using namespace std;
 typedef NodeProperties* Node;
 typedef map<Node, map<Node, float>> AdjacencyMatrix;
 typedef multimap<Node, Node> SpanningTree;
-typedef unordered_set<Node> NodeList;
+typedef set<Node> NodeList;
 class NodePropertiesGraph
 {
 public:
@@ -22,6 +22,7 @@ public:
 	float get_edge_weight(Node node1, Node node2);
 
 	NodeList get_nodes() { return m_nodes; };
+	NodeList get_n_nearest_nodes(Node node, int n);
 private:
 
 	/**

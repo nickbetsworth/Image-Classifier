@@ -22,7 +22,7 @@ public:
 	static const int THUMB_WIDTH = 200;
 	static const int THUMB_HEIGHT = 200;
 	/** @brief	The number of bins each colour channel of the histogram will have. */
-	static const int HIST_BINS = 9;
+	static const int HIST_BINS = 8;
 	/** @brief	The number of colour channels the image has. */
 	static const int NUM_CHANNELS = 3;
 

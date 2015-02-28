@@ -13,7 +13,7 @@ NodePropertiesGraph::~NodePropertiesGraph()
 }
 
 bool NodePropertiesGraph::add_node(NodeProperties* node) {
-	pair<unordered_set<NodeProperties*>::const_iterator, bool> result = m_nodes.insert(node);
+	pair<set<NodeProperties*>::iterator, bool> result = m_nodes.insert(node);
 	// If the new node was successfully added
 	// (It did not already exist within the list)
 	if (result.second) {
@@ -91,6 +91,46 @@ float NodePropertiesGraph::get_edge_weight(Node node1, Node node2) {
 	}
 }
 
+NodeList NodePropertiesGraph::get_n_nearest_nodes(Node node, int n) {
+	set<Node> nearest_nodes;
+
+	// Make sure that the node is part of this graph
+	bool node_in_graph = m_nodes.find(node) != m_nodes.end();
+	if (!node_in_graph) {
+		cout << "The given node was not found in the graph" << endl;
+		return nearest_nodes;
+	}
+
+	if (n > 0 && n) {
+		
+		for (int i = 0; i < n; i++) {
+			Node nearest_node = 0;
+			float nearest_val = std::numeric_limits<float>::max();
+			for (Node neighbour : m_nodes) {
+				// First make sure this node is not the one we have been passed,
+				// and that we have not already counted this node
+				bool is_in = nearest_nodes.find(neighbour) != nearest_nodes.end();
+				if (neighbour != node && !is_in) {
+					// Get the distance to the given node
+					float val = get_edge_weight(node, neighbour);
+					if (val < nearest_val) {
+						nearest_node = neighbour;
+						nearest_val = val;
+					}
+				}
+			}
+
+			if (nearest_node != 0) {
+				nearest_nodes.insert(nearest_node);
+			}
+		}
+		return nearest_nodes;
+	}
+	else {
+		cout << "NodePropertiesGraph::get_n_nearest_nodes: specified n was out of range (0..node count)" << endl;
+		exit(0);
+	}
+}
 SpanningTree NodePropertiesGraph::get_minimum_spanning_tree(Node root_node) {
 	// Check if there is a cached version of the requested spanning tree
 	if (!has_graph_changed() && is_previous_root(root_node)) {

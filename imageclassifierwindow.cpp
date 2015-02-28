@@ -35,24 +35,6 @@ ImageClassifierWindow::ImageClassifierWindow(QStringList image_list, QWidget *pa
 
 	cout << "Loading images.." << endl;
 	vector<Image*> images;
-	/*
-	//QDir dir = QDir("C:/data/ProjectImages/FlickrDownloads/");
-	QDir dir = QDir("C:/data/ProjectImages/Test/");
-	//QDir dir = QDir("C:/data/ProjectImages/GGImages/");
-	QStringList filters;
-	filters << "*.png" << "*.jpg" << "*.gif";
-
-	QFileInfoList list = dir.entryInfoList(filters);
-
-	
-	for (QFileInfo info : list) {
-		string filepath = info.absoluteFilePath().toStdString();
-		Image* image = new Image(filepath);
-		if (image->has_loaded())
-			images.push_back(image);
-		else
-			cout << "Unable to load image: " << filepath << endl;
-	}*/
 
 	for (QString image_file : image_list) {
 		string filepath = image_file.toStdString();
@@ -75,14 +57,6 @@ ImageClassifierWindow::ImageClassifierWindow(QStringList image_list, QWidget *pa
 	// Use our clustered data as training data for a new random forest
 	m_rf_classifier = new ImageClassifierRF();
 	m_rf_classifier->train(m_classes);
-	
-	//RFTest rft = RFTest(m_classes);
-	//rft.perform_test(20);
-
-	vector<NodeProperties*> node_props;
-	for (NodeProperties* node : m_classifier->get_image_classes()) {
-		node_props.push_back(node);
-	}
 	
 	this->setup_classes(m_classes.front());
 
@@ -188,7 +162,7 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	}
 	NodePositioner* positioner = new NodePositioner(class_clicked->get_graph());
 
-	map<NodeProperties*, Point> positions = positioner->get_node_positions(class_clicked->get_icon(), 0.6);
+	map<NodeProperties*, Point> positions = positioner->get_node_positions_tree(class_clicked->get_icon(), 100, 100);
 	// Position each image displayer
 	for (QImageDisplayer* displayer : m_image_displayers) {
 		Image* displayer_class = m_displayer_to_image[displayer];
@@ -309,7 +283,8 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 	}
 
 	NodePositioner* positioner = new NodePositioner(graph);
-	map<NodeProperties*, Point> positions = positioner->get_node_positions(m_classes.front(), 1);
+	//map<NodeProperties*, Point> positions = positioner->get_node_positions_tree(m_classes.front(), 200, 200);
+	map<NodeProperties*, Point> positions = positioner->get_node_positions_fmmm(200, 200);
 
 	// Position each category
 	for (QWheelDisplay* wheel : m_wheels) {
@@ -322,11 +297,11 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 	}
 
 	// Clear up all existing edge lines
-	for (QGraphicsLineItem* item : m_edges) {
-		m_scene_classes->removeItem(item);
-	}
+	//for (QGraphicsLineItem* item : m_edges) {
+		//m_scene_classes->removeItem(item);
+	//}
 
-	m_edges.clear();
+	//m_edges.clear();
 
 	// Create the pen that will be used to draw our lines
 	QPen pen = QPen(Qt::PenStyle::SolidLine);
@@ -336,7 +311,7 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 
 	// Draw all new edge lines
 	// Turn on anti-aliasing for the lines
-	ui.view->setRenderHints(QPainter::Antialiasing);
+	/*ui.view->setRenderHints(QPainter::Antialiasing);
 	for (NodePositioner::Edge e : positioner->get_edges()) {
 		ImageClass* image_class1 = static_cast<ImageClass*>(e.node1);
 		ImageClass* image_class2 = static_cast<ImageClass*>(e.node2);
@@ -349,7 +324,7 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 		line->setZValue(-1);
 		m_scene_classes->addItem(line);
 		m_edges.push_back(line);
-	}
+	}*/
 
 	delete positioner;
 }

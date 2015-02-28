@@ -5,8 +5,7 @@ using namespace cv;
 
 enum Property {
 	Histogram = 1,
-	SIFT = 2,
-	Test = 4
+	SIFT = 2
 };
 inline Property operator|(const Property a, const Property b) {
 	return static_cast<Property>(static_cast<int>(a) | static_cast<int>(b));

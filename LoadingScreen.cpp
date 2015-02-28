@@ -1,7 +1,7 @@
 #include "LoadingScreen.h"
 
 
-LoadingScreen::LoadingScreen(QWidget *parent) : QWidget(parent)
+LoadingScreen::LoadingScreen(QStringList file_paths, QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 	this->setWindowTitle("Loading..");

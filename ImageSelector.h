@@ -42,6 +42,10 @@ public slots:
 	 */
 
 	void addingFinished();
+
+	void duplicateImage();
+
+	void incorrectFormat();
 protected slots:
 
 	/**

@@ -69,10 +69,6 @@ public:
 	vector<Image*>& get_images() { return m_images; };
 
 	NodePropertiesGraph* get_graph() { return m_graph; };
-
-	AdjacencyMatrix& get_adjacency_matrix() {
-		return m_graph->get_adjacency_matrix();
-	};
 	
 	Image* get_icon();
 	void calculate_icon();

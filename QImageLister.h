@@ -56,6 +56,9 @@ signals:
 	 */
 
 	void addingFinished();
+	
+	void incorrectFormat();
+	void duplicateImage();
 protected slots:
 	void deleteClicked();
 protected:

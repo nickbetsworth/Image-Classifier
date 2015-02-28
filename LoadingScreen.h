@@ -13,7 +13,7 @@ class LoadingScreen : public QWidget
 {
 	Q_OBJECT
 public:
-	LoadingScreen(QWidget *parent = 0);
+	LoadingScreen(QStringList file_paths, QWidget *parent = 0);
 	~LoadingScreen();
 	void setupBusyIndicator();
 private:

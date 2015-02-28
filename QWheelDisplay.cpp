@@ -16,18 +16,22 @@ QWheelDisplay::QWheelDisplay(QCategoryDisplayer* category_displayer) : QGraphics
 	m_rad_scale = 1.0;
 
 	ImageClass* image_class = m_category_displayer->get_image_class();
-	//image_class->get_nearest_neighbours(2);
-	int c = get_max_images();
-	if (c > image_class->get_images().size()) {
-		c = image_class->get_images().size() - 1;
-	}
-	auto it = image_class->get_images().begin();
-	for (auto k = it; k != it + c; ++k) {
-		QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap((*k)->get_image_data()));
-		QPixmap* pm_resized = new QPixmap(pm->scaled(QSize(m_diameter, m_diameter), Qt::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));
-		delete pm;
 
-		m_pixmaps.push_back(pm_resized);
+	unsigned int n = get_max_images();
+	if (n > image_class->get_images().size()) {
+		n = image_class->get_images().size() - 1;
+	}
+
+	if (n > 0) {
+		NodeList nearest_images = image_class->get_graph()->get_n_nearest_nodes(image_class->get_icon(), n);
+		for (Node image_node : nearest_images) {
+			Image* image = static_cast<Image*>(image_node);
+			QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_image_data()));
+			QPixmap* pm_resized = new QPixmap(pm->scaled(QSize(m_diameter, m_diameter), Qt::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));
+			delete pm;
+
+			m_pixmaps.push_back(pm_resized);
+		}
 	}
 }
 
@@ -102,8 +106,7 @@ void QWheelDisplay::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 
 			int max_images = get_max_images();
 			// Now bound the number of images to the maximum we calculated
-			// Subtract -1 in this calculation as the central category icon is one of our images, we do not wish to display it twice
-			int num_images = m_pixmaps.size() - 1;
+			int num_images = m_pixmaps.size();
 			if (num_images > max_images) {
 				num_images = max_images;
 			}
@@ -126,13 +129,13 @@ void QWheelDisplay::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 			// Draw each of the images
 			// The images will be on top of everything else
 			setZValue(4);
-			auto it = m_pixmaps.begin() + 1;
-			for (int i = 0; i < num_images; ++i, ++it) {
-				QPixmap* pm = *it;
+			int i = 0;
+			for (QPixmap* p : m_pixmaps) {
 				double deg = qDegreesToRadians(i * inc);
 				QPointF pos = QPointF(rad * sin(deg) - (m_diameter / 2), rad * cos(deg) - (m_diameter / 2));
 
-				painter->drawPixmap(pos, *pm);
+				painter->drawPixmap(pos, *p);
+				i++;
 			}
 		//}
 	}

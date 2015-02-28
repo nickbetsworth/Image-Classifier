@@ -90,12 +90,10 @@ void QImageLister::add_files(QStringList file_paths) {
 	}
 
 	if (duplicates) {
-		QErrorMessage* exist_error = new QErrorMessage(this);
-		exist_error->showMessage("At least one of the dropped files were already on the list");
+		emit duplicateImage();
 	}
 	if (incorrect_type) {
-		QErrorMessage* exist_error = new QErrorMessage(this);
-		exist_error->showMessage("At least one of the dropped files were of the wrong format");
+		emit incorrectFormat();
 	}
 
 	

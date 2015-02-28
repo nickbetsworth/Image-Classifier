@@ -2,7 +2,7 @@
 #include "ImageClassifier.h"
 #include "NodeProperties.h"
 #include "NodePropertiesGraph.h"
-#include "Graph.h"
+#include "ogdf/basic/Graph.h"
 
 /**
  * @class	NodePositioner
@@ -27,15 +27,15 @@ public:
 	*/
 
 	struct Edge {
-		NodeProperties* node1;
-		NodeProperties* node2;
+		Node node1;
+		Node node2;
 	};
 
 	NodePositioner(NodePropertiesGraph* n);
 	virtual ~NodePositioner();
 
-	map<NodeProperties*, Point> NodePositioner::get_node_positions(NodeProperties* root_node, double graph_scale = 1.0);
-
+	map<Node, Point> NodePositioner::get_node_positions_tree(Node root_node, double node_width, double node_height);
+	map<Node, Point> NodePositioner::get_node_positions_fmmm(double node_width, double node_height);
 	/**
 	 * @fn	vector<Edge> NodePositioner::get_edges()
 	 *
@@ -56,6 +56,7 @@ private:
 	/** @brief	Stores a list of edges calculated via the spanning tree. */
 	vector<Edge> m_edges;
 
+	ogdf::Graph* setup_nodes(ogdf::Graph* graph);
 	/**
 	 * @fn	vector<NodePositioner::Edge> NodePositioner::multimap_to_vector(multimap<NodeProperties*, NodeProperties*> map);
 	 *
@@ -69,6 +70,6 @@ private:
 	 * @return	A Vector generated from the map;
 	 */
 
-	vector<NodePositioner::Edge> multimap_to_vector(multimap<NodeProperties*, NodeProperties*> map);
+	vector<NodePositioner::Edge> multimap_to_vector(multimap<Node, Node> map);
 };
 

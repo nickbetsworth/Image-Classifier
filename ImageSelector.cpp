@@ -75,7 +75,7 @@ void ImageSelector::runClicked() {
 		loading_screen->showMessage("Training Classifier..", Qt::AlignCenter, Qt::white);
 		QApplication::processEvents();
 		manager->train_classifier();
-		ImageClassifierWindow* win = new ImageClassifierWindow(ui.lstImages->get_image_files());
+		ImageClassifierWindow* win = new ImageClassifierWindow(manager);
 		loading_screen->finish(win);
 		//
 		win->showMaximized();

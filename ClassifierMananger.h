@@ -21,10 +21,12 @@ public:
 	void cluster_images(int n_clusters);
 	void train_classifier();
 	void classify_images(vector<string> file_paths);
+	void remove_class(ImageClass* image_class);
 
 	vector<Image*>& get_images() { return m_images; };
 	vector<ImageClass*>& get_image_classes() { return m_image_classes; };
-	ImageClassifier* get_classifier() { return m_classifier; };
+	const vector<ImageClass*>& get_image_classes() const { return m_image_classes; };
+	ImageClassifierRF* get_classifier() { return m_classifier; };
 private:
 	vector<string> m_file_paths;
 	vector<Image*> m_images;

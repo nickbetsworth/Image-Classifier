@@ -18,12 +18,12 @@
 #include <QScrollBar>
 
 
-ImageClassifierWindow::ImageClassifierWindow(QStringList image_list, QWidget *parent)
+ImageClassifierWindow::ImageClassifierWindow(ClassifierMananger* mananger, QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 	this->setWindowTitle("Image Classifier");
-
+	m_manager = mananger;
 	connect(menuBar(), SIGNAL(triggered(QAction*)), this, SLOT(menuBarClicked(QAction*)));
 	m_scene_classes = new QGraphicsScene(this);
 	m_scene_class = new QGraphicsScene(this);
@@ -32,33 +32,8 @@ ImageClassifierWindow::ImageClassifierWindow(QStringList image_list, QWidget *pa
 	srand(time(NULL));
 	
 	m_state = BrowseState::CLASSES;
-
-	cout << "Loading images.." << endl;
-	vector<Image*> images;
-
-	for (QString image_file : image_list) {
-		string filepath = image_file.toStdString();
-		Image* image = new Image(filepath);
-		if (image->has_loaded())
-			images.push_back(image);
-		else
-			cout << "Unable to load image: " << filepath << endl;
-	}
-
-	cout << "Loaded in " << images.size() << " images" << endl;
 	
-	//m_classifier = new ImageClassifierBasic(image_classes);
-	int n_clusters = 6;
-	cout << "Using GMM with " << n_clusters << " clusters." << endl;
-	m_classifier = new ImageClassifierGMM(images, n_clusters);
-	m_classifier->classify_images();
-	m_classes = m_classifier->get_image_classes();
-
-	// Use our clustered data as training data for a new random forest
-	m_rf_classifier = new ImageClassifierRF();
-	m_rf_classifier->train(m_classes);
-	
-	this->setup_classes(m_classes.front());
+	this->setup_classes(get_image_classes().front());
 
 	// Set it so that we can drag through the scene with the mouse
 	ui.view->setDragMode(QGraphicsView::DragMode::ScrollHandDrag);
@@ -72,7 +47,7 @@ ImageClassifierWindow::ImageClassifierWindow(QStringList image_list, QWidget *pa
 
 ImageClassifierWindow::~ImageClassifierWindow()
 {
-	delete m_classifier;
+	
 }
 
 void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
@@ -85,7 +60,8 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 		m_scene_class->update();
 		// If there are no images left in the class, then remove the class
 		if (m_current_class->get_images().size() == 0) {
-			m_classes.erase(remove(m_classes.begin(), m_classes.end(), m_current_class), m_classes.end());
+			// Remove the class from our list of classes
+			m_manager->remove_class(m_current_class);
 			// Remove the displayer for this class
 			QCategoryDisplayer* displayer = m_class_to_displayer[m_current_class];
 			m_scene_classes->removeItem(displayer);
@@ -256,7 +232,7 @@ void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
 	NodePropertiesGraph* graph = new NodePropertiesGraph();
 
 	// For each image category, create a component to display itself
-	for (ImageClass* image_class : m_classes) {
+	for (ImageClass* image_class : get_image_classes()) {
 		image_class->calculate_icon();
 		graph->add_node(image_class);
 		// Create the icon for the category
@@ -345,7 +321,7 @@ void ImageClassifierWindow::keyPressEvent(QKeyEvent* e) {
 	}
 	else if (e->key() == Qt::Key::Key_T) {
 		cout << "Re-training Random Forest" << endl;
-		m_rf_classifier->train(m_classes);
+		get_classifier()->train(get_image_classes());
 		cout << "Training Finished" << endl;
 
 		// Re-position the classes again incase there was any slight changes
@@ -419,7 +395,7 @@ void ImageClassifierWindow::menuBarClicked(QAction* action) {
 
 			// Check that the image has successfully loaded
 			if (image->has_loaded()) {
-				ImageClass* predicted_class = m_rf_classifier->predict(image);
+				ImageClass* predicted_class = get_classifier()->predict(image);
 
 				m_new_image_map[predicted_class].push_back(image);
 
@@ -435,9 +411,21 @@ void ImageClassifierWindow::menuBarClicked(QAction* action) {
 }
 
 void ImageClassifierWindow::highlight_classes() {
-	for (ImageClass* image_class : m_classes) {
+	for (ImageClass* image_class : get_image_classes()) {
 		if (!m_new_image_map[image_class].isEmpty()) {
 			m_class_to_displayer[image_class]->set_highlighted(true);
 		}
 	}
+}
+
+const vector<ImageClass*>& ImageClassifierWindow::get_image_classes() const {
+	return m_manager->get_image_classes();
+}
+
+vector<ImageClass*>& ImageClassifierWindow::get_image_classes() {
+	return m_manager->get_image_classes();
+}
+
+ImageClassifierRF* ImageClassifierWindow::get_classifier() {
+	return m_manager->get_classifier();
 }

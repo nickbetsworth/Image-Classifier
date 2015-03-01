@@ -10,6 +10,7 @@
 #include "ImageClassifier.h"
 #include "ImageClassifierRF.h"
 #include "NodePositioner.h"
+#include "ClassifierMananger.h"
 
 enum class BrowseState {
 	CLASSES, CLASS, IMAGE
@@ -20,7 +21,7 @@ class ImageClassifierWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	ImageClassifierWindow(QStringList image_list, QWidget *parent = 0);
+	ImageClassifierWindow(ClassifierMananger* mananger, QWidget *parent = 0);
 	~ImageClassifierWindow();
 public slots:
 
@@ -34,7 +35,6 @@ private:
 	/** @brief	The main user interface. */
 	Ui::ImageClassifierWindowClass ui;
 
-	vector<ImageClass*> m_classes;
 	ImageClass* m_current_class = 0;
 
 	/** @brief	Stores all graphics items which display the relationship between classes. */
@@ -43,11 +43,6 @@ private:
 	QGraphicsScene* m_scene_class;
 
 	QGraphicsScene* m_scene_image;
-
-	// Predicts new data coming in
-	ImageClassifierRF* m_rf_classifier;
-	/** @brief	In charge of classifying images. */
-	ImageClassifier* m_classifier;
 
 	/** @brief	Stores the UI elements that represent each ImageClass. */
 	//vector<QCategoryDisplayer*> m_displayers;
@@ -71,8 +66,15 @@ private:
 	QPointF m_scene_class_pos;
 
 	Image* clicked_img1 = 0;
+
+	ClassifierMananger* m_manager;
+
 	void setup_classes(ImageClass* root_class);
 	void highlight_classes();
+
+	vector<ImageClass*>& get_image_classes();
+	const vector<ImageClass*>& get_image_classes() const;
+	ImageClassifierRF* get_classifier();
 };
 
 #endif // IMAGECLASSIFIERWINDOW_H

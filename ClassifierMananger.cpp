@@ -38,3 +38,11 @@ void ClassifierMananger::train_classifier() {
 void ClassifierMananger::classify_images(vector<string> file_paths) {
 
 }
+
+void ClassifierMananger::remove_class(ImageClass* image_class) {
+	m_image_classes.erase(	remove(
+								m_image_classes.begin(), 
+								m_image_classes.end(), 
+								image_class),
+							m_image_classes.end());
+}

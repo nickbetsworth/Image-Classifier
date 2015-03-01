@@ -1,22 +1,22 @@
-#include "ImageClassifierBasic.h"
+#include "ImageClustererBasic.h"
 #include <string>
 
-ImageClassifierBasic::ImageClassifierBasic(vector<Image*> images) : ImageClassifier(images)
+ImageClustererBasic::ImageClustererBasic(vector<Image*> images) : ImageClusterer(images)
 {
 }
 
 
-ImageClassifierBasic::~ImageClassifierBasic()
+ImageClustererBasic::~ImageClustererBasic()
 {
 }
 
-void ImageClassifierBasic::classify_images() {
+void ImageClustererBasic::cluster_images() {
 	for (Image* image : this->get_images()) {
 		ImageClass* image_class = get_image_class(image);
 		// If the class we have been given is non-NULL
 		if (image_class != 0) {
 			// Add the image to the relevant class
-			add_image_to_class(image, image_class);
+			this->add_image_to_cluster(image, image_class);
 		}
 		else {
 			cout << "Unable to classify image: " << image->get_filepath() << endl;
@@ -24,7 +24,7 @@ void ImageClassifierBasic::classify_images() {
 	}
 }
 
-ImageClass* ImageClassifierBasic::get_image_class(Image* image) {
+ImageClass* ImageClustererBasic::get_image_class(Image* image) {
 	string filepath = image->get_filepath();
 	// Work out the position of the last back-slash
 	size_t pos = filepath.find_last_of('\\') + 1;
@@ -44,7 +44,7 @@ ImageClass* ImageClassifierBasic::get_image_class(Image* image) {
 		image_class = new ImageClass();
 		m_file_to_class_map[filename] = image_class;
 		// Add the new class to the class list
-		add_image_class(image_class);
+		this->create_cluster(image_class);
 	}
 
 	return image_class;

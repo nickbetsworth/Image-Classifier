@@ -12,7 +12,7 @@ void NodeProperties::set_histogram(Mat hist) {
 	m_histogram = hist;
 }
 
-Mat NodeProperties::get_histogram() {
+Mat NodeProperties::get_histogram() const {
 	if (has_flag(Property::Histogram)) {
 		return m_histogram;
 	}
@@ -22,7 +22,7 @@ Mat NodeProperties::get_histogram() {
 	}
 }
 
-Mat NodeProperties::get_feature_vector() {
+Mat NodeProperties::get_feature_vector() const {
 	return get_histogram();
 }
 
@@ -40,12 +40,12 @@ void NodeProperties::remove_flag(Property flags) {
 	m_properties = static_cast<Property>(m_properties & (~flags));
 }
 
-float NodeProperties::calculate_distance_histogram(NodeProperties* node2) {
+float NodeProperties::calculate_distance_histogram(NodeProperties* node2) const {
 	// Earth movers distance
 	return compare_histograms(this->get_histogram(), node2->get_histogram());
 }
 
-float NodeProperties::calculate_distance(NodeProperties* node2) {
+float NodeProperties::calculate_distance(NodeProperties* node2) const {
 	float total = 0;
 
 	if (has_flag(Property::Histogram))

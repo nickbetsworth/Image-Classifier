@@ -1,9 +1,9 @@
 #pragma once
-#include "ImageClassifier.h"
+#include "ImageClusterer.h"
 #include <map>
 
 /**
- * @class	ImageClassifierBasic
+ * @class	ImageClustererBasic
  *
  * @brief	A basic image classifier which classifies images using file names.
  * 			This classifier will group images through the use of their filename.
@@ -16,19 +16,19 @@
  * @date	26/10/2014
  */
 
-class ImageClassifierBasic :
-	public ImageClassifier
+class ImageClustererBasic :
+	public ImageClusterer
 {
 public:
-	ImageClassifierBasic(vector<Image*> images);
-	~ImageClassifierBasic();
+	ImageClustererBasic(vector<Image*> images);
+	~ImageClustererBasic();
 
 	// Classifies the existing set of images
-	virtual void classify_images();
+	virtual void cluster_images();
 protected:
 
 	/**
-	 * @fn	virtual ImageClass* ImageClassifierBasic::get_image_class(Image* image);
+	 * @fn	virtual ImageClass* ImageClustererBasic::get_image_class(Image* image);
 	 *
 	 * @brief	Works out an ImageClass for a given Image through the use of the Image's filepath.
 	 *

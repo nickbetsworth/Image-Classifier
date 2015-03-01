@@ -34,9 +34,6 @@ public:
 	 *
 	 * @brief	Creates a new class from a set of existing images.
 	 *
-	 * @author	Nick
-	 * @date	25/10/2014
-	 *
 	 * @param	images	A list of images belonging to this class
 	 */
 	ImageClass(vector<Image*> images);
@@ -46,9 +43,6 @@ public:
 	 * @fn	bool ImageClass::add_image(Image image);
 	 *
 	 * @brief	Adds a new image to the class.
-	 *
-	 * @author	Nick
-	 * @date	25/10/2014
 	 *
 	 * @param	image	The image to be added to the class.
 	 *

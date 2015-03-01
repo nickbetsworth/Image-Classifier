@@ -9,10 +9,8 @@ public:
 	ImageClassifierRF();
 	~ImageClassifierRF();
 
-	void train(vector<ImageClass*> training_data);
-	virtual void classify_images();
-	ImageClass* predict(Image* image);
-	bool has_trained() { return m_has_trained; };
+	void train(const vector<ImageClass*> training_data);
+	virtual ImageClass* predict(const Image* image);
 protected:
 	const int MAX_DEPTH = 7;
 	const int MIN_SAMPLE_COUNT = 2;
@@ -26,11 +24,8 @@ protected:
 	const int TERMCRIT_TYPE = CV_TERMCRIT_ITER;
 
 private:
-	vector<ImageClass*> m_training_data;
-
 	CvRTrees* m_rt;
 	CvRTParams* m_rt_params;
-	bool m_has_trained;
 	map<int, ImageClass*> m_label_to_class;
 };
 

@@ -23,13 +23,13 @@ class NodeProperties
 public:
 	void set_histogram(Mat hist);
 
-	Mat get_histogram();
+	Mat get_histogram() const;
 
-	Mat get_feature_vector();
+	Mat get_feature_vector() const;
 	//int get_feature_length(Property flags);
 
-	float calculate_distance_histogram(NodeProperties* node2);
-	float calculate_distance(NodeProperties* node2);
+	float calculate_distance_histogram(NodeProperties* node2) const;
+	float calculate_distance(NodeProperties* node2) const;
 
 	bool has_flag(Property flags) const;
 	void add_flag(Property flags);

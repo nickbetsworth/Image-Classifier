@@ -1,7 +1,7 @@
 #include "ImageSelector.h"
 #include "imageclassifierwindow.h"
 #include "LoadingScreen.h"
-#include "ClassifierMananger.h"
+#include "ClassifierManager.h"
 #include <QFileDialog>
 #include <QErrorMessage>
 #include <QtConcurrent/QtConcurrentRun>
@@ -61,14 +61,14 @@ void ImageSelector::runClicked() {
 			std_file_paths.push_back(qs_file_path.toStdString());
 		}
 
-		ClassifierMananger* manager = new ClassifierMananger(std_file_paths);
+		ClassifierManager* manager = new ClassifierManager();
 		QPixmap splash_image = QPixmap("C:/Users/Nick/Desktop/b3.png");
 		QSplashScreen* loading_screen = new QSplashScreen(splash_image);
 		this->hide();
 		loading_screen->show();
 		loading_screen->showMessage("Loading Images..", Qt::AlignCenter, Qt::white);
 		QApplication::processEvents();
-		manager->load_images();
+		manager->load_images(std_file_paths);
 		loading_screen->showMessage("Clustering Images..", Qt::AlignCenter, Qt::white);
 		QApplication::processEvents();
 		manager->cluster_images(6);

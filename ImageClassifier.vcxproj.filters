@@ -80,12 +80,6 @@
     <ClCompile Include="ImageClassifier.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="ImageClassifierBasic.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageClassifierGMM.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
     <ClCompile Include="ImageClassifierRF.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
@@ -131,20 +125,11 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_LoadingScreen.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProgramManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NodeProperties.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
     <ClCompile Include="EMDTest.cpp">
       <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="ClassifierMananger.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphedImageClass.cpp">
-      <Filter>Source Files\Library</Filter>
     </ClCompile>
     <ClCompile Include="NodePropertiesFlagTest.cpp">
       <Filter>Source Files\Tests</Filter>
@@ -158,6 +143,18 @@
     <ClCompile Include="Testing.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="ImageClusterer.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageClustererGMM.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageClustererBasic.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassifierManager.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Histograms.h">
@@ -170,12 +167,6 @@
       <Filter>Header Files\Library</Filter>
     </ClInclude>
     <ClInclude Include="ImageClassifier.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageClassifierBasic.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageClassifierGMM.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
     <ClInclude Include="ImageClassifierRF.h">
@@ -202,17 +193,8 @@
     <ClInclude Include="GeneratedFiles\ui_LoadingScreen.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProgramManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EMDTest.h">
       <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="ClassifierMananger.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphedImageClass.h">
-      <Filter>Header Files\Library</Filter>
     </ClInclude>
     <ClInclude Include="NodePropertiesFlagTest.h">
       <Filter>Header Files\Tests</Filter>
@@ -225,6 +207,18 @@
     </ClInclude>
     <ClInclude Include="Testing.h">
       <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageClusterer.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageClustererGMM.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageClustererBasic.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassifierManager.h">
+      <Filter>Header Files\Library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

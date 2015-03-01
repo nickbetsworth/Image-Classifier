@@ -138,19 +138,19 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ClassifierMananger.cpp" />
+    <ClCompile Include="ClassifierManager.cpp" />
     <ClCompile Include="EMDTest.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_ImageSelector.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_LoadingScreen.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QImageLister.cpp" />
-    <ClCompile Include="GraphedImageClass.cpp" />
     <ClCompile Include="Histograms.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageClass.cpp" />
     <ClCompile Include="ImageClassifier.cpp" />
-    <ClCompile Include="ImageClassifierBasic.cpp" />
-    <ClCompile Include="ImageClassifierGMM.cpp" />
+    <ClCompile Include="ImageClustererBasic.cpp" />
+    <ClCompile Include="ImageClustererGMM.cpp" />
     <ClCompile Include="ImageClassifierRF.cpp" />
+    <ClCompile Include="ImageClusterer.cpp" />
     <ClCompile Include="ImageConversion.cpp" />
     <ClCompile Include="ImageSelector.cpp" />
     <ClCompile Include="LoadingScreen.cpp" />
@@ -159,7 +159,6 @@
     <ClCompile Include="NodePropertiesFlagTest.cpp" />
     <ClCompile Include="NodePropertiesGraph.cpp" />
     <ClCompile Include="NPGTest.cpp" />
-    <ClCompile Include="ProgramManager.cpp" />
     <ClCompile Include="QCategoryDisplayer.cpp" />
     <ClCompile Include="QCategoryView.cpp" />
     <ClCompile Include="QImageDisplayer.cpp" />
@@ -171,18 +170,18 @@
     <ClCompile Include="Testing.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClassifierMananger.h" />
+    <ClInclude Include="ClassifierManager.h" />
     <ClInclude Include="GeneratedFiles\ui_ImageSelector.h" />
     <ClInclude Include="GeneratedFiles\ui_LoadingScreen.h" />
     <ClInclude Include="EMDTest.h" />
-    <ClInclude Include="GraphedImageClass.h" />
     <ClInclude Include="Histograms.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageClass.h" />
     <ClInclude Include="ImageClassifier.h" />
-    <ClInclude Include="ImageClassifierBasic.h" />
-    <ClInclude Include="ImageClassifierGMM.h" />
+    <ClInclude Include="ImageClustererBasic.h" />
+    <ClInclude Include="ImageClustererGMM.h" />
     <ClInclude Include="ImageClassifierRF.h" />
+    <ClInclude Include="ImageClusterer.h" />
     <ClInclude Include="ImageConversion.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </Command>
@@ -219,7 +218,6 @@
     <ClInclude Include="NodePropertiesFlagTest.h" />
     <ClInclude Include="NodePropertiesGraph.h" />
     <ClInclude Include="NPGTest.h" />
-    <ClInclude Include="ProgramManager.h" />
     <ClInclude Include="QCategoryView.h" />
     <CustomBuild Include="QImageDisplayer.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QImageDisplayer.h;%(AdditionalInputs)</AdditionalInputs>

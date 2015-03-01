@@ -2,8 +2,8 @@
 #include "QCategoryDisplayer.h"
 #include "QCategoryView.h"
 #include "QWheelDisplay.h"
-#include "ImageClassifierBasic.h"
-#include "ImageClassifierGMM.h"
+#include "ImageClustererBasic.h"
+#include "ImageClustererGMM.h"
 #include "ImageClassifierRF.h"
 #include "ImageConversion.h"
 #include "RFTest.h"
@@ -18,12 +18,15 @@
 #include <QScrollBar>
 
 
-ImageClassifierWindow::ImageClassifierWindow(ClassifierMananger* mananger, QWidget *parent)
+ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 	this->setWindowTitle("Image Classifier");
+
 	m_manager = mananger;
+	m_current_class = 0;
+
 	connect(menuBar(), SIGNAL(triggered(QAction*)), this, SLOT(menuBarClicked(QAction*)));
 	m_scene_classes = new QGraphicsScene(this);
 	m_scene_class = new QGraphicsScene(this);
@@ -33,7 +36,7 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierMananger* mananger, QWidg
 	
 	m_state = BrowseState::CLASSES;
 	
-	this->setup_classes(get_image_classes().front());
+	setup_classes();
 
 	// Set it so that we can drag through the scene with the mouse
 	ui.view->setDragMode(QGraphicsView::DragMode::ScrollHandDrag);
@@ -41,7 +44,7 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierMananger* mananger, QWidg
 	ui.view->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 	ui.view->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 	ui.view->setCacheMode(QGraphicsView::CacheBackground);
-	setState(BrowseState::CLASSES);
+
 	ui.view->show();
 }
 
@@ -64,13 +67,14 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 			m_manager->remove_class(m_current_class);
 			// Remove the displayer for this class
 			QCategoryDisplayer* displayer = m_class_to_displayer[m_current_class];
+
 			m_scene_classes->removeItem(displayer);
 			
 			// Move up a level as the class we are inside is now empty
 			setState(BrowseState::CLASSES);
 		}
 	}
-	else {
+	/*else {
 		if (clicked_img1 == 0) {
 			clicked_img1 = image;
 		}
@@ -81,16 +85,16 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 			cout << "Distance: " << val << endl;
 			clicked_img1 = 0;
 		}
-	}
-	/*
+	}*/
+	
 	else {
 		m_scene_image->clear();
 
 		// DEBUGGING MESSAGES
-		cout << image->get_filepath() << endl;
+		/*cout << image->get_filepath() << endl;
 		Mat hist = get_1d_histogram(image->get_image_data(), Image::HIST_BINS);
 		Mat hist_t = hist.t();
-		cout << "Hist: " << hist_t << endl;
+		cout << "Hist: " << hist_t << endl;*/
 		// END OF DEBUGGING MESSAGES
 
 		QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_fullres_image()));
@@ -99,12 +103,64 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 		m_scene_image->addItem(item);
 
 		setState(BrowseState::IMAGE);
-	}*/
+	}
 
 	
 }
 
+void ImageClassifierWindow::setup_classes() {
+	m_scene_classes->clear();
+
+	NodePropertiesGraph* graph = new NodePropertiesGraph();
+
+	// For each image category, create a component to display itself
+	for (ImageClass* image_class : get_image_classes()) {
+		image_class->calculate_icon();
+		graph->add_node(image_class);
+		// Create the icon for the category
+		QCategoryDisplayer* cat = new QCategoryDisplayer(image_class);
+		// If this category contains a new image
+
+		// Create the wheel that is displayed on mouse over
+		QWheelDisplay* wheel = new QWheelDisplay(cat);
+		m_wheels.push_back(wheel);
+
+		// Add a mapping from the QCategoryDisplayer to ImageClass, for later use when drawing edges
+		m_class_to_displayer[image_class] = cat;
+		// Add both components to the scene
+		m_scene_classes->addItem(wheel);
+		m_scene_classes->addItem(cat);
+
+		// Create event handlers for when a user mouses in and out of a category
+		connect(cat, SIGNAL(mouseEntered()), wheel, SLOT(show()));
+		connect(cat, SIGNAL(mouseLeft()), wheel, SLOT(hide()));
+
+		// Create an event handler for when a category is clicked on screen
+		connect(cat, SIGNAL(categoryClicked(ImageClass*)), this, SLOT(categoryClicked(ImageClass*)));
+	}
+
+	// Calculate the positions of each of the image classes
+	NodePositioner* positioner = new NodePositioner(graph);
+	// Use a force based layout
+	map<NodeProperties*, Point> positions = positioner->get_node_positions_fmmm(200, 200);
+
+	// Position each category and category wheel
+	for (QWheelDisplay* wheel : m_wheels) {
+		QCategoryDisplayer* displayer = wheel->get_category_displayer();
+
+		Point cv_pos = positions[displayer->get_image_class()];
+		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
+		displayer->setPos(pos);
+		wheel->setPos(pos);
+	}
+
+	setState(BrowseState::CLASSES);
+
+	delete positioner;
+}
+
 void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
+	// Determines whether or not edges will be drawn between the nodes
 	const bool edges_enabled = true;
 
 	// Remove the hover event from the class that was clicked
@@ -120,213 +176,123 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 
 	// Loop through each of the images in the category that was clicked
 	for (Image* img : class_clicked->get_images()) {
+		// Create the component that will display the image
 		QImageDisplayer* displayer = new QImageDisplayer(img);
+		// If this image is to be highlighted
 		if (m_new_image_map[class_clicked].contains(img)) {
 			displayer->set_highlighted(true);
 		}
 
+		// Set up the event handler for when the image is clicked
 		connect(displayer, SIGNAL(imageClicked(Image*, bool)), this, SLOT(imageClicked(Image*, bool)));
+
+		// Create a map from the image to its display component
+		// so we can easily obtain the respective objects later
 		m_image_to_displayer[img] = displayer;
-		m_displayer_to_image[displayer] = img;
+
+		// Add this display component to our list of display components
 		m_image_displayers.push_back(displayer);
 	}
 
-	// Calculate the positions via the histogram of each class
-	vector<NodeProperties*> node_props;
-	for (NodeProperties* node : class_clicked->get_images()) {
-		node_props.push_back(node);
-	}
+	// Calculate the positions of each of the image elements
 	NodePositioner* positioner = new NodePositioner(class_clicked->get_graph());
-
+	// Use a tree layout, the root node is the ImageClass's icon
 	map<NodeProperties*, Point> positions = positioner->get_node_positions_tree(class_clicked->get_icon(), 100, 100);
-	// Position each image displayer
-	for (QImageDisplayer* displayer : m_image_displayers) {
-		Image* displayer_class = m_displayer_to_image[displayer];
 
-		Point cv_pos = positions[displayer_class];
+	for (QImageDisplayer* displayer : m_image_displayers) {
+		// Obtain the position for this image
+		Point cv_pos = positions[displayer->get_image()];
+		// Convert the Point we have been given to a Qt friendly Point
 		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
-		//QPointF pos = QPointF(0, 0);
+		// Set the position of the image to the given point
 		displayer->setPos(pos);
+		// Add the image to the scene
 		m_scene_class->addItem(displayer);
 	}
 
-	// Clear up all existing edge lines
-	for (QGraphicsLineItem* item : m_image_edges) {
-		if (edges_enabled)
-			m_scene_class->removeItem(item);
-	}
+	
+	// If we are drawing edges
+	if (edges_enabled) {
+		// Create the pen that will be used to draw our edges
+		QPen pen = QPen(Qt::PenStyle::SolidLine);
+		pen.setWidth(1);
+		pen.setColor(QColor(140, 140, 140));
+		pen.setCosmetic(true);
 
-	m_image_edges.clear();
+		// Draw all new edge lines
+		// Turn on anti-aliasing for the lines
+		ui.view->setRenderHints(QPainter::Antialiasing);
+		for (NodePositioner::Edge e : positioner->get_edges()) {
+			// Cast each node to an Image
+			Image* image1 = static_cast<Image*>(e.node1);
+			Image* image2 = static_cast<Image*>(e.node2);
+			// Work out which display component each of the Images is represented by
+			QImageDisplayer* class1 = m_image_to_displayer[image1];
+			QImageDisplayer* class2 = m_image_to_displayer[image2];
 
-	// Create the pen that will be used to draw our lines
-	QPen pen = QPen(Qt::PenStyle::SolidLine);
-	pen.setWidth(1);
-	pen.setColor(QColor(140, 140, 140));
-	pen.setCosmetic(true);
+			// Create the line from image1 to image2
+			QGraphicsLineItem* line = new QGraphicsLineItem(class1->x(), class1->y(), class2->x(), class2->y());
+			line->setPen(pen);
+			// Draw the line behind all other graphics items
+			line->setZValue(-1);
 
-	// Draw all new edge lines
-	// Turn on anti-aliasing for the lines
-	ui.view->setRenderHints(QPainter::Antialiasing);
-	for (NodePositioner::Edge e : positioner->get_edges()) {
-		// Cast each node to an ImageClass
-		Image* image1 = static_cast<Image*>(e.node1);
-		Image* image2 = static_cast<Image*>(e.node2);
-		QImageDisplayer* class1 = m_image_to_displayer[image1];
-		QImageDisplayer* class2 = m_image_to_displayer[image2];
-
-		QGraphicsLineItem* line = new QGraphicsLineItem(class1->x(), class1->y(), class2->x(), class2->y());
-		line->setPen(pen);
-		// Draw the line behind all other graphics items
-		line->setZValue(-1);
-		if (edges_enabled)
+			// Add the line to the scene
 			m_scene_class->addItem(line);
-		m_edges.push_back(line);
+		}
 	}
-
-	setState(BrowseState::CLASS);
-
-	// Calculate center point of scene
-	QPointF center_point = m_scene_class->itemsBoundingRect().center();
-	ui.view->centerOn(center_point);
 
 	QParallelAnimationGroup* anim_group = new QParallelAnimationGroup();
 
+	// Animate each of the image displayers to fade in
 	for (QImageDisplayer* displayer : m_image_displayers) {
-		Image* displayer_class = m_displayer_to_image[displayer];
-		
-		Point cv_pos = positions[displayer_class];
-		QPointF end_pos = QPointF(cv_pos.x, cv_pos.y);
 		QPropertyAnimation* anim = new QPropertyAnimation(displayer, "opacity");
 		anim->setDuration(500);
 		anim->setStartValue(0.2);
 		anim->setEndValue(1.0);
-		//anim->setStartValue(center_point);
-		//anim->setEndValue(end_pos);
 		anim->setEasingCurve(QEasingCurve::OutCubic);
 
 		anim_group->addAnimation(anim);
 	}
 
-	// Start all animations
+	// Start the animations
 	anim_group->start(QAbstractAnimation::DeleteWhenStopped);
-	
-	// Get the graphics item for the root node
-	QGraphicsItem* root_node_gfx = m_image_to_displayer[class_clicked->get_images().front()];
-	// Center the view on the root node
-	ui.view->centerOn(root_node_gfx);
-	// Perform some clean up
-	delete positioner;
 
-	m_current_class = class_clicked;
-
-
+	// Expand the boundaries of the scene slightly, so the user can browse 
+	// outside the bounds of where the images are
 	// Get the bounding rect of the scene
 	QRectF sceneRect = m_scene_class->itemsBoundingRect();
+	// Enlargen it
 	sceneRect.adjust(-1000, -1000, 1000, 1000);
 	ui.view->setSceneRect(sceneRect);
-}
 
-void ImageClassifierWindow::setup_classes(ImageClass* root_class) {
-	m_scene_classes->clear();
+	// Get the graphics item for the root node and center the view on it
+	QGraphicsItem* root_node_gfx = m_image_to_displayer[class_clicked->get_icon()];
+	ui.view->centerOn(root_node_gfx);
 
-	NodePropertiesGraph* graph = new NodePropertiesGraph();
-
-	// For each image category, create a component to display itself
-	for (ImageClass* image_class : get_image_classes()) {
-		image_class->calculate_icon();
-		graph->add_node(image_class);
-		// Create the icon for the category
-		QCategoryDisplayer* cat = new QCategoryDisplayer(image_class);
-		// If this category contains a new image
-		
-		// Create the wheel that is displayed on mouse over
-		QWheelDisplay* wheel = new QWheelDisplay(cat);
-
-
-		m_wheels.push_back(wheel);
-		// Add a mapping from the QCategoryDisplayer to ImageClass, for later use when drawing edges
-		m_class_to_displayer[image_class] = cat;
-		// Add both components to the scene
-		m_scene_classes->addItem(wheel);
-		m_scene_classes->addItem(cat);
-
-		// Create event handlers for when a user mouses in and out of a category
-		connect(cat, SIGNAL(mouseEntered()), wheel, SLOT(show()));
-		connect(cat, SIGNAL(mouseLeft()), wheel, SLOT(hide()));
-
-		// Create an event handler for when a category is clicked on screen
-		connect(cat, SIGNAL(categoryClicked(ImageClass*)), this, SLOT(categoryClicked(ImageClass*)));
-	}
-
-	NodePositioner* positioner = new NodePositioner(graph);
-	//map<NodeProperties*, Point> positions = positioner->get_node_positions_tree(m_classes.front(), 200, 200);
-	map<NodeProperties*, Point> positions = positioner->get_node_positions_fmmm(200, 200);
-
-	// Position each category
-	for (QWheelDisplay* wheel : m_wheels) {
-		QCategoryDisplayer* displayer = wheel->get_category_displayer();
-
-		Point cv_pos = positions[displayer->get_image_class()];
-		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
-		displayer->setPos(pos);
-		wheel->setPos(pos);
-	}
-
-	// Clear up all existing edge lines
-	//for (QGraphicsLineItem* item : m_edges) {
-		//m_scene_classes->removeItem(item);
-	//}
-
-	//m_edges.clear();
-
-	// Create the pen that will be used to draw our lines
-	QPen pen = QPen(Qt::PenStyle::SolidLine);
-	pen.setWidth(1);
-	pen.setColor(QColor(140, 140, 140));
-	pen.setCosmetic(true);
-
-	// Draw all new edge lines
-	// Turn on anti-aliasing for the lines
-	/*ui.view->setRenderHints(QPainter::Antialiasing);
-	for (NodePositioner::Edge e : positioner->get_edges()) {
-		ImageClass* image_class1 = static_cast<ImageClass*>(e.node1);
-		ImageClass* image_class2 = static_cast<ImageClass*>(e.node2);
-		QCategoryDisplayer* class1 = m_class_to_displayer[image_class1];
-		QCategoryDisplayer* class2 = m_class_to_displayer[image_class2];
-
-		QGraphicsLineItem* line = new QGraphicsLineItem(class1->x(), class1->y(), class2->x(), class2->y());
-		line->setPen(pen);
-		// Draw the line behind all other graphics items
-		line->setZValue(-1);
-		m_scene_classes->addItem(line);
-		m_edges.push_back(line);
-	}*/
+	m_current_class = class_clicked;
+	setState(BrowseState::CLASS);
 
 	delete positioner;
 }
 
 
 void ImageClassifierWindow::keyPressEvent(QKeyEvent* e) {
+	// When the escape key is pressed, move up one level, if possible
 	if (e->key() == Qt::Key::Key_Escape) {
 		if (m_state == BrowseState::CLASS) {
 			setState(BrowseState::CLASSES);
-			//ui.view->setScene(m_scene_classes);
 		}
 		else if(m_state == BrowseState::IMAGE) {
 			setState(BrowseState::CLASS);
-			//ui.view->setScene(m_scene_class);
 		}
 		
+		// Tell the graphics view to update
 		ui.view->update();
 	}
 	else if (e->key() == Qt::Key::Key_T) {
 		cout << "Re-training Random Forest" << endl;
 		get_classifier()->train(get_image_classes());
 		cout << "Training Finished" << endl;
-
-		// Re-position the classes again incase there was any slight changes
-		//m_cp = new NodePositionerHist(m_classifier->get_image_classes());
-		//this->setup_classes(m_classes.front());
 	}
 	else if (e->key() == Qt::Key::Key_R) {
 		//ui.view->update();
@@ -354,6 +320,7 @@ void ImageClassifierWindow::setState(BrowseState state) {
 		// If the new state is the classes scene 
 		if (state == BrowseState::CLASSES) {
 			// Remove highlights from all images inside class we were just in
+			// And remove the highlight from the class itself
 			if (m_current_class != 0) {
 				m_new_image_map[m_current_class].clear();
 				m_class_to_displayer[m_current_class]->set_highlighted(false);
@@ -385,21 +352,20 @@ void ImageClassifierWindow::setState(BrowseState state) {
 
 
 void ImageClassifierWindow::menuBarClicked(QAction* action) {
-	// If the add image button is clciked
+	// If the add image button is clicked
 	if (action == ui.actionAddImage) {
+		// Query the user for the images they wish to add 
 		QStringList image_files = QFileDialog::getOpenFileNames(this, "Select images to add", "", "Images (*.png *.jpg *.gif)");
-		// For each of the images selected
+
 		for (QString image_file : image_files) {
 			// Load in the image
 			Image* image = new Image(image_file.toStdString());
 
 			// Check that the image has successfully loaded
 			if (image->has_loaded()) {
-				ImageClass* predicted_class = get_classifier()->predict(image);
-
-				m_new_image_map[predicted_class].push_back(image);
-
-				predicted_class->add_image(image);
+				ImageClass* predicted_class = m_manager->classify_image(image);
+				if (predicted_class != 0)
+					m_new_image_map[predicted_class].push_back(image);
 			}
 		}
 
@@ -426,6 +392,6 @@ vector<ImageClass*>& ImageClassifierWindow::get_image_classes() {
 	return m_manager->get_image_classes();
 }
 
-ImageClassifierRF* ImageClassifierWindow::get_classifier() {
+ImageClassifier* ImageClassifierWindow::get_classifier() {
 	return m_manager->get_classifier();
 }

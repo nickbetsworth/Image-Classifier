@@ -9,8 +9,6 @@
  *
  * @brief	Classifies new images in to an existing class.
  *
- * @author	Nick
- * @date	26/10/2014
  */
 using namespace std;
 class ImageClassifier
@@ -22,88 +20,53 @@ public:
 	 *
 	 * @brief	Creates a new instance of ImageClassifier
 	 *
-	 * @author	Nick
-	 * @date	26/10/2014
 	 */
-	ImageClassifier(vector<Image*> images);
 	ImageClassifier();
 	virtual ~ImageClassifier();
 
 	/**
-	 * @fn	int ImageClassifier::get_class_count();
+	 * @fn	virtual void ImageClassifier::train(vector<ImageClass*> training_data) = 0;
 	 *
-	 * @brief	Returns how many classes belong to this image classifier.
+	 * @brief	Trains the classifier using the given training data.
 	 *
-	 * @author	Nick
-	 * @date	26/10/2014
-	 *
-	 * @return	The number of separate classes.
+	 * @param [in,out]	training_data	The data to train the classifier with.
 	 */
-	int get_class_count();
+
+	virtual void train(const vector<ImageClass*> training_data) = 0;
 
 	/**
-	 * @fn	vector<ImageClass*> ImageClassifier::get_image_classes();
+	 * @fn	virtual ImageClass* ImageClassifier::predict(Image* image) = 0;
 	 *
-	 * @brief	Retrieves a list of existing ImageClasses.
+	 * @brief	Predicts which class an image belongs to.
 	 *
-	 * @author	Nick
-	 * @date	28/10/2014
+	 * @param [in,out]	image	The image we are predicting the class for.
 	 *
-	 * @return	A list of existing ImageClasses.
+	 * @return	The class that the model has predicted the image belongs to.
 	 */
 
-	vector<ImageClass*> get_image_classes();
+	virtual ImageClass* predict(const Image* image) = 0;
 
-	virtual void classify_images() = 0;
+	/**
+	 * @fn	bool ImageClassifier::has_trained() const
+	 *
+	 * @brief	Query if this classifier has been trained yet.
+	 *
+	 * @return	true if trained, false if not.
+	 */
 
-	vector<Image*> get_images();
+	bool has_trained() const { return m_has_trained; };
 protected:
 
 	/**
-	 * @fn	void ImageClassifier::add_image_class(ImageClass* image_class);
+	 * @fn	void ImageClassifier::set_trained_state(const bool has_trained)
 	 *
-	 * @brief	Adds a new ImageClass to be considered.
+	 * @brief	Sets whether or not the classifier has been trained.
 	 *
-	 * @author	Nick
-	 * @date	28/10/2014
-	 *
-	 * @param image_class	The new ImageClass.
 	 */
 
-	void add_image_class(ImageClass* image_class);
-
-	/**
-	* @fn	void ImageClassifier::add_image_to_class(Image* image, ImageClass* image_class);
-	*
-	* @brief	Adds the provided image to the specified ImageClass.
-	*
-	* @author	Nick
-	* @date	26/10/2014
-	*
-	* @param image	   		The image to be added.
-	* @param image_class	The class the image is to be added to.
-	*/
-
-	void add_image_to_class(Image* image, ImageClass* image_class);
-
-	/**
-	 * @fn	map<Image*, ImageClass*> ImageClassifier::get_class_map()
-	 *
-	 * @brief	Returns a mapping from Images to the respective ImageClass it belongs to.
-	 *
-	 * @author	Nick
-	 * @date	28/10/2014
-	 *
-	 * @return	An Image to ImageClass map.
-	 */
-
-	map<Image*, ImageClass*> get_class_map() { return m_class_map; };
+	void set_trained_state(const bool has_trained) { m_has_trained = has_trained; };
 private:
-	vector<Image*> m_images;
-	/** @brief	Stores a list of ImageClasses */
-	vector<ImageClass*> m_classes;
-	/** @brief	Stores a mapping from Image to ImageClass */
-	map<Image*, ImageClass*> m_class_map;
-	
+	/** @brief	Stores whether or not this classifier has been trained. */
+	bool m_has_trained;
 };
 

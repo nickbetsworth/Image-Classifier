@@ -1,7 +1,7 @@
 #include "ImageClassifierRF.h"
 
 
-ImageClassifierRF::ImageClassifierRF()
+ImageClassifierRF::ImageClassifierRF() : ImageClassifier()
 {
 	m_rt = new CvRTrees();
 	m_rt_params = new CvRTParams(
@@ -16,18 +16,13 @@ ImageClassifierRF::ImageClassifierRF()
 		MAX_TREES,
 		FOREST_ACCURACY,
 		TERMCRIT_TYPE);
-	m_has_trained = false;
 }
 
 ImageClassifierRF::~ImageClassifierRF()
 {
 }
 
-void ImageClassifierRF::classify_images() {
-
-}
-
-void ImageClassifierRF::train(vector<ImageClass*> training_data) {
+void ImageClassifierRF::train(const vector<ImageClass*> training_data) {
 	// Calculate the total number of images we have
 	int num_images = 0;
 	for (ImageClass* image_class : training_data) 
@@ -61,11 +56,11 @@ void ImageClassifierRF::train(vector<ImageClass*> training_data) {
 
 	m_rt->train(trainData, CV_ROW_SAMPLE, responses, Mat(), Mat(), Mat(), Mat(), *m_rt_params);
 
-	m_has_trained = true;
+	this->set_trained_state(true);
 }
 
-ImageClass* ImageClassifierRF::predict(Image* image) {
-	if (m_has_trained) {
+ImageClass* ImageClassifierRF::predict(const Image* image) {
+	if (this->has_trained()) {
 		Mat hist = image->get_histogram();
 		Mat hist_t = hist.t();
 		int label = m_rt->predict(hist_t);

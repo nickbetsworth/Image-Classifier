@@ -1,20 +1,20 @@
-#include "ImageClassifierGMM.h"
+#include "ImageClustererGMM.h"
 #include <opencv\cv.h>
 #include "Histograms.h"
 
-ImageClassifierGMM::ImageClassifierGMM(vector<Image*> images, int n_clusters) : ImageClassifier(images)
+ImageClustererGMM::ImageClustererGMM(vector<Image*> images, int n_clusters) : ImageClusterer(images)
 {
 	m_em = new EM(n_clusters);
 	m_n_clusters = n_clusters;
 }
 
 
-ImageClassifierGMM::~ImageClassifierGMM()
+ImageClustererGMM::~ImageClustererGMM()
 {
 	delete m_em;
 }
 
-void ImageClassifierGMM::classify_images() {
+void ImageClustererGMM::cluster_images() {
 	int img_count = get_images().size();
 	int current_row = 0;
 	const int bins = Image::HIST_BINS;
@@ -64,7 +64,7 @@ void ImageClassifierGMM::classify_images() {
 	for (int i = 0; i < m_n_clusters; i++) {
 		ImageClass* image_class = label_to_class_map[i];
 		if (image_class->get_images().size() > 0)
-			this->add_image_class(image_class);
+			this->create_cluster(image_class);
 	}
 	//cout << "Likelihoods:" << likelihoods << endl;
 	//cout << "Labels:" << labels << endl;

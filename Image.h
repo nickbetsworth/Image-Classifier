@@ -79,6 +79,8 @@ public:
 	// Returns a full resolution image
 	Mat get_fullres_image() const;
 private:
+	void generate_thumbnail();
+
 	/** @brief	Stores the filepath this image belongs to */
 	string m_filepath;
 	/** @brief	Stores the image thumbnail data */

@@ -21,9 +21,7 @@ public:
 	* @struct	Edge
 	*
 	* @brief	Represents an edge between two image classes.
-	*
-	* @author	Nick
-	* @date	09/11/2014
+	* 			
 	*/
 
 	struct Edge {
@@ -50,26 +48,13 @@ public:
 	vector<Edge> get_edges() { return m_edges; };
 protected:
 private:
+	ogdf::Graph* setup_nodes(ogdf::Graph* graph);
+	vector<NodePositioner::Edge> multimap_to_vector(multimap<Node, Node> map);
+
 	NodePropertiesGraph* m_graph;
-	/** @brief	Stores the graph of relations between NodeProperties. */
-	//Graph<NodeProperties*> m_graph;
 	/** @brief	Stores a list of edges calculated via the spanning tree. */
 	vector<Edge> m_edges;
 
-	ogdf::Graph* setup_nodes(ogdf::Graph* graph);
-	/**
-	 * @fn	vector<NodePositioner::Edge> NodePositioner::multimap_to_vector(multimap<NodeProperties*, NodeProperties*> map);
-	 *
-	 * @brief	Converts a multimap of edges to a single vector.
-	 *
-	 * @author	Nick
-	 * @date	09/11/2014
-	 *
-	 * @param 	map	The multimap to be converted.
-	 *
-	 * @return	A Vector generated from the map;
-	 */
-
-	vector<NodePositioner::Edge> multimap_to_vector(multimap<Node, Node> map);
+	
 };
 

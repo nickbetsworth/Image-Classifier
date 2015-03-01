@@ -53,61 +53,6 @@ ImageClassifierWindow::~ImageClassifierWindow()
 	
 }
 
-void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
-	if (rightClick) {
-		// Remove this image from the category
-		m_current_class->remove_image(image);
-		// Remove the image from the scene
-		m_scene_class->removeItem(m_image_to_displayer[image]);
-		// Update the scene
-		m_scene_class->update();
-		// If there are no images left in the class, then remove the class
-		if (m_current_class->get_images().size() == 0) {
-			// Remove the class from our list of classes
-			m_manager->remove_class(m_current_class);
-			// Remove the displayer for this class
-			QCategoryDisplayer* displayer = m_class_to_displayer[m_current_class];
-
-			m_scene_classes->removeItem(displayer);
-			
-			// Move up a level as the class we are inside is now empty
-			setState(BrowseState::CLASSES);
-		}
-	}
-	/*else {
-		if (clicked_img1 == 0) {
-			clicked_img1 = image;
-		}
-		else {
-			cout << clicked_img1->get_filepath() << ": " << clicked_img1->get_histogram() << endl;
-			cout << image->get_filepath() << ": "  << image->get_histogram() << endl;
-			double val = clicked_img1->calculate_distance(image);
-			cout << "Distance: " << val << endl;
-			clicked_img1 = 0;
-		}
-	}*/
-	
-	else {
-		m_scene_image->clear();
-
-		// DEBUGGING MESSAGES
-		/*cout << image->get_filepath() << endl;
-		Mat hist = get_1d_histogram(image->get_image_data(), Image::HIST_BINS);
-		Mat hist_t = hist.t();
-		cout << "Hist: " << hist_t << endl;*/
-		// END OF DEBUGGING MESSAGES
-
-		QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_fullres_image()));
-		QGraphicsItem* item = new QGraphicsPixmapItem(*pm);
-		ui.view->resetMatrix();
-		m_scene_image->addItem(item);
-
-		setState(BrowseState::IMAGE);
-	}
-
-	
-}
-
 void ImageClassifierWindow::setup_classes() {
 	m_scene_classes->clear();
 
@@ -275,6 +220,54 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	delete positioner;
 }
 
+void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
+	if (rightClick) {
+		// Remove this image from the category
+		m_current_class->remove_image(image);
+		// Remove the image from the scene
+		m_scene_class->removeItem(m_image_to_displayer[image]);
+		// Update the scene
+		m_scene_class->update();
+		// If there are no images left in the class, then remove the class
+		if (m_current_class->get_images().size() == 0) {
+			// Remove the class from our list of classes
+			m_manager->remove_class(m_current_class);
+			// Remove the displayer for this class
+			QCategoryDisplayer* displayer = m_class_to_displayer[m_current_class];
+
+			m_scene_classes->removeItem(displayer);
+
+			// Move up a level as the class we are inside is now empty
+			setState(BrowseState::CLASSES);
+		}
+		// If the node that was removed was the root node
+		else if (image == m_current_class->get_icon()) {
+			// Re-calculate this classes icon
+			m_current_class->calculate_icon();
+			
+		}
+	}
+	else {
+		m_scene_image->clear();
+
+		// DEBUGGING MESSAGES
+		/*cout << image->get_filepath() << endl;
+		Mat hist = get_1d_histogram(image->get_image_data(), Image::HIST_BINS);
+		Mat hist_t = hist.t();
+		cout << "Hist: " << hist_t << endl;*/
+		// END OF DEBUGGING MESSAGES
+
+		QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_fullres_image()));
+		QGraphicsItem* item = new QGraphicsPixmapItem(*pm);
+		// Center the image in the co-ordinate system
+		item->setPos(QPointF(-pm->width() / 2, -pm->height() / 2));
+		ui.view->resetMatrix();
+		m_scene_image->addItem(item);
+		ui.view->centerOn(item);;
+
+		setState(BrowseState::IMAGE);
+	}
+}
 
 void ImageClassifierWindow::keyPressEvent(QKeyEvent* e) {
 	// When the escape key is pressed, move up one level, if possible

@@ -48,7 +48,7 @@ float NodeProperties::calculate_distance_histogram(NodeProperties* node2) const 
 float NodeProperties::calculate_distance(NodeProperties* node2) const {
 	float total = 0;
 
-	if (has_flag(Property::Histogram))
+	if (has_flag(Property::Histogram) && node2->has_flag(Property::Histogram))
 		total += calculate_distance_histogram(node2);
 	//if (has_flag(Property::...))
 		//total += calculate_distance_...

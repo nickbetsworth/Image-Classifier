@@ -155,6 +155,12 @@
     <ClCompile Include="ClassifierManager.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
+    <ClCompile Include="QLoadingSplashScreen.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QLoadingSplashScreen.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Histograms.h">
@@ -284,10 +290,21 @@
     <CustomBuild Include="LoadingScreen.h">
       <Filter>Header Files\Interface</Filter>
     </CustomBuild>
+    <CustomBuild Include="QLoadingSplashScreen.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="imageclassifierwindow.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\b3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\b4.gif">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

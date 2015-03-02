@@ -2,6 +2,9 @@
 #include <QWidget>
 #include "ui_ImageSelector.h"
 #include "Image.h"
+#include "ClassifierManager.h"
+#include "QLoadingSplashScreen.h"
+#include <QFuture>
 
 /**
  * @class	ImageSelector
@@ -16,6 +19,9 @@ class ImageSelector : public QWidget
 public:
 	ImageSelector(QWidget *parent = 0);
 	~ImageSelector();
+signals:
+	void statusUpdate(QString status);
+	void finishedLoading();
 public slots:
 
 	/**
@@ -63,8 +69,13 @@ protected slots:
 	 */
 
 	void runClicked();
+
+	void managerLoaded();
 private:
+	ClassifierManager* load_classifier_manager();
+
 	Ui::ImageSelector ui;
-	
+	QLoadingSplashScreen* m_loading_screen;
+	QFuture<ClassifierManager*> m_loader;
 };
 

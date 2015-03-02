@@ -6,6 +6,7 @@
 #include <QErrorMessage>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QSplashScreen>
+#include "QLoadingSplashScreen.h"
 #include <iostream>
 
 using namespace std;
@@ -48,43 +49,47 @@ void ImageSelector::addImageClicked() {
 }
 
 void ImageSelector::runClicked() {
-	ui.btnRun->setDisabled(true);
-	ui.btnRun->setText("Clustering Images..");
-	QApplication::processEvents();
-
 	if (ui.lstImages->get_image_files().size() > 0) {
-		// Convert the QStringList to a vector<string>, as the image library
-		// has no Qt dependency
-		vector<string> std_file_paths;
-		
-		for (QString qs_file_path : ui.lstImages->get_image_files()) {
-			std_file_paths.push_back(qs_file_path.toStdString());
-		}
+		// Create the loading screen, and set up communication between this class and the splash screen
+		m_loading_screen = new QLoadingSplashScreen();
+		connect(this, SIGNAL(statusUpdate(QString)), m_loading_screen, SLOT(showMessage(const QString&)));
+		connect(this, SIGNAL(finishedLoading()), m_loading_screen, SLOT(finished()));
+		// Let us know when the loading has finished, 
+		// so we do not block the splash screen's draw thread
+		connect(this, SIGNAL(finishedLoading()), this, SLOT(managerLoaded()));
 
-		ClassifierManager* manager = new ClassifierManager();
-		QPixmap splash_image = QPixmap("C:/Users/Nick/Desktop/b3.png");
-		QSplashScreen* loading_screen = new QSplashScreen(splash_image);
+		// Hide the current image selection window and show the splash screen
 		this->hide();
-		loading_screen->show();
-		loading_screen->showMessage("Loading Images..", Qt::AlignCenter, Qt::white);
-		QApplication::processEvents();
-		manager->load_images(std_file_paths);
-		loading_screen->showMessage("Clustering Images..", Qt::AlignCenter, Qt::white);
-		QApplication::processEvents();
-		manager->cluster_images(6);
-		loading_screen->showMessage("Training Classifier..", Qt::AlignCenter, Qt::white);
-		QApplication::processEvents();
-		manager->train_classifier();
-		ImageClassifierWindow* win = new ImageClassifierWindow(manager);
-		loading_screen->finish(win);
-		//
-		win->showMaximized();
-		//
+		m_loading_screen->show();
+
+		// Perform all of the loading in a separate thread
+		m_loader = QtConcurrent::run(this, &ImageSelector::load_classifier_manager);
 	}
 	else {
-
+		QErrorMessage* error = new QErrorMessage(this);
+		error->showMessage("You must specify at least one image");
 	}
-	
+}
+
+ClassifierManager* ImageSelector::load_classifier_manager() {
+	emit statusUpdate("Loading Images");
+	// Convert the QStringList to a vector<string>, as the image library
+	// has no Qt dependency
+	vector<string> std_file_paths;
+
+	for (QString qs_file_path : ui.lstImages->get_image_files()) {
+		std_file_paths.push_back(qs_file_path.toStdString());
+	}
+
+	ClassifierManager* manager = new ClassifierManager();
+	manager->load_images(std_file_paths);
+	emit statusUpdate("Clustering Images");
+	manager->cluster_images(6);
+	emit statusUpdate("Training Classifier");
+	manager->train_classifier();
+
+	emit finishedLoading();
+	return manager;
 }
 
 void ImageSelector::addingStarted() {
@@ -98,7 +103,6 @@ void ImageSelector::addingStarted() {
 void ImageSelector::listChanged() {
 	// Update the image counter
 	ui.lblImageCount->setText("Image Count: " + QString::number(ui.lstImages->get_image_files().size()));
-	//QApplication::processEvents();
 }
 
 void ImageSelector::addingFinished() {
@@ -109,11 +113,20 @@ void ImageSelector::addingFinished() {
 }
 
 void ImageSelector::incorrectFormat() {
-	QErrorMessage* exist_error = new QErrorMessage(this);
-	exist_error->showMessage("At least one of the dropped files was of the wrong format");
+	QErrorMessage* format_error = new QErrorMessage(this);
+	format_error->showMessage("At least one of the dropped files was of the wrong format");
+	delete format_error;
 }
 
 void ImageSelector::duplicateImage() {
-	QErrorMessage* exist_error = new QErrorMessage(this);
-	exist_error->showMessage("At least one of the dropped files was already on the list");
+	QErrorMessage* duplicate_error = new QErrorMessage(this);
+	duplicate_error->showMessage("At least one of the dropped files was already on the list");
+	delete duplicate_error;
+}
+
+void ImageSelector::managerLoaded() {
+	ClassifierManager* manager = m_loader.result();
+	ImageClassifierWindow* win = new ImageClassifierWindow(manager);
+	
+	win->showMaximized();
 }

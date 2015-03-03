@@ -16,6 +16,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QScrollBar>
+#include <QtConcurrent/QtConcurrentRun>
 
 
 ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidget *parent)
@@ -26,8 +27,14 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidge
 
 	m_manager = mananger;
 	m_current_class = 0;
-
+	m_status_checker = new QTimer(this);
+	// Set up the event handler for the menu bar being clicked
 	connect(menuBar(), SIGNAL(triggered(QAction*)), this, SLOT(menuBarClicked(QAction*)));
+	// Set up the event handler for the node positioner
+	connect(m_status_checker, SIGNAL(timeout()), this, SLOT(checkPositionerStatus()));
+	//cout << "Connect status: " << connect(this, SIGNAL(finishedPositioning(ImageClass*, NodePositions, NodeEdges)), this, SLOT(render_class(ImageClass*, NodePositions, NodeEdges)), Qt::QueuedConnection) << endl;
+	//emit finishedPositioning(0, NodePositions(), NodeEdges());
+
 	m_scene_classes = new QGraphicsScene(this);
 	m_scene_class = new QGraphicsScene(this);
 	m_scene_image = new QGraphicsScene(this);
@@ -81,7 +88,7 @@ void ImageClassifierWindow::setup_classes() {
 		connect(cat, SIGNAL(mouseLeft()), wheel, SLOT(hide()));
 
 		// Create an event handler for when a category is clicked on screen
-		connect(cat, SIGNAL(categoryClicked(ImageClass*)), this, SLOT(categoryClicked(ImageClass*)));
+		connect(cat, SIGNAL(classClicked(ImageClass*)), this, SLOT(classClicked(ImageClass*)));
 	}
 
 	// Calculate the positions of each of the image classes
@@ -104,13 +111,17 @@ void ImageClassifierWindow::setup_classes() {
 	delete positioner;
 }
 
-void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
+void ImageClassifierWindow::render_class() {
+	NodePositioner* np = m_positioner.result();
+	NodePositions positions = np->get_previous_node_positions();
+	NodeEdges edges = np->get_edges();
+
 	// Determines whether or not edges will be drawn between the nodes
 	const bool edges_enabled = true;
 
 	// Remove the hover event from the class that was clicked
 	// So that the wheel is no longer displayed on class exit
-	m_class_to_displayer[class_clicked]->set_hovering(false);
+	m_class_to_displayer[m_current_class]->set_hovering(false);
 	// Clean up all existing sub categories
 	m_scene_class->clear();
 	// Reset the bounding box of the scene
@@ -120,11 +131,11 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	m_image_to_displayer.clear();
 
 	// Loop through each of the images in the category that was clicked
-	for (Image* img : class_clicked->get_images()) {
+	for (Image* img : m_current_class->get_images()) {
 		// Create the component that will display the image
 		QImageDisplayer* displayer = new QImageDisplayer(img);
 		// If this image is to be highlighted
-		if (m_new_image_map[class_clicked].contains(img)) {
+		if (m_new_image_map[m_current_class].contains(img)) {
 			displayer->set_highlighted(true);
 		}
 
@@ -139,11 +150,6 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 		m_image_displayers.push_back(displayer);
 	}
 
-	// Calculate the positions of each of the image elements
-	NodePositioner* positioner = new NodePositioner(class_clicked->get_graph());
-	// Use a tree layout, the root node is the ImageClass's icon
-	map<NodeProperties*, Point> positions = positioner->get_node_positions_tree(class_clicked->get_icon(), 100, 100);
-
 	for (QImageDisplayer* displayer : m_image_displayers) {
 		// Obtain the position for this image
 		Point cv_pos = positions[displayer->get_image()];
@@ -155,7 +161,7 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 		m_scene_class->addItem(displayer);
 	}
 
-	
+
 	// If we are drawing edges
 	if (edges_enabled) {
 		// Create the pen that will be used to draw our edges
@@ -167,7 +173,7 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 		// Draw all new edge lines
 		// Turn on anti-aliasing for the lines
 		ui.view->setRenderHints(QPainter::Antialiasing);
-		for (NodePositioner::Edge e : positioner->get_edges()) {
+		for (NodePositioner::Edge e : edges) {
 			// Cast each node to an Image
 			Image* image1 = static_cast<Image*>(e.node1);
 			Image* image2 = static_cast<Image*>(e.node2);
@@ -211,14 +217,58 @@ void ImageClassifierWindow::categoryClicked(ImageClass* class_clicked) {
 	ui.view->setSceneRect(sceneRect);
 
 	// Get the graphics item for the root node and center the view on it
-	QGraphicsItem* root_node_gfx = m_image_to_displayer[class_clicked->get_icon()];
+	QGraphicsItem* root_node_gfx = m_image_to_displayer[m_current_class->get_icon()];
 	ui.view->centerOn(root_node_gfx);
 
-	m_current_class = class_clicked;
 	setState(BrowseState::CLASS);
-
-	delete positioner;
 }
+
+void ImageClassifierWindow::checkPositionerStatus() {
+	// Check if we have finished positioning the nodes
+	if (m_positioner.isFinished()) {
+		// Stop the timer which periodically runs this method
+		m_status_checker->stop();
+		// Render the class with the positions
+		this->render_class();
+		// Re-enable the view
+		ui.view->setEnabled(true);
+		// Close the splash screen
+		m_loading_screen->close();
+	}
+}
+
+NodePositioner* ImageClassifierWindow::calculate_image_positions() {
+	// Update the splash screen to say what we are doing
+	emit updateStatus("Positioning Nodes");
+	
+	NodePositioner* positioner = new NodePositioner(m_current_class->get_graph());
+	// Get the positions and edges, and make a copy of them
+	NodePositions positions = NodePositions(positioner->get_node_positions_tree(m_current_class->get_icon(), 100, 100));
+	NodeEdges edges = NodeEdges(positioner->get_edges());
+
+	// Let the splash screen know we have finished loading
+	emit finished();
+
+	return positioner;
+}
+
+void ImageClassifierWindow::classClicked(ImageClass* class_clicked) {
+	m_current_class = class_clicked;
+	
+	// Disable the view while we attempt to render the class
+	ui.view->setEnabled(false);
+
+	// Open up a splash screen to report to the user what is being done
+	m_loading_screen = new QLoadingSplashScreen();
+	connect(this, SIGNAL(updateStatus(QString)), m_loading_screen, SLOT(showMessage(const QString&)));
+	m_loading_screen->show();
+	
+	// Concurrently calculate the positions 
+	m_positioner = QtConcurrent::run(this, &ImageClassifierWindow::calculate_image_positions);
+	// Create a timer that will poll the status of the positioner
+	m_status_checker->start(200);
+}
+
 
 void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 	if (rightClick) {
@@ -261,11 +311,13 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 		QGraphicsItem* item = new QGraphicsPixmapItem(*pm);
 		// Center the image in the co-ordinate system
 		item->setPos(QPointF(-pm->width() / 2, -pm->height() / 2));
+
+		// Set the state here so we store the current position of the class view
+		setState(BrowseState::IMAGE);
+
 		ui.view->resetMatrix();
 		m_scene_image->addItem(item);
 		ui.view->centerOn(item);;
-
-		setState(BrowseState::IMAGE);
 	}
 }
 
@@ -307,6 +359,7 @@ void ImageClassifierWindow::setState(BrowseState state) {
 		new_scene = m_scene_image;
 		// Store the position the scene is currently centered on
 		m_scene_class_pos = ui.view->mapToScene(ui.view->viewport()->rect()).boundingRect().center();
+
 	}
 	// If we're moving up a level, we need to restore the last position
 	else {
@@ -327,6 +380,7 @@ void ImageClassifierWindow::setState(BrowseState state) {
 		else if (state == BrowseState::CLASS) {
 			new_scene = m_scene_class;
 			new_position = m_scene_class_pos;
+			cout << "Setting to position " << new_position.x() << ", " << new_position.y() << endl;
 		}
 	}
 	

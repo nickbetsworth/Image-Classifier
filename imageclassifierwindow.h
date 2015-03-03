@@ -6,6 +6,8 @@
 #include <QMap>
 #include <QGraphicsScene>
 #include <QAction>
+#include <QTimer>
+#include <QFuture>
 #include "ui_imageclassifierwindow.h"
 #include "QWheelDisplay.h"
 #include "ImageClass.h"
@@ -13,11 +15,14 @@
 #include "ImageClassifierRF.h"
 #include "NodePositioner.h"
 #include "ClassifierManager.h"
+#include "QLoadingSplashScreen.h"
 
 enum class BrowseState {
 	CLASSES, CLASS, IMAGE
 };
 
+typedef map<Node, Point> NodePositions;
+typedef vector<NodePositioner::Edge> NodeEdges;
 class ImageClassifierWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -25,15 +30,31 @@ class ImageClassifierWindow : public QMainWindow
 public:
 	ImageClassifierWindow(ClassifierManager* mananger, QWidget *parent = 0);
 	~ImageClassifierWindow();
+signals:
+	void updateStatus(QString status);
+	void testSignal();
+	void finished();
 public slots:
-
 	void imageClicked(Image* image, bool rightClick);
-	void categoryClicked(ImageClass* root_class);
+	void classClicked(ImageClass* root_class);
 	void menuBarClicked(QAction* action);
+	void checkPositionerStatus();
 protected:
 	void keyPressEvent(QKeyEvent* e);
 	void setState(BrowseState state);
+private slots:
+	
 private:
+	void setup_classes();
+	void render_class();
+	NodePositioner* calculate_image_positions();
+
+	void highlight_classes();
+
+	vector<ImageClass*>& get_image_classes();
+	const vector<ImageClass*>& get_image_classes() const;
+	ImageClassifier* get_classifier();
+
 	/** @brief	The main user interface. */
 	Ui::ImageClassifierWindowClass ui;
 
@@ -65,13 +86,10 @@ private:
 	QPointF m_scene_classes_pos;
 	QPointF m_scene_class_pos;
 
-	
-	void setup_classes();
-	void highlight_classes();
-
-	vector<ImageClass*>& get_image_classes();
-	const vector<ImageClass*>& get_image_classes() const;
-	ImageClassifier* get_classifier();
+	QFuture<NodePositioner*> m_positioner;
+	QTimer* m_status_checker;
+	QLoadingSplashScreen* m_loading_screen;
+	ImageClass* m_class_clicked;
 };
 
 #endif // IMAGECLASSIFIERWINDOW_H

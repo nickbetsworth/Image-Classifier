@@ -34,6 +34,7 @@ public:
 
 	map<Node, Point> NodePositioner::get_node_positions_tree(Node root_node, double node_width, double node_height);
 	map<Node, Point> NodePositioner::get_node_positions_fmmm(double node_width, double node_height);
+	map<Node, Point> NodePositioner::get_previous_node_positions() { return m_previous_positions; };
 	/**
 	 * @fn	vector<Edge> NodePositioner::get_edges()
 	 *
@@ -54,7 +55,7 @@ private:
 	NodePropertiesGraph* m_graph;
 	/** @brief	Stores a list of edges calculated via the spanning tree. */
 	vector<Edge> m_edges;
-
+	map<Node, Point> m_previous_positions;
 	
 };
 

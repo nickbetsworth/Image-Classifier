@@ -67,6 +67,8 @@ map<Node, Point> NodePositioner::get_node_positions_tree(Node root_node, double 
 		//cout << "Position: (" << x << ", " << y << ") P1: " << ga.imageWidthNode(v) << " P2: " << ga.imageHeightNode(v) << endl;
 	}
 
+	m_previous_positions = pos_map;
+
 	return pos_map;
 }
 
@@ -126,6 +128,7 @@ map<Node, Point> NodePositioner::get_node_positions_fmmm(double node_width, doub
 		//cout << "Position: (" << x << ", " << y << ") P1: " << ga.imageWidthNode(v) << " P2: " << ga.imageHeightNode(v) << endl;
 	}
 
+	m_previous_positions = pos_map;
 	return pos_map;
 }
 

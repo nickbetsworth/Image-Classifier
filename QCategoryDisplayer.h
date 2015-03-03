@@ -44,7 +44,7 @@ protected:
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 
 signals:
-	void categoryClicked(ImageClass*);
+	void classClicked(ImageClass*);
 private:
 	/** @brief	The image class which this display component represents. */
 	ImageClass* m_image_class;

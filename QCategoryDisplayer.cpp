@@ -29,5 +29,5 @@ QRectF QCategoryDisplayer::boundingRect() const {
 }
 
 void QCategoryDisplayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
-	emit(categoryClicked(m_image_class));
+	emit(classClicked(m_image_class));
 }

@@ -421,6 +421,9 @@ void ImageClassifierWindow::menuBarClicked(QAction* action) {
 
 		cout << image_files.size() << " new images were added" << endl;
 	}
+	else if (action == ui.actionTrainClassifier) {
+		m_manager->train_classifier();
+	}
 }
 
 void ImageClassifierWindow::highlight_classes() {

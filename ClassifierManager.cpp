@@ -55,6 +55,12 @@ void ClassifierManager::train_classifier() {
 		return;
 	}
 
+	// If the classifier has already trained, create a new instance of it before training
+	if (m_classifier->has_trained()) {
+		delete m_classifier;
+		m_classifier = new ImageClassifierRF();
+	}
+
 	cout << "Training classifier" << endl;
 	m_classifier->train(m_image_classes);
 }

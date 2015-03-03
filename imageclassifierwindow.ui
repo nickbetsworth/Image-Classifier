@@ -36,11 +36,23 @@
     </property>
     <addaction name="actionAddImage"/>
    </widget>
+   <widget class="QMenu" name="menuClassifier">
+    <property name="title">
+     <string>Classifier</string>
+    </property>
+    <addaction name="actionTrainClassifier"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuClassifier"/>
   </widget>
   <action name="actionAddImage">
    <property name="text">
     <string>Insert Image(s)</string>
+   </property>
+  </action>
+  <action name="actionTrainClassifier">
+   <property name="text">
+    <string>Re-train Classifier</string>
    </property>
   </action>
  </widget>

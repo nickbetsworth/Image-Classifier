@@ -70,40 +70,41 @@ void ImageClassifierWindow::setup_classes() {
 		image_class->calculate_icon();
 		graph->add_node(image_class);
 		// Create the icon for the category
-		QCategoryDisplayer* cat = new QCategoryDisplayer(image_class);
+		QCategoryDisplayer* cluster = new QCategoryDisplayer(image_class);
 		// If this category contains a new image
 
 		// Create the wheel that is displayed on mouse over
-		QWheelDisplay* wheel = new QWheelDisplay(cat);
-		m_wheels.push_back(wheel);
+		//QWheelDisplay* wheel = new QWheelDisplay(cat);
+		//m_wheels.push_back(wheel);
+		m_clusters.push_back(cluster);
 
 		// Add a mapping from the QCategoryDisplayer to ImageClass, for later use when drawing edges
-		m_class_to_displayer[image_class] = cat;
+		m_class_to_displayer[image_class] = cluster;
 		// Add both components to the scene
-		m_scene_classes->addItem(wheel);
-		m_scene_classes->addItem(cat);
+		//m_scene_classes->addItem(wheel);
+		m_scene_classes->addItem(cluster);
 
 		// Create event handlers for when a user mouses in and out of a category
-		connect(cat, SIGNAL(mouseEntered()), wheel, SLOT(show()));
-		connect(cat, SIGNAL(mouseLeft()), wheel, SLOT(hide()));
+		//connect(cat, SIGNAL(mouseEntered()), wheel, SLOT(show()));
+		//connect(cat, SIGNAL(mouseLeft()), wheel, SLOT(hide()));
 
 		// Create an event handler for when a category is clicked on screen
-		connect(cat, SIGNAL(classClicked(ImageClass*)), this, SLOT(classClicked(ImageClass*)));
+		connect(cluster, SIGNAL(classClicked(ImageClass*)), this, SLOT(classClicked(ImageClass*)));
 	}
 
 	// Calculate the positions of each of the image classes
 	NodePositioner* positioner = new NodePositioner(graph);
 	// Use a force based layout
-	map<NodeProperties*, Point> positions = positioner->get_node_positions_fmmm(200, 200);
+	// We add some padding to the total radius, so it doesn't come so close to
+	// other categories
+	int category_radius = QCategoryDisplayer::get_total_diameter() + 100;
+	map<NodeProperties*, Point> positions = positioner->get_node_positions_fmmm(category_radius, category_radius);
 
 	// Position each category and category wheel
-	for (QWheelDisplay* wheel : m_wheels) {
-		QCategoryDisplayer* displayer = wheel->get_category_displayer();
-
-		Point cv_pos = positions[displayer->get_image_class()];
+	for (QCategoryDisplayer* cluster : m_clusters) {
+		Point cv_pos = positions[cluster->get_image_class()];
 		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
-		displayer->setPos(pos);
-		wheel->setPos(pos);
+		cluster->setPos(pos);
 	}
 
 	setState(BrowseState::CLASSES);

@@ -98,11 +98,9 @@ NodeList NodePropertiesGraph::get_n_nearest_nodes(Node node, int n) {
 	bool node_in_graph = m_nodes.find(node) != m_nodes.end();
 	if (!node_in_graph) {
 		cout << "The given node was not found in the graph" << endl;
-		return nearest_nodes;
-	}
-
-	if (n > 0 && n) {
 		
+	}
+	else if (n > 0 && n) {
 		for (int i = 0; i < n; i++) {
 			Node nearest_node = 0;
 			float nearest_val = std::numeric_limits<float>::max();
@@ -124,12 +122,12 @@ NodeList NodePropertiesGraph::get_n_nearest_nodes(Node node, int n) {
 				nearest_nodes.insert(nearest_node);
 			}
 		}
-		return nearest_nodes;
 	}
 	else {
 		cout << "NodePropertiesGraph::get_n_nearest_nodes: specified n was out of range (0..node count)" << endl;
-		exit(0);
 	}
+
+	return nearest_nodes;
 }
 SpanningTree NodePropertiesGraph::get_minimum_spanning_tree(Node root_node) {
 	// Check if there is a cached version of the requested spanning tree

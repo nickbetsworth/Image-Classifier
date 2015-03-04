@@ -71,7 +71,7 @@ private:
 	QGraphicsScene* m_scene_image;
 
 	/** @brief	Stores the UI elements that represent each ImageClass. */
-	QVector<QWheelDisplay*> m_wheels;
+	QVector<QCategoryDisplayer*> m_clusters;
 	/** @brief	Maps from ImageClass to its respective UI element. */
 	QMap<ImageClass*, QCategoryDisplayer*> m_class_to_displayer;
 

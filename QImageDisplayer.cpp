@@ -3,23 +3,19 @@
 #include <QPainter>
 #include <QGraphicsSceneEvent>
 
-QImageDisplayer::QImageDisplayer(Image* image) : QImageDisplayer(image, DEFAULT_DIAMETER) {
+QImageDisplayer::QImageDisplayer(Image* image, QGraphicsItem* parent) : QImageDisplayer(image, DEFAULT_DIAMETER, parent) {
 
 }
 
-QImageDisplayer::QImageDisplayer(Image* image, int diameter) {
+QImageDisplayer::QImageDisplayer(Image* image, int diameter, QGraphicsItem* parent) : QGraphicsObject(parent) {
 	m_diameter = diameter;
-	m_image = image;
-	QSize size = QSize(diameter, diameter);
-	// Scale the pixmap to the specified size
-	QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_image_data()));
-	m_pixmap = new QPixmap(pm->scaled(size, Qt::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));
-	// Free up the memory from the unscaled pixmap
-	delete pm;
+	m_pixmap = 0;
+	set_image(image);
 
 	// The user is not currently hovering over this icon
 	m_hovering = false;
 	m_highlighted = false;
+	
 	// Enable hover events to be sent when a user hovers over the category
 	setAcceptHoverEvents(true);
 }
@@ -27,6 +23,7 @@ QImageDisplayer::QImageDisplayer(Image* image, int diameter) {
 
 QImageDisplayer::~QImageDisplayer()
 {
+	delete m_pixmap;
 }
 
 QRectF QImageDisplayer::boundingRect() const {
@@ -48,7 +45,7 @@ void QImageDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 	// Turn AA on to smooth the edges
 	painter->setRenderHint(QPainter::RenderHint::Antialiasing, true);
 
-	QRectF pixmapRect = boundingRect();
+	QRectF pixmapRect = QImageDisplayer::boundingRect();
 
 	if (is_highlighted() && !is_hovering()) {
 		QBrush brush = QBrush(Qt::SolidPattern);
@@ -61,12 +58,42 @@ void QImageDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 		pixmapRect.adjust(HIGHLIGHT_SIZE, HIGHLIGHT_SIZE, -HIGHLIGHT_SIZE, -HIGHLIGHT_SIZE);
 	}
 
+	// Clip the image to be a circle
 	QPainterPath path;
-
 	path.addEllipse(pixmapRect);
 	painter->setClipPath(path);
 
 	painter->drawPixmap(pixmapRect.toRect(), *m_pixmap);
+}
+
+void QImageDisplayer::set_image(Image* image) {
+	// If we are told to load the image we already have,
+	// do nothing
+	if (image == m_image) {
+		return;
+	}
+
+	if (m_pixmap != 0) {
+		delete m_pixmap;
+	}
+
+	QSize size = QSize(get_diameter(), get_diameter());
+	// Scale the pixmap to the specified size
+	QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_image_data()));
+	m_pixmap = new QPixmap(pm->scaled(size, Qt::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));
+	// Free up the memory from the unscaled pixmap
+	delete pm;
+
+	// Need to load in full res first if diameter > thumbnail size
+	// f
+	// f
+	// f
+	// c
+	// c
+	// c
+	
+	
+	m_image = image;
 }
 
 void QImageDisplayer::mousePressEvent(QGraphicsSceneMouseEvent* event) {
@@ -76,6 +103,8 @@ void QImageDisplayer::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 		rightClick = true;
 
 	emit(imageClicked(m_image, rightClick));
+	cout << "Here?!?!" << endl;
+	//QGraphicsItem::mousePressEvent(event);
 }
 
 void QImageDisplayer::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {

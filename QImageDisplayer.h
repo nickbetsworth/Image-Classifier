@@ -15,11 +15,11 @@ class QImageDisplayer :
 	Q_OBJECT
 	Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 public:
-	QImageDisplayer(Image* image);
-	QImageDisplayer(Image* image, int diameter);
-	~QImageDisplayer();
+	QImageDisplayer(Image* image, QGraphicsItem* parent = 0);
+	QImageDisplayer(Image* image, int diameter, QGraphicsItem* parent = 0);
+	virtual ~QImageDisplayer();
 
-	QRectF boundingRect() const;
+	virtual QRectF boundingRect() const;
 
 	/**
 	 * @fn	Image* QImageDisplayer::get_image()
@@ -30,6 +30,7 @@ public:
 	 */
 
 	Image* get_image() { return m_image; };
+	void set_image(Image* image);
 	QPixmap* get_pixmap() { return m_pixmap; };
 	int get_diameter() const { return m_diameter; };
 	void set_diameter(int diameter) { m_diameter = diameter; };
@@ -64,13 +65,14 @@ public:
 	 */
 
 	void set_highlighted(bool highlighted);
+
+	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 protected:
 	/** @brief	The default diameter of the display component. */
 	static const int DEFAULT_DIAMETER = 100;
 	/** @brief	Thickness of the highlight. */
 	static const int HIGHLIGHT_SIZE = 6;
 
-	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 	virtual QPainterPath shape() const;
 	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);

@@ -47,12 +47,13 @@ void QImageDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
 	QRectF pixmapRect = QImageDisplayer::boundingRect();
 
-	if (is_highlighted() && !is_hovering()) {
+	// Draw the highlighted ring
+	if (is_highlighted()) {
 		QBrush brush = QBrush(Qt::SolidPattern);
 		brush.setColor(QColor(255, 60, 60));
 		painter->setBrush(brush);
 		painter->setPen(Qt::PenStyle::NoPen);
-		painter->drawEllipse(boundingRect().toRect());
+		painter->drawEllipse(pixmapRect.toRect());
 
 		// Make the pixmap smaller accordingly
 		pixmapRect.adjust(HIGHLIGHT_SIZE, HIGHLIGHT_SIZE, -HIGHLIGHT_SIZE, -HIGHLIGHT_SIZE);
@@ -97,6 +98,10 @@ void QImageDisplayer::set_image(Image* image) {
 }
 
 void QImageDisplayer::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+	event->accept();
+}
+
+void QImageDisplayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
 	//QGraphicsObject::mouseReleaseEvent(event);
 	bool rightClick = false;
 	if (event->button() == Qt::RightButton)

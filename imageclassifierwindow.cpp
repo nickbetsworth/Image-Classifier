@@ -97,7 +97,7 @@ void ImageClassifierWindow::setup_classes() {
 	// Use a force based layout
 	// We add some padding to the total radius, so it doesn't come so close to
 	// other categories
-	int category_radius = QCategoryDisplayer::get_total_diameter() + 100;
+	int category_radius = QCategoryDisplayer::get_total_diameter() + 200;
 	map<NodeProperties*, Point> positions = positioner->get_node_positions_fmmm(category_radius, category_radius);
 
 	// Position each category and category wheel
@@ -209,19 +209,11 @@ void ImageClassifierWindow::render_class() {
 	// Start the animations
 	anim_group->start(QAbstractAnimation::DeleteWhenStopped);
 
-	// Expand the boundaries of the scene slightly, so the user can browse 
-	// outside the bounds of where the images are
-	// Get the bounding rect of the scene
-	QRectF sceneRect = m_scene_class->itemsBoundingRect();
-	// Enlargen it
-	sceneRect.adjust(-1000, -1000, 1000, 1000);
-	ui.view->setSceneRect(sceneRect);
+	setState(BrowseState::CLASS);
 
 	// Get the graphics item for the root node and center the view on it
 	QGraphicsItem* root_node_gfx = m_image_to_displayer[m_current_class->get_icon()];
 	ui.view->centerOn(root_node_gfx);
-
-	setState(BrowseState::CLASS);
 }
 
 void ImageClassifierWindow::checkPositionerStatus() {
@@ -267,7 +259,7 @@ void ImageClassifierWindow::classClicked(ImageClass* class_clicked) {
 	// Concurrently calculate the positions 
 	m_positioner = QtConcurrent::run(this, &ImageClassifierWindow::calculate_image_positions);
 	// Create a timer that will poll the status of the positioner
-	m_status_checker->start(200);
+	m_status_checker->start(100);
 }
 
 
@@ -389,6 +381,15 @@ void ImageClassifierWindow::setState(BrowseState state) {
 		// Reset the cache as there will most likely be no relevant images
 		ui.view->resetCachedContent();
 		ui.view->setScene(new_scene);
+
+		// Expand the boundaries of the scene slightly, so the user can browse 
+		// outside the bounds of where the images are
+		// Get the bounding rect of the scene
+		QRectF sceneRect = new_scene->itemsBoundingRect();
+		// Enlargen it
+		sceneRect.adjust(-1000, -1000, 1000, 1000);
+		ui.view->setSceneRect(sceneRect);
+
 		ui.view->update();
 
 		m_state = state;

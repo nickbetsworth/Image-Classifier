@@ -56,7 +56,7 @@ void QLoadingSplashScreen::drawContents(QPainter* painter) {
 	int text_height = fm.height();
 	// Calculate the position of the text
 	int x_pos = (this->width() - text_width) / 2;
-	int y_pos = (this->height() / 2) + text_height + 20;
+	int y_pos = (this->height() / 2) + text_height + 40;
 	QPoint pos = QPoint(x_pos, y_pos);
 
 	// Set the color of the text

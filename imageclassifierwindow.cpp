@@ -51,6 +51,9 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidge
 	ui.view->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 	ui.view->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 	ui.view->setCacheMode(QGraphicsView::CacheBackground);
+	// Set the background colour of the view
+	QBrush b = QBrush(QColor(25, 25, 25));
+	ui.view->setBackgroundBrush(b);
 
 	ui.view->show();
 }
@@ -168,12 +171,12 @@ void ImageClassifierWindow::render_class() {
 		// Create the pen that will be used to draw our edges
 		QPen pen = QPen(Qt::PenStyle::SolidLine);
 		pen.setWidth(1);
-		pen.setColor(QColor(140, 140, 140));
+		pen.setColor(QColor(240, 240, 240));
 		pen.setCosmetic(true);
 
 		// Draw all new edge lines
 		// Turn on anti-aliasing for the lines
-		ui.view->setRenderHints(QPainter::Antialiasing);
+		ui.view->setRenderHint(QPainter::Antialiasing);
 		for (NodePositioner::Edge e : edges) {
 			// Cast each node to an Image
 			Image* image1 = static_cast<Image*>(e.node1);

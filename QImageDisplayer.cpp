@@ -2,6 +2,7 @@
 #include "ImageConversion.h"
 #include <QPainter>
 #include <QGraphicsSceneEvent>
+#include <QGraphicsEffect>
 
 QImageDisplayer::QImageDisplayer(Image* image, QGraphicsItem* parent) : QImageDisplayer(image, DEFAULT_DIAMETER, parent) {
 
@@ -63,6 +64,7 @@ void QImageDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 	QPainterPath path;
 	path.addEllipse(pixmapRect);
 	painter->setClipPath(path);
+
 
 	painter->drawPixmap(pixmapRect.toRect(), *m_pixmap);
 }

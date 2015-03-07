@@ -3,7 +3,7 @@
 #include "LoadingScreen.h"
 #include "ClassifierManager.h"
 #include <QFileDialog>
-#include <QErrorMessage>
+#include <QMessageBox>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QSplashScreen>
 #include "QLoadingSplashScreen.h"
@@ -66,8 +66,10 @@ void ImageSelector::runClicked() {
 		m_loader = QtConcurrent::run(this, &ImageSelector::load_classifier_manager);
 	}
 	else {
-		QErrorMessage* error = new QErrorMessage(this);
-		error->showMessage("You must specify at least one image");
+		QMessageBox* error = new QMessageBox(this);
+		error->setText("You must specify at least one image");
+		error->exec();
+		delete error;
 	}
 }
 
@@ -113,15 +115,17 @@ void ImageSelector::addingFinished() {
 }
 
 void ImageSelector::incorrectFormat() {
-	QErrorMessage* format_error = new QErrorMessage(this);
-	format_error->showMessage("At least one of the dropped files was of the wrong format");
-	delete format_error;
+	QMessageBox* error = new QMessageBox(this);
+	error->setText("Some of the provided files were of the wrong format");
+	error->exec();
+	delete error;
 }
 
 void ImageSelector::duplicateImage() {
-	QErrorMessage* duplicate_error = new QErrorMessage(this);
-	duplicate_error->showMessage("At least one of the dropped files was already on the list");
-	delete duplicate_error;
+	QMessageBox* error = new QMessageBox(this);
+	error->setText("Some of the provided files were already on the list");
+	error->exec();
+	delete error;
 }
 
 void ImageSelector::managerLoaded() {

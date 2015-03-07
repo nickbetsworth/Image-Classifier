@@ -28,12 +28,16 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidge
 	m_manager = mananger;
 	m_current_class = 0;
 	m_status_checker = new QTimer(this);
+	m_current_task = ProgramTask::IDLE;
+	m_loading_screen = new QLoadingSplashScreen();
+
+	connect(this, SIGNAL(updateStatus(QString)), m_loading_screen, SLOT(showMessage(const QString&)));
+
 	// Set up the event handler for the menu bar being clicked
 	connect(menuBar(), SIGNAL(triggered(QAction*)), this, SLOT(menuBarClicked(QAction*)));
-	// Set up the event handler for the node positioner
-	connect(m_status_checker, SIGNAL(timeout()), this, SLOT(checkPositionerStatus()));
-	//cout << "Connect status: " << connect(this, SIGNAL(finishedPositioning(ImageClass*, NodePositions, NodeEdges)), this, SLOT(render_class(ImageClass*, NodePositions, NodeEdges)), Qt::QueuedConnection) << endl;
-	//emit finishedPositioning(0, NodePositions(), NodeEdges());
+	// Set up the event handler for the node positioner status checker
+	connect(m_status_checker, SIGNAL(timeout()), this, SLOT(checkStatus()));
+
 
 	m_scene_classes = new QGraphicsScene(this);
 	m_scene_class = new QGraphicsScene(this);
@@ -52,7 +56,7 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidge
 	ui.view->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
 	ui.view->setCacheMode(QGraphicsView::CacheBackground);
 	// Set the background colour of the view
-	QBrush b = QBrush(QColor(25, 25, 25));
+	QBrush b = QBrush(QColor(15, 15, 15));
 	ui.view->setBackgroundBrush(b);
 
 	ui.view->show();
@@ -171,7 +175,7 @@ void ImageClassifierWindow::render_class() {
 		// Create the pen that will be used to draw our edges
 		QPen pen = QPen(Qt::PenStyle::SolidLine);
 		pen.setWidth(1);
-		pen.setColor(QColor(240, 240, 240));
+		pen.setColor(QColor(255, 255, 255));
 		pen.setCosmetic(true);
 
 		// Draw all new edge lines
@@ -219,17 +223,47 @@ void ImageClassifierWindow::render_class() {
 	ui.view->centerOn(root_node_gfx);
 }
 
-void ImageClassifierWindow::checkPositionerStatus() {
-	// Check if we have finished positioning the nodes
-	if (m_positioner.isFinished()) {
+void ImageClassifierWindow::start_task(ProgramTask task) {
+	// If we're doing anything other than idling
+	if (task != ProgramTask::IDLE) {
+		// Disable the view while we attempt to render the class
+		ui.view->setEnabled(false);
+
+		// Open up a splash screen to report to the user what is being done
+		m_loading_screen->show();
+	}
+
+	m_current_task = task;
+
+	// Create a timer that will poll the status of the task
+	m_status_checker->start(100);
+}
+
+void ImageClassifierWindow::checkStatus() {
+	// Stores whether the job being undertaken has finished
+	bool has_finished = false;
+
+	if (m_current_task == ProgramTask::POSITIONING) {
+		// Check if we have finished positioning the nodes
+		if (m_positioner.isFinished()) {
+			// Render the class with the positions
+			this->render_class();
+	
+			has_finished = true;
+		}
+	}
+	else if (m_current_task == ProgramTask::CLASSIFYING) {
+		has_finished = m_classifierProcess.isFinished();
+	}
+	
+	if (has_finished) {
 		// Stop the timer which periodically runs this method
 		m_status_checker->stop();
-		// Render the class with the positions
-		this->render_class();
 		// Re-enable the view
 		ui.view->setEnabled(true);
 		// Close the splash screen
 		m_loading_screen->close();
+		m_current_task = ProgramTask::IDLE;
 	}
 }
 
@@ -250,19 +284,8 @@ NodePositioner* ImageClassifierWindow::calculate_image_positions() {
 
 void ImageClassifierWindow::classClicked(ImageClass* class_clicked) {
 	m_current_class = class_clicked;
-	
-	// Disable the view while we attempt to render the class
-	ui.view->setEnabled(false);
-
-	// Open up a splash screen to report to the user what is being done
-	m_loading_screen = new QLoadingSplashScreen();
-	connect(this, SIGNAL(updateStatus(QString)), m_loading_screen, SLOT(showMessage(const QString&)));
-	m_loading_screen->show();
-	
-	// Concurrently calculate the positions 
 	m_positioner = QtConcurrent::run(this, &ImageClassifierWindow::calculate_image_positions);
-	// Create a timer that will poll the status of the positioner
-	m_status_checker->start(100);
+	start_task(ProgramTask::POSITIONING);
 }
 
 
@@ -408,27 +431,33 @@ void ImageClassifierWindow::menuBarClicked(QAction* action) {
 	if (action == ui.actionAddImage) {
 		// Query the user for the images they wish to add 
 		QStringList image_files = QFileDialog::getOpenFileNames(this, "Select images to add", "", "Images (*.png *.jpg *.gif)");
-
-		for (QString image_file : image_files) {
-			// Load in the image
-			Image* image = new Image(image_file.toStdString());
-
-			// Check that the image has successfully loaded
-			if (image->has_loaded()) {
-				ImageClass* predicted_class = m_manager->classify_image(image);
-				if (predicted_class != 0)
-					m_new_image_map[predicted_class].push_back(image);
-			}
-		}
-
-		// Highlight all classes necessary
-		highlight_classes();
-
-		cout << image_files.size() << " new images were added" << endl;
+		m_classifierProcess = QtConcurrent::run(this, &ImageClassifierWindow::classify_images, image_files);
+		start_task(ProgramTask::CLASSIFYING);
 	}
 	else if (action == ui.actionTrainClassifier) {
 		m_manager->train_classifier();
 	}
+}
+
+void ImageClassifierWindow::classify_images(QStringList image_files) {
+	updateStatus("Adding new images");
+
+	for (QString image_file : image_files) {
+		// Load in the image
+		Image* image = new Image(image_file.toStdString());
+
+		// Check that the image has successfully loaded
+		if (image->has_loaded()) {
+			ImageClass* predicted_class = m_manager->classify_image(image);
+			if (predicted_class != 0)
+				m_new_image_map[predicted_class].push_back(image);
+		}
+	}
+
+	// Highlight all classes necessary
+	highlight_classes();
+
+	cout << image_files.size() << " new images were added" << endl;
 }
 
 void ImageClassifierWindow::highlight_classes() {

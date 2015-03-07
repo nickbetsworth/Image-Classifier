@@ -21,6 +21,9 @@ enum class BrowseState {
 	CLASSES, CLASS, IMAGE
 };
 
+enum class ProgramTask {
+	POSITIONING, CLASSIFYING, IDLE
+};
 typedef map<Node, Point> NodePositions;
 typedef vector<NodePositioner::Edge> NodeEdges;
 class ImageClassifierWindow : public QMainWindow
@@ -38,7 +41,7 @@ public slots:
 	void imageClicked(Image* image, bool rightClick);
 	void classClicked(ImageClass* root_class);
 	void menuBarClicked(QAction* action);
-	void checkPositionerStatus();
+	void checkStatus();
 protected:
 	void keyPressEvent(QKeyEvent* e);
 	void setState(BrowseState state);
@@ -49,11 +52,14 @@ private:
 	void render_class();
 	NodePositioner* calculate_image_positions();
 
+	void classify_images(QStringList image_files);
 	void highlight_classes();
 
 	vector<ImageClass*>& get_image_classes();
 	const vector<ImageClass*>& get_image_classes() const;
 	ImageClassifier* get_classifier();
+
+	void start_task(ProgramTask task);
 
 	/** @brief	The main user interface. */
 	Ui::ImageClassifierWindowClass ui;
@@ -89,7 +95,10 @@ private:
 	QFuture<NodePositioner*> m_positioner;
 	QTimer* m_status_checker;
 	QLoadingSplashScreen* m_loading_screen;
-	ImageClass* m_class_clicked;
+
+	QFuture<void> m_classifierProcess;
+
+	ProgramTask m_current_task;
 };
 
 #endif // IMAGECLASSIFIERWINDOW_H

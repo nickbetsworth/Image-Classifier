@@ -38,7 +38,7 @@ void QCategoryDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem
 	// Set up the pen for drawing the edges
 	QPen pen = QPen(Qt::PenStyle::SolidLine);
 	pen.setWidth(1);
-	pen.setColor(QColor(240, 240, 240));
+	pen.setColor(QColor(255, 255, 255));
 	pen.setCosmetic(true);
 	painter->setPen(pen);
 	// Draw the main central icon image

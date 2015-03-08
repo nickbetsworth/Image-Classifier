@@ -102,6 +102,8 @@ void QImageLister::add_files(QStringList file_paths) {
 }
 
 bool QImageLister::add_file(QString file_path) {
+	const bool load_icon = false;
+
 	// If the file already exists in the list, don't add it
 	if (m_image_files.contains(file_path)) {
 		return false;
@@ -110,12 +112,18 @@ bool QImageLister::add_file(QString file_path) {
 		m_image_files.push_back(file_path);
 
 		// Load the image's icon
-		QPixmap image = QPixmap(file_path);
-		QPixmap thumbnail = image.scaled(QSize(49, 49), Qt::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
+		if (load_icon) {
+			QPixmap image = QPixmap(file_path);
+			QPixmap thumbnail = image.scaled(QSize(49, 49), Qt::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
 
-		QIcon image_icon = QIcon(thumbnail);
-		// Create a new list item with the icon and file path
-		QListWidgetItem* item = new QListWidgetItem(image_icon, file_path, this);
+			QIcon image_icon = QIcon(thumbnail);
+			// Create a new list item with the icon and file path
+			QListWidgetItem* item = new QListWidgetItem(image_icon, file_path, this);
+		}
+		else {
+			QListWidgetItem* item = new QListWidgetItem(file_path, this);
+		}
+		
 
 		// Let other classes know that the contents of the list has changed
 		emit listChanged();

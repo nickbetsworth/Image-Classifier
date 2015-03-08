@@ -54,6 +54,7 @@ private:
 
 	void classify_images(QStringList image_files);
 	void highlight_classes();
+	void update_class(ImageClass* image_class);
 
 	vector<ImageClass*>& get_image_classes();
 	const vector<ImageClass*>& get_image_classes() const;
@@ -82,6 +83,7 @@ private:
 	QMap<ImageClass*, QCategoryDisplayer*> m_class_to_displayer;
 
 	BrowseState m_state;
+	bool m_image_removed;
 
 	QVector<QImageDisplayer*> m_image_displayers;
 	QMap<Image*, QImageDisplayer*> m_image_to_displayer;
@@ -89,6 +91,8 @@ private:
 	// Stores a map from each class to the list of new images
 	QMap<ImageClass*, QList<Image*>> m_new_image_map;
 
+	// Store the previous positions of the graphics view when the user
+	// was last in these states
 	QPointF m_scene_classes_pos;
 	QPointF m_scene_class_pos;
 

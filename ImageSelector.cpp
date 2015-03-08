@@ -17,6 +17,7 @@ ImageSelector::ImageSelector(QWidget *parent) : QWidget(parent)
 	this->setWindowTitle("Image Selection");
 
 	ui.lstImages->setIconSize(QSize(60, 60));
+	// Set each list item to static, i.e no drag & drop of items
 	ui.lstImages->setViewMode(QListView::ViewMode::ListMode);
 	
 	//ui.lstImages->addAction(deleteAction);

@@ -43,7 +43,6 @@ void QCategoryDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem
 	painter->setPen(pen);
 	// Draw the main central icon image
 	
-
 	// Draw the edges first, and then the neighbours on top of the edges
 	for (QImageDisplayer* neighbour : m_neighbours) {
 		QPoint neighbour_pos = neighbour->pos().toPoint();
@@ -52,7 +51,6 @@ void QCategoryDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem
 		QLine edge = QLine(neighbour_pos, QPoint(0, 0));
 		
 		painter->drawLine(edge);
-		
 	}
 
 	QImageDisplayer::paint(painter, option, widget);
@@ -60,7 +58,6 @@ void QCategoryDisplayer::paint(QPainter* painter, const QStyleOptionGraphicsItem
 
 void QCategoryDisplayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
 	// Check if the mouse click was within the central icon
-	cout << "Here!" << endl;
 	QVector2D mouse_point = QVector2D(event->pos());
 	QVector2D icon_center = QVector2D(QPointF(0, 0));
 	if (mouse_point.distanceToPoint(icon_center) <= (ICON_DIAMETER / 2)) {
@@ -77,6 +74,7 @@ void QCategoryDisplayer::update_images() {
 	for (QImageDisplayer* neighbour : m_neighbours) {
 		delete neighbour;
 	}
+	m_neighbours.clear();
 
 	// Set the central icon (QImageDisplayer::set_image)
 	this->set_image(get_image_class()->get_icon());

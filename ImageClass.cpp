@@ -71,6 +71,7 @@ void ImageClass::calculate_icon() {
 		min.at<float>(i) = numeric_limits<float>::max();
 		max.at<float>(i) = numeric_limits<float>::lowest();
 	}
+
 	for (Image* image : m_images) {
 		Mat hist = image->get_histogram();
 		for (int i = 0; i < dims; i++) {

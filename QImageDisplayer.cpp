@@ -24,7 +24,9 @@ QImageDisplayer::QImageDisplayer(Image* image, int diameter, QGraphicsItem* pare
 
 QImageDisplayer::~QImageDisplayer()
 {
-	delete m_pixmap;
+	if (m_pixmap != 0) {
+		delete m_pixmap;
+	}
 }
 
 QRectF QImageDisplayer::boundingRect() const {

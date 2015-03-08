@@ -254,6 +254,15 @@ void ImageClassifierWindow::checkStatus() {
 	}
 	else if (m_current_task == ProgramTask::CLASSIFYING) {
 		has_finished = m_classifierProcess.isFinished();
+
+		if (has_finished) {
+			// Re-evaluate the icon/neighbours of each class that has received new images
+			for (ImageClass* image_class : m_manager->get_image_classes()) {
+				if (m_new_image_map[image_class].size() > 0) {
+					this->update_class(image_class);
+				}
+			}
+		}
 	}
 	
 	if (has_finished) {
@@ -295,6 +304,7 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 		m_current_class->remove_image(image);
 		// Remove the image from the scene
 		m_scene_class->removeItem(m_image_to_displayer[image]);
+		m_image_removed = true;
 		// Update the scene
 		m_scene_class->update();
 		// If there are no images left in the class, then remove the class
@@ -384,9 +394,16 @@ void ImageClassifierWindow::setState(BrowseState state) {
 	else {
 		// If the new state is the classes scene 
 		if (state == BrowseState::CLASSES) {
+			
+
 			// Remove highlights from all images inside class we were just in
 			// And remove the highlight from the class itself
 			if (m_current_class != 0) {
+				// If any images were removed whilst the user was inside the class
+				if (m_image_removed) {
+					this->update_class(m_current_class);
+				}
+
 				m_new_image_map[m_current_class].clear();
 				m_class_to_displayer[m_current_class]->set_highlighted(false);
 			}
@@ -468,6 +485,11 @@ void ImageClassifierWindow::highlight_classes() {
 	}
 }
 
+void ImageClassifierWindow::update_class(ImageClass* image_class) {
+	image_class->calculate_icon();
+	m_class_to_displayer[image_class]->update_images();
+	cout << "Neighbours being updated for class " << image_class << endl;
+}
 const vector<ImageClass*>& ImageClassifierWindow::get_image_classes() const {
 	return m_manager->get_image_classes();
 }

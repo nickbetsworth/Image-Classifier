@@ -121,7 +121,8 @@ bool QImageLister::add_file(QString file_path) {
 			QListWidgetItem* item = new QListWidgetItem(image_icon, file_path, this);
 		}
 		else {
-			QListWidgetItem* item = new QListWidgetItem(file_path, this);
+			this->addItem(file_path);
+			//QListWidgetItem* item = new QListWidgetItem(file_path, this);
 		}
 		
 

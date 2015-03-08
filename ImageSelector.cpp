@@ -104,7 +104,7 @@ void ImageSelector::addingStarted() {
 
 void ImageSelector::listChanged() {
 	// Update the image counter
-	ui.lblImageCount->setText("Image Count: " + QString::number(ui.lstImages->get_image_files().size()));
+	ui.lblImageCount->setText("Image Count: " + QString::number(ui.lstImages->get_image_count()));
 }
 
 void ImageSelector::addingFinished() {

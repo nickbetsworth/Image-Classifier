@@ -31,6 +31,7 @@ public:
 	 */
 
 	QStringList get_image_files() { return m_image_files; };
+	int get_image_count() { return m_image_files.size(); };
 signals:
 
 	/**

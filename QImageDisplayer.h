@@ -92,5 +92,8 @@ private:
 	bool m_hovering;
 	/** @brief	Stores whether or not this image is being highlighted. */
 	bool m_highlighted;
+
+	/** @brief	Stores the position a user clicked on the image at the last mousePressEvent */
+	QPoint m_pos_clicked;
 };
 

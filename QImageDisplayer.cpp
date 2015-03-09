@@ -2,7 +2,7 @@
 #include "ImageConversion.h"
 #include <QPainter>
 #include <QGraphicsSceneEvent>
-#include <QGraphicsEffect>
+#include <QVector2D>
 
 QImageDisplayer::QImageDisplayer(Image* image, QGraphicsItem* parent) : QImageDisplayer(image, DEFAULT_DIAMETER, parent) {
 
@@ -102,18 +102,22 @@ void QImageDisplayer::set_image(Image* image) {
 }
 
 void QImageDisplayer::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+	m_pos_clicked = event->pos().toPoint();
 	event->accept();
 }
 
 void QImageDisplayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
-	//QGraphicsObject::mouseReleaseEvent(event);
-	bool rightClick = false;
-	if (event->button() == Qt::RightButton)
-		rightClick = true;
+	QVector2D v1 = QVector2D(m_pos_clicked);
+	QVector2D v2 = QVector2D(event->pos());
 
-	emit(imageClicked(m_image, rightClick));
-	cout << "Here?!?!" << endl;
-	//QGraphicsItem::mousePressEvent(event);
+	// Only send out a signal if the mouse was released within the image
+	if (v1.distanceToPoint(v2) < QImageDisplayer::get_diameter() / 2) {
+		bool rightClick = false;
+		if (event->button() == Qt::RightButton)
+			rightClick = true;
+
+		emit(imageClicked(m_image, rightClick));
+	}
 }
 
 void QImageDisplayer::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {

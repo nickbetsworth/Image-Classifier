@@ -22,7 +22,6 @@ public:
 	QLoadingSplashScreen();
 	virtual ~QLoadingSplashScreen();
 protected:
-
 	/**
 	 * @fn	void QLoadingSplashScreen::goto_next_frame();
 	 *
@@ -40,6 +39,10 @@ protected:
 	 */
 
 	virtual void drawContents(QPainter* painter);
+
+	static const int FRAME_WIDTH = 360;
+	static const int FRAME_HEIGHT = 200;
+	
 protected slots:
 
 	/**
@@ -63,5 +66,8 @@ private:
 	/** @brief	In charge of telling the splash screen when  
 	/** to move to the next frame in the animation. */
 	QTimer* m_anim_timer;
+
+	QColor m_background_color;
+	QPoint m_spinner_pos;
 };
 

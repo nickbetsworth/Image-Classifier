@@ -17,6 +17,7 @@ public:
 protected:
 	virtual void wheelEvent(QWheelEvent* e);
 	virtual void mousePressEvent(QMouseEvent* event);
+	virtual void mouseReleaseEvent(QMouseEvent* event);
 private:
 	// Performs any necessary initialization
 	void initialize();

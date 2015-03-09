@@ -1,5 +1,7 @@
 #include "QCategoryView.h"
 #include <QWheelEvent>
+#include <QScrollBar>
+#include <QGraphicsItem>
 #include <iostream>
 QCategoryView::QCategoryView(QWidget* parent) : QGraphicsView(parent) { initialize(); }
 QCategoryView::QCategoryView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent) { initialize(); }
@@ -10,6 +12,8 @@ QCategoryView::~QCategoryView()
 
 // When a user scrolls, zoom in or out of the scene
 void QCategoryView::wheelEvent(QWheelEvent* e) {
+	//this->setTransformationAnchor(QGraphicsView::ViewportAnchor::AnchorUnderMouse);
+	// 
 	const double max_zoom = 1.0;
 	const double min_zoom = 0.2;
 	// How quickly the scale will change with respect to mouse scroling
@@ -44,9 +48,33 @@ void QCategoryView::wheelEvent(QWheelEvent* e) {
 }
 
 void QCategoryView::mousePressEvent(QMouseEvent* event) {
+	// If the user is pressing ctrl, remove interactivity from the scene
+	// so that they can not click on a cluster/image
+	if (event->modifiers().testFlag(Qt::KeyboardModifier::ControlModifier))
+		this->setInteractive(false);
+
 	QGraphicsView::mousePressEvent(event);
 }
 
+void QCategoryView::mouseReleaseEvent(QMouseEvent* event) {
+	QGraphicsView::mouseReleaseEvent(event);
+
+	// Restore interactivity to the scene
+	if (!this->isInteractive())
+		this->setInteractive(true);
+}
+
 void QCategoryView::initialize() {
-	//scale(1.0, 1.0);
+	// Set it so that we can drag through the scene with the mouse
+	this->setDragMode(QGraphicsView::DragMode::ScrollHandDrag);
+	this->setInteractive(true);
+
+	// Remove the scroll bars as they are no longer needed due to the hand drag option
+	this->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+	this->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+	this->setCacheMode(QGraphicsView::CacheBackground);
+	// Set the background colour of the view
+	QBrush b = QBrush(QColor(15, 15, 15));
+	this->setBackgroundBrush(b);
+	
 }

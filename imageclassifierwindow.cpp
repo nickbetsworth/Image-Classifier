@@ -49,16 +49,6 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidge
 	
 	setup_classes();
 
-	// Set it so that we can drag through the scene with the mouse
-	ui.view->setDragMode(QGraphicsView::DragMode::ScrollHandDrag);
-	// Remove the scroll bars as they are no longer needed due to the hand drag option
-	ui.view->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-	ui.view->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-	ui.view->setCacheMode(QGraphicsView::CacheBackground);
-	// Set the background colour of the view
-	QBrush b = QBrush(QColor(15, 15, 15));
-	ui.view->setBackgroundBrush(b);
-
 	ui.view->show();
 }
 

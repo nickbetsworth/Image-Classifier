@@ -3,6 +3,6 @@
     </qresource>
 	<qresource>
 		<file alias="splash.png">Resources/b3.png</file>
-		<file alias="splash.gif">Resources/b4.gif</file>
+		<file alias="splash.gif">Resources/spinner.gif</file>
 	</qresource>
 </RCC>

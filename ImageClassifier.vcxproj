@@ -154,6 +154,7 @@
     <ClCompile Include="ImageClusterer.cpp" />
     <ClCompile Include="ImageConversion.cpp" />
     <ClCompile Include="ImageSelector.cpp" />
+    <ClCompile Include="ImageTest.cpp" />
     <ClCompile Include="LoadingScreen.cpp" />
     <ClCompile Include="NodePositioner.cpp" />
     <ClCompile Include="NodeProperties.cpp" />
@@ -340,6 +341,9 @@
   <ItemGroup>
     <Image Include="Resources\b3.png" />
     <Image Include="Resources\b4.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ImageTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

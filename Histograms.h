@@ -4,6 +4,6 @@
 #include "Image.h"
 
 // Calculates a histogram with the given number of bins, from the matrix provided.
-Mat get_1d_histogram(Mat image_data, int bins);
+cv::Mat get_1d_histogram(cv::Mat image_data, int bins);
 // Compares two histograms via EMD.
-float compare_histograms(Mat hist1, Mat hist2);
+float compare_histograms(cv::Mat hist1, cv::Mat hist2);

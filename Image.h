@@ -3,9 +3,6 @@
 #include <string>
 #include <opencv\cv.h>
 
-using namespace std;
-using namespace cv;
-
 /**
  * @class	Image
  *
@@ -34,7 +31,7 @@ public:
 	 * @param	filepath	filepath of the image to be loaded in.
 	 */
 
-	Image(const string &filepath);
+	Image(const std::string &filepath);
 	~Image();
 
 	/**
@@ -55,7 +52,7 @@ public:
 	 * @return	The filepath from which this image was loaded.
 	 */
 
-	string get_filepath() const { return m_filepath; };
+	std::string get_filepath() const { return m_filepath; };
 
 	/**
 	 * @fn	Mat Image::get_image_data() const
@@ -65,7 +62,7 @@ public:
 	 * @return	A matrix containing image data.
 	 */
 
-	Mat get_image_data() const { return m_image_data; };
+	cv::Mat get_image_data() const { return m_image_data; };
 
 	/**
 	 * @fn	Mat Image::get_histogram() const
@@ -75,16 +72,23 @@ public:
 	 * @return	The histogram.
 	 */
 
-	//Mat get_histogram() const { return m_histogram; };
-	// Returns a full resolution image
-	Mat get_fullres_image() const;
-private:
-	void generate_thumbnail();
+	/**
+	 * @fn	cv::Mat Image::get_fullres_image() const;
+	 *
+	 * @brief	Returns a full resolution image.
+	 *
+	 * @return	The full resolution image.
+	 */
 
+	cv::Mat get_fullres_image() const;
+private:
+	void calculate_SIFT();
+	void generate_thumbnail();
+	
 	/** @brief	Stores the filepath this image belongs to */
-	string m_filepath;
+	std::string m_filepath;
 	/** @brief	Stores the image thumbnail data */
-	Mat m_image_data;
+	cv::Mat m_image_data;
 	//Mat m_histogram;
 };
 

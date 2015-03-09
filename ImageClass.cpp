@@ -4,7 +4,7 @@
 ImageClass::ImageClass()
 {
 	// Initialise the property sheet histogram before adding to 
-	Mat hist = Mat::zeros(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
+	cv::Mat hist = cv::Mat::zeros(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
 	this->set_histogram(hist);
 	this->add_flag(Property::Histogram);
 	m_icon = 0;
@@ -58,10 +58,10 @@ void ImageClass::remove_image(Image* image) {
 void ImageClass::calculate_icon() {
 	int dims = Image::HIST_BINS * Image::NUM_CHANNELS;
 	// Find min and max out of all images, for each dimension
-	Mat min = Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
-	Mat max = Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
+	cv::Mat min = cv::Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
+	cv::Mat max = cv::Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
 	// Holds the center point of each dimension
-	Mat centers = Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
+	cv::Mat centers = cv::Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
 
 	Image* center_image = 0;
 	float closest_distance = numeric_limits<float>::max();
@@ -73,7 +73,7 @@ void ImageClass::calculate_icon() {
 	}
 
 	for (Image* image : m_images) {
-		Mat hist = image->get_histogram();
+		cv::Mat hist = image->get_histogram();
 		for (int i = 0; i < dims; i++) {
 			float val = hist.at<float>(i);
 
@@ -95,7 +95,7 @@ void ImageClass::calculate_icon() {
 	// For each image, calculate the distance to the center point
 	// And determine if it is the closest image to the center point
 	for (Image* image : m_images) {
-		Mat hist = image->get_histogram();
+		cv::Mat hist = image->get_histogram();
 		float distance = center_node->calculate_distance(image);
 
 		//cout << "Distance: " << distance << endl;

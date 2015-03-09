@@ -12,7 +12,7 @@ public:
 	virtual void cluster_images();
 
 private:
-	EM* m_em;
+	cv::EM* m_em;
 	int m_n_clusters;
 };
 

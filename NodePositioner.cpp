@@ -13,7 +13,7 @@ NodePositioner::~NodePositioner()
 {
 }
 
-map<Node, Point> NodePositioner::get_node_positions_tree(Node root_node, double node_width, double node_height) {
+map<Node, cv::Point> NodePositioner::get_node_positions_tree(Node root_node, double node_width, double node_height) {
 	auto spanning_tree = m_graph->get_minimum_spanning_tree(root_node);
 
 	// Store the spanning tree as a list of edges, for later use
@@ -72,7 +72,7 @@ map<Node, Point> NodePositioner::get_node_positions_tree(Node root_node, double 
 	return pos_map;
 }
 
-map<Node, Point> NodePositioner::get_node_positions_fmmm(double node_width, double node_height) {
+map<Node, cv::Point> NodePositioner::get_node_positions_fmmm(double node_width, double node_height) {
 	map<Node, cv::Point> pos_map;
 
 	// Create the graph and graph attributes

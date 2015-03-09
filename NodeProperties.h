@@ -1,7 +1,6 @@
 #pragma once
 #include <opencv\cv.h>
 #include <iostream>
-using namespace cv;
 
 enum Property {
 	Histogram = 1,
@@ -21,11 +20,11 @@ class NodeProperties
 {
 	
 public:
-	void set_histogram(Mat hist);
+	void set_histogram(cv::Mat hist);
 
-	Mat get_histogram() const;
+	cv::Mat get_histogram() const;
 
-	Mat get_feature_vector() const;
+	cv::Mat get_feature_vector() const;
 	//int get_feature_length(Property flags);
 
 	float calculate_distance_histogram(NodeProperties* node2) const;
@@ -39,6 +38,6 @@ protected:
 private:
 	/** @brief	Stores the properties that this node holds. */
 	Property m_properties = static_cast<Property>(0);
-	Mat m_histogram;
+	cv::Mat m_histogram;
 };
 

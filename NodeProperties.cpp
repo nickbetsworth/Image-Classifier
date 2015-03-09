@@ -1,7 +1,7 @@
 #include "NodeProperties.h"
 #include "Histograms.h"
 
-void NodeProperties::set_histogram(Mat hist) {
+void NodeProperties::set_histogram(cv::Mat hist) {
 	// If this is not an empty histogram, set the histogram flag to true
 	// Otherwise set the histogram flag to false
 	if (!hist.empty())
@@ -12,17 +12,17 @@ void NodeProperties::set_histogram(Mat hist) {
 	m_histogram = hist;
 }
 
-Mat NodeProperties::get_histogram() const {
+cv::Mat NodeProperties::get_histogram() const {
 	if (has_flag(Property::Histogram)) {
 		return m_histogram;
 	}
 	else {
-		cout << "Error: attempted to retrieve histogram from NodeProperties whilst histogram flag is disabled" << endl;
-		return Mat();
+		std::cout << "Error: attempted to retrieve histogram from NodeProperties whilst histogram flag is disabled" << std::endl;
+		return cv::Mat();
 	}
 }
 
-Mat NodeProperties::get_feature_vector() const {
+cv::Mat NodeProperties::get_feature_vector() const {
 	return get_histogram();
 }
 

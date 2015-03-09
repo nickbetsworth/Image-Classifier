@@ -1,6 +1,6 @@
 #include "Histograms.h"
 
-Mat get_1d_histogram(Mat image_data, int bins = 8) {
+cv::Mat get_1d_histogram(cv::Mat image_data, int bins = 8) {
 	const int dims = 1;
 	const int sizes[] = { bins, bins, bins };
 	const int num_channels = 3;
@@ -9,10 +9,10 @@ Mat get_1d_histogram(Mat image_data, int bins = 8) {
 	float gRange[] = { 0, 256 };
 	float bRange[] = { 0, 256 };
 	const float *ranges[] = { rRange, gRange, bRange };
-	Mat mask = Mat();
+	cv::Mat mask = cv::Mat();
 
-	Mat hist = Mat(0, 1, CV_32F);
-	Mat temp;
+	cv::Mat hist = cv::Mat(0, 1, CV_32F);
+	cv::Mat temp;
 	for (int c = 0; c < num_channels; c++) {
 		// Calculate the histogram for the current color channel
 		calcHist(&image_data, 1, &channels[c], mask, temp, dims, &sizes[c], &ranges[c], true, false);
@@ -21,17 +21,17 @@ Mat get_1d_histogram(Mat image_data, int bins = 8) {
 		//cout << hist;
 	}
 
-	normalize(hist, hist, 1.0, 0.0, NORM_L1);
+	normalize(hist, hist, 1.0, 0.0, cv::NORM_L1);
 	return hist;
 }
 
-float compare_histograms(Mat hist1, Mat hist2) {
+float compare_histograms(cv::Mat hist1, cv::Mat hist2) {
 	// Make a copy of the histograms as we will be adding columns
-	Mat hist1copy = hist1.clone();
-	Mat hist2copy = hist2.clone();
+	cv::Mat hist1copy = hist1.clone();
+	cv::Mat hist2copy = hist2.clone();
 
 	// Append an index of the corresponding row of each histogram bin, for EMD
-	Mat emd_cols = Mat::zeros(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
+	cv::Mat emd_cols = cv::Mat::zeros(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
 	for (int i = 0; i < Image::HIST_BINS * Image::NUM_CHANNELS; i++) {
 		emd_cols.at<float>(i, 0) = i + 1;
 	}

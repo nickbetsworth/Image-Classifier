@@ -44,7 +44,7 @@ enum class ProgramTask {
 	POSITIONING, CLASSIFYING, IDLE
 };
 
-typedef map<Node, Point> NodePositions;
+typedef map<Node, cv::Point> NodePositions;
 typedef vector<NodePositioner::Edge> NodeEdges;
 
 /**

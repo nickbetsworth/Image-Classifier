@@ -95,11 +95,11 @@ void ImageClassifierWindow::setup_classes() {
 	// We add some padding to the total radius, so it doesn't come so close to
 	// other categories
 	int category_radius = QCategoryDisplayer::get_total_diameter() + 200;
-	map<NodeProperties*, Point> positions = positioner->get_node_positions_fmmm(category_radius, category_radius);
+	map<NodeProperties*, cv::Point> positions = positioner->get_node_positions_fmmm(category_radius, category_radius);
 
 	// Position each category and category wheel
 	for (QCategoryDisplayer* cluster : m_clusters) {
-		Point cv_pos = positions[cluster->get_image_class()];
+		cv::Point cv_pos = positions[cluster->get_image_class()];
 		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
 		cluster->setPos(pos);
 	}
@@ -150,7 +150,7 @@ void ImageClassifierWindow::render_class() {
 
 	for (QImageDisplayer* displayer : m_image_displayers) {
 		// Obtain the position for this image
-		Point cv_pos = positions[displayer->get_image()];
+		cv::Point cv_pos = positions[displayer->get_image()];
 		// Convert the Point we have been given to a Qt friendly Point
 		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
 		// Set the position of the image to the given point

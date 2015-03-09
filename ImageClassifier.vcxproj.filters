@@ -161,6 +161,9 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_QLoadingSplashScreen.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="ImageTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Histograms.h">
@@ -306,5 +309,10 @@
     <Image Include="Resources\b4.gif">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ImageTest.h">
+      <Filter>Header Files\Tests</Filter>
+    </None>
   </ItemGroup>
 </Project>

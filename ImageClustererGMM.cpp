@@ -4,7 +4,7 @@
 
 ImageClustererGMM::ImageClustererGMM(vector<Image*> images, int n_clusters) : ImageClusterer(images)
 {
-	m_em = new EM(n_clusters);
+	m_em = new cv::EM(n_clusters);
 	m_n_clusters = n_clusters;
 }
 
@@ -19,11 +19,11 @@ void ImageClustererGMM::cluster_images() {
 	int current_row = 0;
 	const int bins = Image::HIST_BINS;
 	const int channels = Image::NUM_CHANNELS;
-	Mat samples = Mat::zeros(img_count, bins * channels, CV_32F);
+	cv::Mat samples = cv::Mat::zeros(img_count, bins * channels, CV_32F);
 
 	for (Image* image : this->get_images()) {
-		Mat hist = image->get_histogram();
-		Mat hist_t = hist.t();
+		cv::Mat hist = image->get_histogram();
+		cv::Mat hist_t = hist.t();
 		//cout << hist_t << endl;
 		// Copy this row to the current_rowTH row of the samples matrix
 		hist_t.copyTo(samples.row(current_row));
@@ -36,9 +36,9 @@ void ImageClustererGMM::cluster_images() {
 		}*/
 	}
 	
-	Mat likelihoods;
-	Mat labels;
-	Mat probs;
+	cv::Mat likelihoods;
+	cv::Mat labels;
+	cv::Mat probs;
 
 	m_em->train(samples, likelihoods, labels, probs);
 	

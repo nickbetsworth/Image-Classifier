@@ -266,35 +266,33 @@ void ImageClassifierWindow::checkStatus() {
 	}
 }
 
-NodePositioner* ImageClassifierWindow::calculate_image_positions() {
+NodePositioner* ImageClassifierWindow::calculate_image_positions(ImageClass* image_class) {
 	// Update the splash screen to say what we are doing
 	emit updateStatus("Positioning Nodes");
 	
-	NodePositioner* positioner = new NodePositioner(m_current_class->get_graph());
+	NodePositioner* positioner = new NodePositioner(image_class->get_graph());
 	// Get the positions and edges, and make a copy of them
-	NodePositions positions = NodePositions(positioner->get_node_positions_tree(m_current_class->get_icon(), 100, 100));
+	NodePositions positions = NodePositions(positioner->get_node_positions_tree(image_class->get_icon(), 100, 100));
 	NodeEdges edges = NodeEdges(positioner->get_edges());
-
-	// Let the splash screen know we have finished loading
-	emit finished();
 
 	return positioner;
 }
 
 void ImageClassifierWindow::classClicked(ImageClass* class_clicked) {
 	m_current_class = class_clicked;
-	m_positioner = QtConcurrent::run(this, &ImageClassifierWindow::calculate_image_positions);
+	m_positioner = QtConcurrent::run(this, &ImageClassifierWindow::calculate_image_positions, class_clicked);
 	start_task(ProgramTask::POSITIONING);
 }
 
 
 void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 	if (rightClick) {
+		m_image_removed = true;
 		// Remove this image from the category
 		m_current_class->remove_image(image);
 		// Remove the image from the scene
 		m_scene_class->removeItem(m_image_to_displayer[image]);
-		m_image_removed = true;
+		
 		// Update the scene
 		m_scene_class->update();
 		// If there are no images left in the class, then remove the class
@@ -313,7 +311,6 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 		else if (image == m_current_class->get_icon()) {
 			// Re-calculate this classes icon
 			m_current_class->calculate_icon();
-			
 		}
 	}
 	else {
@@ -384,8 +381,6 @@ void ImageClassifierWindow::setState(BrowseState state) {
 	else {
 		// If the new state is the classes scene 
 		if (state == BrowseState::CLASSES) {
-			
-
 			// Remove highlights from all images inside class we were just in
 			// And remove the highlight from the class itself
 			if (m_current_class != 0) {
@@ -394,9 +389,11 @@ void ImageClassifierWindow::setState(BrowseState state) {
 					this->update_class(m_current_class);
 				}
 
-				m_new_image_map[m_current_class].clear();
-				m_class_to_displayer[m_current_class]->set_highlighted(false);
+				remove_highlight(m_current_class);
 			}
+
+			// Reset the flag
+			m_image_removed = false;
 
 			ui.view->setSceneRect(QRectF());
 			new_scene = m_scene_classes;
@@ -406,7 +403,6 @@ void ImageClassifierWindow::setState(BrowseState state) {
 		else if (state == BrowseState::CLASS) {
 			new_scene = m_scene_class;
 			new_position = m_scene_class_pos;
-			cout << "Setting to position " << new_position.x() << ", " << new_position.y() << endl;
 		}
 	}
 	
@@ -475,10 +471,16 @@ void ImageClassifierWindow::highlight_classes() {
 	}
 }
 
+void ImageClassifierWindow::remove_highlight(ImageClass* image_class) {
+	m_new_image_map[m_current_class].clear();
+	m_class_to_displayer[m_current_class]->set_highlighted(false);
+}
+
 void ImageClassifierWindow::update_class(ImageClass* image_class) {
-	image_class->calculate_icon();
-	m_class_to_displayer[image_class]->update_images();
-	cout << "Neighbours being updated for class " << image_class << endl;
+	if (image_class->get_image_count() > 0) {
+		image_class->calculate_icon();
+		m_class_to_displayer[image_class]->update_images();
+	}
 }
 const vector<ImageClass*>& ImageClassifierWindow::get_image_classes() const {
 	return m_manager->get_image_classes();

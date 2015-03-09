@@ -61,6 +61,7 @@ public:
 	 */
 
 	vector<Image*>& get_images() { return m_images; };
+	int get_image_count() { return m_images.size(); };
 
 	NodePropertiesGraph* get_graph() { return m_graph; };
 	

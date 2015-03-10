@@ -452,14 +452,19 @@ void ImageClassifierWindow::classify_images(QStringList image_files) {
 	updateStatus("Adding new images");
 
 	for (QString image_file : image_files) {
-		// Load in the image
-		Image* image = new Image(image_file.toStdString());
+		// Ensure that this is a valid image file
+		if (image_file.endsWith(".jpg", Qt::CaseInsensitive) ||
+			image_file.endsWith(".png", Qt::CaseInsensitive) ||
+			image_file.endsWith(".gif", Qt::CaseInsensitive)) {
+			// Load in the image
+			Image* image = new Image(image_file.toStdString());
 
-		// Check that the image has successfully loaded
-		if (image->has_loaded()) {
-			ImageClass* predicted_class = m_manager->classify_image(image);
-			if (predicted_class != 0)
-				m_new_image_map[predicted_class].push_back(image);
+			// Check that the image has successfully loaded
+			if (image->has_loaded()) {
+				ImageClass* predicted_class = m_manager->classify_image(image);
+				if (predicted_class != 0)
+					m_new_image_map[predicted_class].push_back(image);
+			}
 		}
 	}
 

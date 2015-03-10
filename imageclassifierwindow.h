@@ -113,6 +113,17 @@ public slots:
 	 */
 
 	void checkStatus();
+
+	/**
+	 * @fn	void ImageClassifierWindow::addImages(QStringList& image_files);
+	 *
+	 * @brief	Called when we are given a list of file paths to be classified (via drag &amp; drop
+	 * 			or file -> add new images)
+	 *
+	 * @param [in,out]	image_files	The files to be classified.
+	 */
+
+	void addImages(const QStringList& image_files);
 protected:
 
 	/**

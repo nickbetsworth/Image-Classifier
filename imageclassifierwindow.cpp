@@ -35,9 +35,10 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidge
 
 	// Set up the event handler for the menu bar being clicked
 	connect(menuBar(), SIGNAL(triggered(QAction*)), this, SLOT(menuBarClicked(QAction*)));
-	// Set up the event handler for the node positioner status checker
+	// Set up the event handler for the status checker
 	connect(m_status_checker, SIGNAL(timeout()), this, SLOT(checkStatus()));
-
+	// Set up the event hander for when a user drag & drops files to be classified
+	std::cout << "filesDropped->addImages connection status: " << connect(ui.view, SIGNAL(filesDropped(const QStringList&)), this, SLOT(addImages(const QStringList&))) << std::endl;
 
 	m_scene_classes = new QGraphicsScene(this);
 	m_scene_class = new QGraphicsScene(this);
@@ -434,12 +435,17 @@ void ImageClassifierWindow::menuBarClicked(QAction* action) {
 	if (action == ui.actionAddImage) {
 		// Query the user for the images they wish to add 
 		QStringList image_files = QFileDialog::getOpenFileNames(this, "Select images to add", "", "Images (*.png *.jpg *.gif)");
-		m_classifierProcess = QtConcurrent::run(this, &ImageClassifierWindow::classify_images, image_files);
-		start_task(ProgramTask::CLASSIFYING);
+		this->addImages(image_files);
 	}
 	else if (action == ui.actionTrainClassifier) {
 		m_manager->train_classifier();
 	}
+}
+
+void ImageClassifierWindow::addImages(const QStringList& image_files) {
+	std::cout << "Signal received" << std::endl;
+	m_classifierProcess = QtConcurrent::run(this, &ImageClassifierWindow::classify_images, image_files);
+	start_task(ProgramTask::CLASSIFYING);
 }
 
 void ImageClassifierWindow::classify_images(QStringList image_files) {

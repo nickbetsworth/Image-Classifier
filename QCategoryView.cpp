@@ -1,10 +1,33 @@
 #include "QCategoryView.h"
 #include <QWheelEvent>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QMimeData>
+#include <QtConcurrent/QtConcurrentRun>
 #include <QScrollBar>
 #include <QGraphicsItem>
+
 #include <iostream>
 QCategoryView::QCategoryView(QWidget* parent) : QGraphicsView(parent) { initialize(); }
 QCategoryView::QCategoryView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent) { initialize(); }
+
+void QCategoryView::initialize() {
+	// Set it so that we can drag through the scene with the mouse
+	this->setDragMode(QGraphicsView::DragMode::ScrollHandDrag);
+	this->setInteractive(true);
+
+	this->setAcceptDrops(true);
+
+	// Remove the scroll bars as they are no longer needed due to the hand drag option
+	this->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+	this->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
+	this->setCacheMode(QGraphicsView::CacheBackground);
+	// Set the background colour of the view
+	QBrush b = QBrush(QColor(15, 15, 15));
+	this->setBackgroundBrush(b);
+
+}
 
 QCategoryView::~QCategoryView()
 {
@@ -64,17 +87,36 @@ void QCategoryView::mouseReleaseEvent(QMouseEvent* event) {
 		this->setInteractive(true);
 }
 
-void QCategoryView::initialize() {
-	// Set it so that we can drag through the scene with the mouse
-	this->setDragMode(QGraphicsView::DragMode::ScrollHandDrag);
-	this->setInteractive(true);
+void QCategoryView::dragEnterEvent(QDragEnterEvent *e) {
+	if (e->mimeData()->hasFormat("text/uri-list")) {
+		e->acceptProposedAction();
 
-	// Remove the scroll bars as they are no longer needed due to the hand drag option
-	this->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-	this->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAlwaysOff);
-	this->setCacheMode(QGraphicsView::CacheBackground);
-	// Set the background colour of the view
-	QBrush b = QBrush(QColor(15, 15, 15));
-	this->setBackgroundBrush(b);
-	
+		std::cout << "User attempting to drag acceptable data" << std::endl;
+	}
+	else {
+		std::cout << "User attempting to drag incorrect data type" << std::endl;
+	}
+
+}
+
+void QCategoryView::dragMoveEvent(QDragMoveEvent *e) {
+	if (e->mimeData()->hasFormat("text/uri-list")) {
+		e->acceptProposedAction();
+	}
+}
+
+void QCategoryView::dropEvent(QDropEvent *e) {
+	if (e->mimeData()->hasUrls()) {
+		QList<QUrl> urls = e->mimeData()->urls();
+		QStringList file_paths;
+
+		for (QUrl url : urls) {
+			file_paths.push_back(url.toLocalFile());
+		}
+
+		std::cout << "Signal sent" << std::endl;
+		emit(filesDropped(file_paths));
+
+		e->acceptProposedAction();
+	}
 }

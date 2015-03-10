@@ -10,6 +10,9 @@
 
 class QCategoryView : public QGraphicsView
 {
+	Q_OBJECT
+signals:
+	void filesDropped(const QStringList& files);
 public:
 	QCategoryView(QWidget* parent = 0);
 	QCategoryView(QGraphicsScene* scene, QWidget* parent = 0);
@@ -18,6 +21,9 @@ protected:
 	virtual void wheelEvent(QWheelEvent* e);
 	virtual void mousePressEvent(QMouseEvent* event);
 	virtual void mouseReleaseEvent(QMouseEvent* event);
+	virtual void dragEnterEvent(QDragEnterEvent *e);
+	virtual void dragMoveEvent(QDragMoveEvent *e);
+	virtual void dropEvent(QDropEvent *e);
 private:
 	// Performs any necessary initialization
 	void initialize();

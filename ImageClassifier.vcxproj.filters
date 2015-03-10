@@ -164,6 +164,9 @@
     <ClCompile Include="ImageTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Histograms.h">
@@ -180,9 +183,6 @@
     </ClInclude>
     <ClInclude Include="ImageClassifierRF.h">
       <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="QCategoryView.h">
-      <Filter>Header Files\Interface</Filter>
     </ClInclude>
     <ClInclude Include="NodePositioner.h">
       <Filter>Header Files\Library</Filter>
@@ -294,6 +294,9 @@
       <Filter>Header Files\Interface</Filter>
     </CustomBuild>
     <CustomBuild Include="QLoadingSplashScreen.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="QCategoryView.h">
       <Filter>Header Files\Interface</Filter>
     </CustomBuild>
   </ItemGroup>

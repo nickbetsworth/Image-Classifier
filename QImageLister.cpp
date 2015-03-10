@@ -16,10 +16,11 @@ QImageLister::QImageLister(QWidget *parent) : QListWidget(parent)
 	setAcceptDrops(true);
 
 	this->setContextMenuPolicy(Qt::ContextMenuPolicy::DefaultContextMenu);
-	// Create the context menu
+
+	// Create the context menu for when a user wishes to remove a file from the list
 	m_delete_menu = new QMenu(this);
 	QStyle* style = QApplication::style();
-	m_delete_action = new QAction(style->standardIcon(QStyle::StandardPixmap::SP_TrashIcon), "Delete", this);
+	m_delete_action = new QAction(style->standardIcon(QStyle::StandardPixmap::SP_TrashIcon), "Remove", this);
 	m_delete_menu->addAction(m_delete_action);
 
 	// Connect up the delete pressed

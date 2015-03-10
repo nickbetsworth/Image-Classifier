@@ -2,5 +2,5 @@
 #include "Image.h"
 
 void test_image() {
-	Image* i = new Image("C:\\imgs\\test.jpg");
+	Image* i = new Image("C:\\data\\ProjectImages\\Test\\192443058.png");
 }

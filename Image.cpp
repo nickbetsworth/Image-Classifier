@@ -34,14 +34,17 @@ cv::Mat Image::get_fullres_image() const {
 }
 
 void Image::calculate_SIFT() {
-	cv::SiftFeatureDetector detector;
+	cv::SiftFeatureDetector detector = cv::SiftFeatureDetector(32);
 	std::vector<cv::KeyPoint> key_points;
+	cv::Mat descriptors;
+	
 	detector.detect(m_image_data, key_points);
+	detector.compute(m_image_data, key_points, descriptors);
 
 	cv::Mat output;
 	cv::drawKeypoints(m_image_data, key_points, output);
-	cv::imwrite("C:\\Users\\Nick\\Pictures\\img.jpg", output);
-	std::cout << "Written!" << std::endl;
+	cv::imwrite("C:\\data\\ProjectImages\\Test\\192443058New.png", output);
+	std::cout << "Descriptors: " << descriptors << std::endl;
 }
 
 void Image::generate_thumbnail() {

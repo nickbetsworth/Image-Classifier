@@ -167,6 +167,12 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryView.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="ImageClustererKMeans.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="SiftTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Histograms.h">
@@ -228,6 +234,12 @@
     </ClInclude>
     <ClInclude Include="ClassifierManager.h">
       <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageClustererKMeans.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="SiftTest.h">
+      <Filter>Header Files\Tests</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

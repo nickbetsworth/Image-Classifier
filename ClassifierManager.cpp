@@ -1,5 +1,5 @@
 #include "ClassifierManager.h"
-
+#include "ImageClustererKMeans.h"
 ClassifierManager::ClassifierManager()
 {
 	m_classifier = new ImageClassifierRF();
@@ -42,7 +42,7 @@ void ClassifierManager::cluster_images(int n_clusters) {
 	}
 
 	cout << "Using GMM with " << n_clusters << " clusters." << endl;
-	ImageClusterer* clusterer = new ImageClustererGMM(m_images, n_clusters);
+	ImageClusterer* clusterer = new ImageClustererKMeans(m_images, n_clusters);
 	clusterer->cluster_images();
 	m_image_classes = clusterer->get_clusters();
 }

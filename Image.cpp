@@ -1,6 +1,7 @@
 #include "Image.h"
 #include <opencv\highgui.h>
 #include <opencv2\nonfree\features2d.hpp>
+#include <opencv2\nonfree\nonfree.hpp>
 #include "Histograms.h"
 
 Image::Image(const std::string &filepath)
@@ -14,10 +15,13 @@ Image::Image(const std::string &filepath)
 	
 	m_image_data = cv::imread(filepath);
 
-	//calculate_SIFT();
 	// Do our histogram calculation before resizing
-	this->set_histogram(get_1d_histogram(m_image_data, HIST_BINS));
-	this->add_flag(Property::Histogram);
+	this->set_histogram(calculate_histogram(m_image_data));
+	std::vector<cv::KeyPoint> key_points = calculate_key_points(m_image_data);
+	cv::Mat descriptors = calculate_descriptors(m_image_data, key_points);
+
+	this->set_keypoint_descriptors(key_points, descriptors);
+
 	// Resize our image to a thumbnail size
 	generate_thumbnail();
 }
@@ -33,18 +37,27 @@ cv::Mat Image::get_fullres_image() const {
 	return fullres_image;
 }
 
-void Image::calculate_SIFT() {
-	cv::SiftFeatureDetector detector = cv::SiftFeatureDetector(32);
-	std::vector<cv::KeyPoint> key_points;
-	cv::Mat descriptors;
-	
-	detector.detect(m_image_data, key_points);
-	detector.compute(m_image_data, key_points, descriptors);
+cv::Mat Image::calculate_histogram(cv::Mat image_data) {
+	return get_1d_histogram(image_data, HIST_BINS);
+}
 
-	cv::Mat output;
-	cv::drawKeypoints(m_image_data, key_points, output);
-	cv::imwrite("C:\\data\\ProjectImages\\Test\\192443058New.png", output);
-	std::cout << "Descriptors: " << descriptors << std::endl;
+std::vector<cv::KeyPoint> Image::calculate_key_points(cv::Mat image_data) {
+	cv::Ptr<cv::FeatureDetector> detector = get_detector();
+	std::vector<cv::KeyPoint> key_points;
+	detector->detect(image_data, key_points);
+
+	return key_points;
+}
+
+cv::Mat Image::calculate_descriptors(cv::Mat image_data, std::vector<cv::KeyPoint>& key_points) {
+	cv::Ptr<cv::DescriptorExtractor> extractor = get_extractor();
+
+	cv::Mat descriptors;
+
+	std::cout << "Key points size: " << key_points.size() << std::endl;
+	extractor->compute(image_data, key_points, descriptors);
+
+	return descriptors;
 }
 
 void Image::generate_thumbnail() {
@@ -74,3 +87,30 @@ void Image::generate_thumbnail() {
 
 	resize(m_image_data, m_image_data, cv::Size(THUMB_WIDTH, THUMB_HEIGHT));
 }
+
+cv::Ptr<cv::FeatureDetector> Image::get_detector() {
+	if (detector == 0) {
+		cv::initModule_nonfree();
+		detector = cv::FeatureDetector::create("SURF");
+	}
+
+	return detector;
+}
+cv::Ptr<cv::DescriptorExtractor> Image::get_extractor() {
+	if (extractor == 0) {
+		cv::initModule_nonfree();
+		extractor = cv::DescriptorExtractor::create("SURF");
+	}
+
+	return extractor;
+}
+cv::Ptr<cv::DescriptorMatcher> Image::get_matcher() {
+	if (matcher == 0)
+		matcher = cv::DescriptorMatcher::create("FlannBased");
+
+	return matcher;
+}
+
+cv::Ptr<cv::FeatureDetector> Image::detector = 0;
+cv::Ptr<cv::DescriptorExtractor> Image::extractor = 0;
+cv::Ptr<cv::DescriptorMatcher> Image::matcher = 0;

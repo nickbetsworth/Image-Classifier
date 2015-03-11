@@ -1,6 +1,6 @@
 #include "Histograms.h"
 
-cv::Mat get_1d_histogram(cv::Mat image_data, int bins = 8) {
+cv::Mat get_1d_histogram(cv::Mat image_data, int bins) {
 	const int dims = 1;
 	const int sizes[] = { bins, bins, bins };
 	const int num_channels = 3;

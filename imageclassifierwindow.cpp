@@ -483,8 +483,8 @@ void ImageClassifierWindow::highlight_classes() {
 }
 
 void ImageClassifierWindow::remove_highlight(ImageClass* image_class) {
-	m_new_image_map[m_current_class].clear();
-	m_class_to_displayer[m_current_class]->set_highlighted(false);
+	m_new_image_map[image_class].clear();
+	m_class_to_displayer[image_class]->set_highlighted(false);
 }
 
 void ImageClassifierWindow::update_class(ImageClass* image_class) {

@@ -22,6 +22,37 @@ cv::Mat NodeProperties::get_histogram() const {
 	}
 }
 
+void NodeProperties::set_keypoint_descriptors(std::vector<cv::KeyPoint> key_points, cv::Mat descriptors) {
+	if (key_points.size() > 0 && !descriptors.empty())
+		add_flag(Property::SIFT);
+	else
+		remove_flag(Property::SIFT);
+
+	m_key_points = key_points;
+	m_descriptors = descriptors;
+}
+
+cv::Mat NodeProperties::get_descriptors() const {
+	if (has_flag(Property::SIFT)) {
+		return m_descriptors;
+	}
+	else {
+		std::cout << "Error: attempted to retrieve descriptors from NodeProperties whilst SIFT flag is disabled" << std::endl;
+		return cv::Mat();
+	}
+}
+
+std::vector<cv::KeyPoint> NodeProperties::get_key_points() const {
+	if (has_flag(Property::SIFT)) {
+		return m_key_points;
+	}
+	else {
+		std::cout << "Error: attempted to retrieve key points from NodeProperties whilst SIFT flag is disabled" << std::endl;
+		return std::vector<cv::KeyPoint>();
+	}
+}
+
+
 cv::Mat NodeProperties::get_feature_vector() const {
 	return get_histogram();
 }

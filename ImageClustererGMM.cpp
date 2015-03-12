@@ -63,8 +63,10 @@ void ImageClustererGMM::cluster_images() {
 
 	for (int i = 0; i < m_n_clusters; i++) {
 		ImageClass* image_class = label_to_class_map[i];
-		if (image_class->get_images().size() > 0)
+		if (image_class->get_image_count() > 0)
 			this->create_cluster(image_class);
+		else
+			delete image_class;
 	}
 	//cout << "Likelihoods:" << likelihoods << endl;
 	//cout << "Labels:" << labels << endl;

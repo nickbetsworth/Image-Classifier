@@ -91,7 +91,9 @@ void Image::generate_thumbnail() {
 cv::Ptr<cv::FeatureDetector> Image::get_detector() {
 	if (detector == 0) {
 		cv::initModule_nonfree();
-		detector = cv::FeatureDetector::create("SURF");
+		//detector = cv::FeatureDetector::create("SIFT");
+		detector = new cv::SiftFeatureDetector(Image::MAX_KEY_POINTS);
+		//detector->set("nfeatures", Image::MAX_KEY_POINTS);
 	}
 
 	return detector;
@@ -99,7 +101,7 @@ cv::Ptr<cv::FeatureDetector> Image::get_detector() {
 cv::Ptr<cv::DescriptorExtractor> Image::get_extractor() {
 	if (extractor == 0) {
 		cv::initModule_nonfree();
-		extractor = cv::DescriptorExtractor::create("SURF");
+		extractor = cv::DescriptorExtractor::create("SIFT");
 	}
 
 	return extractor;

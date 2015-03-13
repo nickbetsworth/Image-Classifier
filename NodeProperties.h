@@ -31,6 +31,7 @@ public:
 	//int get_feature_length(Property flags);
 
 	float calculate_distance_histogram(NodeProperties* node2) const;
+	float calculate_distance_descriptors(NodeProperties* node2) const;
 	float calculate_distance(NodeProperties* node2) const;
 
 	bool has_flag(Property flags) const;

@@ -76,13 +76,33 @@ float NodeProperties::calculate_distance_histogram(NodeProperties* node2) const 
 	return compare_histograms(this->get_histogram(), node2->get_histogram());
 }
 
+float NodeProperties::calculate_distance_descriptors(NodeProperties* node2) const {
+	float dist = 0;
+
+	cv::Ptr<cv::DescriptorMatcher> matcher = Image::get_matcher();
+	std::vector<std::vector<cv::DMatch>> matches;
+	matcher->knnMatch(node2->get_descriptors(), this->get_descriptors(), matches, 16);
+
+	int n = 0;
+	for (std::vector<cv::DMatch> match_list : matches) {
+		for (cv::DMatch match : match_list) {
+			n++;
+			dist += match.distance;
+		}
+	}
+
+	dist /= n;
+	std::cout << "Distance from " << this << " to " << node2 << ": " << dist << " with " << n << " matches." << std::endl;
+	return dist;
+}
+
 float NodeProperties::calculate_distance(NodeProperties* node2) const {
 	float total = 0;
-
-	if (has_flag(Property::Histogram) && node2->has_flag(Property::Histogram))
-		total += calculate_distance_histogram(node2);
-	//if (has_flag(Property::...))
-		//total += calculate_distance_...
+	
+	//if (has_flag(Property::Histogram) && node2->has_flag(Property::Histogram))
+		//total += calculate_distance_histogram(node2);
+	if (has_flag(Property::SIFT) && node2->has_flag(Property::SIFT))
+		total += calculate_distance_descriptors(node2);
 		
 	return total;
 }

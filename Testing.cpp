@@ -12,5 +12,5 @@ void perform_tests() {
 	//test_flags();
 	//test_image();
 	//test_sift();
-	test_PCA();
+	//test_PCA();
 }

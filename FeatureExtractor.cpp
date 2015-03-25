@@ -55,7 +55,7 @@ float FeatureExtractor::calculate_descriptor_distance(cv::Mat descriptors1, cv::
 	if (both_dist)
 		dist /= 2;
 
-	return dist;
+	return dist / 10;
 }
 
 

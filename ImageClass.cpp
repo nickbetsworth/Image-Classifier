@@ -3,10 +3,6 @@
 
 ImageClass::ImageClass()
 {
-	// Initialise the property sheet histogram before adding to 
-	cv::Mat hist = cv::Mat::zeros(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
-	this->set_histogram(hist);
-	this->add_flag(Property::Histogram);
 	m_icon = 0;
 
 	m_graph = new NodePropertiesGraph();
@@ -56,13 +52,33 @@ void ImageClass::remove_image(Image* image) {
 
 // Calculates the icon
 void ImageClass::calculate_icon() {
+	if (m_images.size() == 0)
+		return;
+
+	// Get the first image from the list to determine what features this set of images has
+	Image* ex_img = m_images.front();
+
+	int dims = 0;
 	
-	int dims = Image::HIST_BINS * Image::NUM_CHANNELS;
+	if (ex_img->has_flag(Property::PCA_SIFT)) {
+		dims = ex_img->get_PCA_descriptors().cols;
+	}
+	else if (ex_img->has_flag(Property::SIFT)) {
+		dims = ex_img->get_descriptors().cols;
+	}
+	else if (ex_img->has_flag(Property::Histogram)) {
+		dims = ex_img->get_histogram().rows;
+	}
+	else {
+		std::cout << "Error: Attempting to calculate icon on image set with no features" << std::endl;
+		return;
+	}
+
 	// Find min and max out of all images, for each dimension
-	cv::Mat min = cv::Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
-	cv::Mat max = cv::Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
+	cv::Mat min = cv::Mat(1, dims, CV_32F);
+	cv::Mat max = cv::Mat(1, dims, CV_32F);
 	// Holds the center point of each dimension
-	cv::Mat centers = cv::Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
+	cv::Mat centers = cv::Mat(1, dims, CV_32F);
 
 	Image* center_image = 0;
 	float closest_distance = numeric_limits<float>::max();
@@ -73,16 +89,33 @@ void ImageClass::calculate_icon() {
 		max.at<float>(i) = numeric_limits<float>::lowest();
 	}
 
-	for (Image* image : m_images) {
-		cv::Mat hist = image->get_histogram();
-		for (int i = 0; i < dims; i++) {
-			float val = hist.at<float>(i);
+	cv::Mat data = cv::Mat(0, dims, CV_32F);
 
-			if (val > max.at<float>(i))
-				max.at<float>(i) = val;
-			if (val < min.at<float>(i))
-				min.at<float>(i) = val;
+	// Generate a large matrix, where each row represents an observation
+	// with `dims` number of columns
+	for (Image* image : m_images) {
+		if (ex_img->has_flag(Property::PCA_SIFT)) {
+			data.push_back(image->get_PCA_descriptors());
 		}
+		else if (ex_img->has_flag(Property::SIFT)) {
+			data.push_back(image->get_descriptors());
+		}
+		else if (ex_img->has_flag(Property::Histogram)) {
+			cv::Mat hist_copy = image->get_histogram().clone();
+			cv::Mat hist_t = hist_copy.t();
+			data.push_back(hist_t);
+
+			//hist_copy.release();
+		}
+	}
+
+	for (int i = 0; i < dims; i++) {
+		double min_val = 0;
+		double max_val = 0;
+
+		cv::minMaxIdx(data.col(i), &min_val, &max_val, 0, 0);
+		min.at<float>(i) = min_val;
+		max.at<float>(i) = max_val;
 	}
 
 	// Now calculate the center point of each dimension
@@ -92,12 +125,21 @@ void ImageClass::calculate_icon() {
 
 	// Create a node which represents the center of this cluster
 	NodeProperties* center_node = new NodeProperties();
-	center_node->set_histogram(centers);
+
+	if (ex_img->has_flag(Property::PCA_SIFT)) {
+		center_node->set_PCA_descriptors(centers);
+	}
+	else if (ex_img->has_flag(Property::SIFT)) {
+		center_node->set_descriptors(centers);
+	}
+	else if (ex_img->has_flag(Property::Histogram)) {
+		center_node->set_histogram(centers.t());
+	}
+
 	// For each image, calculate the distance to the center point
 	// And determine if it is the closest image to the center point
 	for (Image* image : m_images) {
-		cv::Mat hist = image->get_histogram();
-		float distance = center_node->calculate_distance(image);
+		float distance = image->calculate_distance(center_node);
 
 		//cout << "Distance: " << distance << endl;
 		if (distance < closest_distance) {
@@ -114,7 +156,17 @@ void ImageClass::calculate_icon() {
 
 	// Store the image which is closest to the center point of each dimension
 	m_icon = center_image;
-	this->set_histogram(m_icon->get_histogram());
+
+
+	if (ex_img->has_flag(Property::PCA_SIFT)) {
+		this->set_PCA_descriptors(m_icon->get_PCA_descriptors());
+	}
+	else if (ex_img->has_flag(Property::SIFT)) {
+		this->set_descriptors(m_icon->get_descriptors());
+	}
+	else if (ex_img->has_flag(Property::Histogram)) {
+		this->set_histogram(m_icon->get_histogram());
+	}
 }
 
 Image* ImageClass::get_icon() {

@@ -34,6 +34,15 @@ void NodeProperties::set_keypoint_descriptors(std::vector<cv::KeyPoint> key_poin
 	m_descriptors = descriptors;
 }
 
+void NodeProperties::set_descriptors(cv::Mat descriptors) {
+	if (!descriptors.empty())
+		add_flag(Property::SIFT);
+	else
+		remove_flag(Property::SIFT);
+
+	m_descriptors = descriptors;
+}
+
 cv::Mat NodeProperties::get_descriptors() const {
 	if (has_flag(Property::SIFT)) {
 		return m_descriptors;
@@ -112,11 +121,13 @@ float NodeProperties::calculate_distance(NodeProperties* node2) const {
 	//if (has_flag(Property::Histogram) && node2->has_flag(Property::Histogram))
 		//total += calculate_distance_histogram(node2);
 	if (has_flag(Property::PCA_SIFT) && node2->has_flag(Property::PCA_SIFT))
-		total += calculate_distance_PCA_descriptors(node2);
+		total = calculate_distance_PCA_descriptors(node2);
 	// Only calculate the SIFT distance if the PCA distance is not calculated
 	// This is because PCA Sift is typically done to reduce calculation times
 	else if (has_flag(Property::SIFT) && node2->has_flag(Property::SIFT))
-		total += calculate_distance_descriptors(node2);
+		total = calculate_distance_descriptors(node2);
+	else if (has_flag(Property::Histogram) && node2->has_flag(Property::Histogram))
+		total = calculate_distance_histogram(node2);
 		
 	return total;
 }

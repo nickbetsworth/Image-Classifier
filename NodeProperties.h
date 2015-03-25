@@ -27,6 +27,7 @@ public:
 	
 	void set_keypoint_descriptors(std::vector<cv::KeyPoint> key_points, cv::Mat descriptors);
 	std::vector<cv::KeyPoint> get_key_points() const;
+	void set_descriptors(cv::Mat descriptors);
 	cv::Mat get_descriptors() const;
 
 	void set_PCA_descriptors(cv::Mat descriptors);

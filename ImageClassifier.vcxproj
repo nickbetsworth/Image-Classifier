@@ -170,12 +170,12 @@
     <ClCompile Include="QImageDisplayer.cpp" />
     <ClCompile Include="QImageLister.cpp" />
     <ClCompile Include="QLoadingSplashScreen.cpp" />
-    <ClCompile Include="QWheelDisplay.cpp" />
     <ClCompile Include="RFTest.cpp" />
     <ClCompile Include="imageclassifierwindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SiftTest.cpp" />
     <ClCompile Include="Testing.cpp" />
+    <ClCompile Include="Test_PCA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassifierManager.h" />
@@ -200,6 +200,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </AdditionalInputs>
     </ClInclude>
+    <ClInclude Include="Test_PCA.h" />
     <CustomBuild Include="QLoadingSplashScreen.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QLoadingSplashScreen.h -o GeneratedFiles\debug\moc_QLoadingSplashScreen.cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC QLoadingSplashScreen.h</Message>
@@ -252,16 +253,6 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC QImageDisplayer.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\release\moc_QImageDisplayer.cpp;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="QWheelDisplay.h">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QWheelDisplay.h;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QWheelDisplay.h -o GeneratedFiles\debug\moc_QWheelDisplay.cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC QWheelDisplay.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_QWheelDisplay.cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">QWheelDisplay.h;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QWheelDisplay.h -o GeneratedFiles\release\moc_QWheelDisplay.cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC QWheelDisplay.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\release\moc_QWheelDisplay.cpp;%(Outputs)</Outputs>
-    </CustomBuild>
     <CustomBuild Include="QImageLister.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QImageLister.h -o GeneratedFiles\debug\moc_QImageLister.cpp</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_QImageLister.cpp;%(Outputs)</Outputs>
@@ -291,12 +282,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\release\moc_QImageDisplayer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\debug\moc_QWheelDisplay.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\release\moc_QWheelDisplay.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\debug\moc_imageclassifierwindow.cpp">

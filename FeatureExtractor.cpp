@@ -10,7 +10,7 @@ std::vector<cv::KeyPoint> FeatureExtractor::calculate_key_points(cv::Mat image_d
 	std::vector<cv::KeyPoint> key_points;
 	detector->detect(image_data, key_points);
 
-	cv::KeyPointsFilter::retainBest(key_points, Image::MAX_KEY_POINTS);
+	//cv::KeyPointsFilter::retainBest(key_points, Image::MAX_KEY_POINTS);
 
 	return key_points;
 }
@@ -24,6 +24,13 @@ cv::Mat FeatureExtractor::calculate_descriptors(cv::Mat image_data, std::vector<
 	extractor->compute(image_data, key_points, descriptors);
 
 	return descriptors;
+}
+
+cv::Mat FeatureExtractor::PCA_descriptors(cv::Mat descriptors, double ret_variance) {
+	cv::PCA pca = cv::PCA(descriptors, cv::Mat(), CV_PCA_DATA_AS_COL, ret_variance);
+	cv::Mat reduced = pca.project(descriptors);
+	
+	return reduced;
 }
 
 cv::Ptr<cv::FeatureDetector> FeatureExtractor::get_detector() {

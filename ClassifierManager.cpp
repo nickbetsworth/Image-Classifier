@@ -13,7 +13,7 @@ ClassifierManager::~ClassifierManager()
 }
 
 Image* ClassifierManager::load_image(string file_path) {
-	Image* image = ImageFactory::create_image(file_path, Property::SIFT);
+	Image* image = ImageFactory::create_image(file_path, Property::SIFT | Property::Histogram);
 	if (image->has_loaded()) {
 		return image;
 	}
@@ -44,6 +44,7 @@ void ClassifierManager::cluster_images(int n_clusters) {
 	}
 
 	cout << "Using GMM with " << n_clusters << " clusters." << endl;
+	
 	ImageClusterer* clusterer = new ImageClustererKMeans(m_images, n_clusters);
 	clusterer->cluster_images();
 	m_image_classes = clusterer->get_clusters();

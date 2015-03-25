@@ -19,7 +19,7 @@ Image::Image(const std::string &filepath) : m_filepath(filepath)
 	generate_thumbnail();
 }
 
-Image::Image(const std::string &filepath, cv::Mat image_data) : m_filepath(filepath), m_image_data(image_data) {
+Image::Image(const std::string &filepath, cv::Mat image_data) : m_filepath(filepath), m_image_data(image_data.clone()) {
 	generate_thumbnail();
 }
 

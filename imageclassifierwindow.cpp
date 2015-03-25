@@ -1,7 +1,6 @@
 #include "imageclassifierwindow.h"
 #include "QCategoryDisplayer.h"
 #include "QCategoryView.h"
-#include "QWheelDisplay.h"
 #include "ImageClustererBasic.h"
 #include "ImageClustererGMM.h"
 #include "ImageClassifierRF.h"

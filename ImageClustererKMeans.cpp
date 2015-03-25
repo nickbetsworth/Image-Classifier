@@ -1,5 +1,6 @@
 #include "ImageClustererKMeans.h"
 #include "FeatureExtractor.h"
+
 ImageClustererKMeans::ImageClustererKMeans(vector<Image*> images, int n_clusters) : ImageClusterer(images)
 {
 	m_n_clusters = n_clusters;
@@ -34,7 +35,7 @@ void ImageClustererKMeans::cluster_images() {
 		cv::Mat bow_descriptor;
 		//cv::Mat descriptors;
 		extractor.compute(image->get_fullres_image(), image->get_key_points(), bow_descriptor);
-
+		
 		// Find the cluster with the highest frequency
 		int maxID[2];
 		cv::minMaxIdx(bow_descriptor, 0, 0, 0, maxID);

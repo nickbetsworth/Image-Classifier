@@ -95,9 +95,6 @@
     <ClCompile Include="QImageDisplayer.cpp">
       <Filter>Source Files\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="QWheelDisplay.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
     <ClCompile Include="imageclassifierwindow.cpp">
       <Filter>Source Files\Interface</Filter>
     </ClCompile>
@@ -179,6 +176,9 @@
     <ClCompile Include="FeatureExtractor.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
+    <ClCompile Include="Test_PCA.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Histograms.h">
@@ -253,6 +253,9 @@
     <ClInclude Include="FeatureExtractor.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
+    <ClInclude Include="Test_PCA.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\debug\moc_QCategoryDisplayer.cpp">
@@ -265,12 +268,6 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\release\moc_QImageDisplayer.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\debug\moc_QWheelDisplay.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\release\moc_QWheelDisplay.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\debug\moc_imageclassifierwindow.cpp">
@@ -289,9 +286,6 @@
   <ItemGroup>
     <CustomBuild Include="imageclassifierwindow.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="QWheelDisplay.h">
-      <Filter>Header Files\Interface</Filter>
     </CustomBuild>
     <CustomBuild Include="QCategoryDisplayer.h">
       <Filter>Header Files\Interface</Filter>

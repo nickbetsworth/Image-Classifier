@@ -9,13 +9,13 @@
 #include <QTimer>
 #include <QFuture>
 #include "ui_imageclassifierwindow.h"
-#include "QWheelDisplay.h"
 #include "ImageClass.h"
 #include "ImageClassifier.h"
 #include "ImageClassifierRF.h"
 #include "NodePositioner.h"
 #include "ClassifierManager.h"
 #include "QLoadingSplashScreen.h"
+#include "QCategoryDisplayer.h"
 
 /**
  * @enum	BrowseState

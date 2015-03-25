@@ -54,6 +54,22 @@ std::vector<cv::KeyPoint> NodeProperties::get_key_points() const {
 	}
 }
 
+void NodeProperties::set_PCA_descriptors(cv::Mat descriptors) {
+	if (!descriptors.empty())
+		add_flag(Property::PCA_SIFT);
+
+	m_PCA_descriptors = descriptors;
+}
+
+cv::Mat NodeProperties::get_PCA_descriptors() const {
+	if (has_flag(Property::PCA_SIFT)) {
+		return m_PCA_descriptors;
+	}
+	else {
+		std::cout << "Error: attempted to retrieve descriptors from NodeProperties whilst PCA_SIFT flag is disabled" << std::endl;
+		return cv::Mat();
+	}
+}
 
 cv::Mat NodeProperties::get_feature_vector() const {
 	return get_histogram();
@@ -98,12 +114,34 @@ float NodeProperties::calculate_distance_descriptors(NodeProperties* node2) cons
 	return dist;
 }
 
+float NodeProperties::calculate_distance_PCA_descriptors(NodeProperties* node2) const {
+	float dist = 0;
+
+	cv::Ptr<cv::DescriptorMatcher> matcher = FeatureExtractor::get_matcher();
+
+	std::vector<cv::DMatch> matches;
+
+	matcher->match(node2->get_PCA_descriptors(), this->get_PCA_descriptors(), matches);
+
+	for (cv::DMatch match : matches) {
+		dist += match.distance;
+	}
+
+	dist /= matches.size();
+
+	return dist;
+}
+
 float NodeProperties::calculate_distance(NodeProperties* node2) const {
 	float total = 0;
 	
 	//if (has_flag(Property::Histogram) && node2->has_flag(Property::Histogram))
 		//total += calculate_distance_histogram(node2);
-	if (has_flag(Property::SIFT) && node2->has_flag(Property::SIFT))
+	if (has_flag(Property::PCA_SIFT) && node2->has_flag(Property::PCA_SIFT))
+		total += calculate_distance_PCA_descriptors(node2);
+	// Only calculate the SIFT distance if the PCA distance is not calculated
+	// This is because PCA Sift is typically done to reduce calculation times
+	else if (has_flag(Property::SIFT) && node2->has_flag(Property::SIFT))
 		total += calculate_distance_descriptors(node2);
 		
 	return total;

@@ -43,6 +43,11 @@ public:
 	*/
 
 	static cv::Mat calculate_descriptors(cv::Mat image_data, std::vector<cv::KeyPoint>& key_points);
+
+	// Performs PCA to reduce dimensionality on a set of descriptors
+	//	ret_variance is the amount of retained variance via projection,
+	//	higher values retain more of the original descriptors
+	static cv::Mat PCA_descriptors(cv::Mat descriptors, double ret_variance = 0.9);
 private:
 	static cv::Ptr<cv::FeatureDetector> detector;
 	static cv::Ptr<cv::DescriptorExtractor> extractor;

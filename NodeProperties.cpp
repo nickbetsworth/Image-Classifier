@@ -95,39 +95,13 @@ float NodeProperties::calculate_distance_histogram(NodeProperties* node2) const 
 }
 
 float NodeProperties::calculate_distance_descriptors(NodeProperties* node2) const {
-	float dist = 0;
-
-	cv::Ptr<cv::DescriptorMatcher> matcher = FeatureExtractor::get_matcher();
-
-	std::vector<cv::DMatch> matches; 
-	
-	matcher->match(node2->get_descriptors(), this->get_descriptors(), matches);
-
-	for (cv::DMatch match : matches) {
-		dist += match.distance;
-	}
-
-	dist /= matches.size();
-	
-	//std::cout << "Distance from " << this << " to " << node2 << ": " << dist << " with " << n << " matches." << std::endl;
+	float dist = FeatureExtractor::calculate_descriptor_distance(this->get_descriptors(), node2->get_descriptors());
 
 	return dist;
 }
 
 float NodeProperties::calculate_distance_PCA_descriptors(NodeProperties* node2) const {
-	float dist = 0;
-
-	cv::Ptr<cv::DescriptorMatcher> matcher = FeatureExtractor::get_matcher();
-
-	std::vector<cv::DMatch> matches;
-
-	matcher->match(node2->get_PCA_descriptors(), this->get_PCA_descriptors(), matches);
-
-	for (cv::DMatch match : matches) {
-		dist += match.distance;
-	}
-
-	dist /= matches.size();
+	float dist = FeatureExtractor::calculate_descriptor_distance(this->get_PCA_descriptors(), node2->get_PCA_descriptors());
 
 	return dist;
 }

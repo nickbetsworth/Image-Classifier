@@ -48,6 +48,9 @@ public:
 	//	ret_variance is the amount of retained variance via projection,
 	//	higher values retain more of the original descriptors
 	static cv::Mat PCA_descriptors(cv::Mat descriptors, double ret_variance = 0.9);
+
+	// Calculates the distance between two sets of descriptors
+	static float calculate_descriptor_distance(cv::Mat descriptors1, cv::Mat descriptors2);
 private:
 	static cv::Ptr<cv::FeatureDetector> detector;
 	static cv::Ptr<cv::DescriptorExtractor> extractor;

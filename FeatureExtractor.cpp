@@ -33,6 +33,26 @@ cv::Mat FeatureExtractor::PCA_descriptors(cv::Mat descriptors, double ret_varian
 	return reduced;
 }
 
+float FeatureExtractor::calculate_descriptor_distance(cv::Mat descriptors1, cv::Mat descriptors2) {
+	float dist = 0;
+
+	cv::Ptr<cv::DescriptorMatcher> matcher = FeatureExtractor::get_matcher();
+
+	std::vector<cv::DMatch> matches;
+
+	matcher->match(descriptors1, descriptors2, matches);
+
+	for (cv::DMatch match : matches) {
+		dist += match.distance;
+	}
+
+	dist /= matches.size();
+
+	return dist;
+}
+
+
+
 cv::Ptr<cv::FeatureDetector> FeatureExtractor::get_detector() {
 	if (detector == 0) {
 		cv::initModule_nonfree();

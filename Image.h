@@ -85,6 +85,9 @@ public:
 	 */
 
 	cv::Mat get_fullres_image() const;
+
+	void set_probs(cv::Mat probs) { m_probs = probs; };
+	cv::Mat get_probs() { return m_probs; };
 private:
 	void generate_thumbnail();
 
@@ -92,6 +95,6 @@ private:
 	std::string m_filepath;
 	/** @brief	Stores the image thumbnail data */
 	cv::Mat m_image_data;
-	//Mat m_histogram;
+	cv::Mat m_probs;
 };
 

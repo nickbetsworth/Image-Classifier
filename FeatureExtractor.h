@@ -50,7 +50,9 @@ public:
 	static cv::Mat PCA_descriptors(cv::Mat descriptors, double ret_variance = 0.9);
 
 	// Calculates the distance between two sets of descriptors
-	static float calculate_descriptor_distance(cv::Mat descriptors1, cv::Mat descriptors2);
+	// both_dist determines whether we calculate distance of matches from descriptors2 to descriptors1, rather
+	// than just descriptors1 to descriptors2
+	static float calculate_descriptor_distance(cv::Mat descriptors1, cv::Mat descriptors2, bool both_dist = false);
 private:
 	static cv::Ptr<cv::FeatureDetector> detector;
 	static cv::Ptr<cv::DescriptorExtractor> extractor;

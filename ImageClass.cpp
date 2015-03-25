@@ -56,6 +56,7 @@ void ImageClass::remove_image(Image* image) {
 
 // Calculates the icon
 void ImageClass::calculate_icon() {
+	
 	int dims = Image::HIST_BINS * Image::NUM_CHANNELS;
 	// Find min and max out of all images, for each dimension
 	cv::Mat min = cv::Mat(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);

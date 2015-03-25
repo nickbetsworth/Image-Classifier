@@ -33,8 +33,11 @@ cv::Mat FeatureExtractor::PCA_descriptors(cv::Mat descriptors, double ret_varian
 	return reduced;
 }
 
-float FeatureExtractor::calculate_descriptor_distance(cv::Mat descriptors1, cv::Mat descriptors2) {
+float FeatureExtractor::calculate_descriptor_distance(cv::Mat descriptors1, cv::Mat descriptors2, bool both_dist) {
 	float dist = 0;
+
+	if (both_dist)
+		dist += calculate_descriptor_distance(descriptors2, descriptors1, false);
 
 	cv::Ptr<cv::DescriptorMatcher> matcher = FeatureExtractor::get_matcher();
 
@@ -47,6 +50,10 @@ float FeatureExtractor::calculate_descriptor_distance(cv::Mat descriptors1, cv::
 	}
 
 	dist /= matches.size();
+
+	// Halve the distance if we calculated it in both directions
+	if (both_dist)
+		dist /= 2;
 
 	return dist;
 }

@@ -18,7 +18,7 @@ void ImageClustererKMeans::cluster_images() {
 	}
 	
 	cv::Mat vocabulary = trainer.cluster();
-
+	std::cout << "Vocab: " << vocabulary << std::endl;
 	cv::BOWImgDescriptorExtractor extractor(Image::get_extractor(), Image::get_matcher());
 	extractor.setVocabulary(vocabulary);
 

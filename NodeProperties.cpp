@@ -1,5 +1,6 @@
 #include "NodeProperties.h"
 #include "Histograms.h"
+#include <chrono>
 
 void NodeProperties::set_histogram(cv::Mat hist) {
 	// If this is not an empty histogram, set the histogram flag to true
@@ -80,19 +81,19 @@ float NodeProperties::calculate_distance_descriptors(NodeProperties* node2) cons
 	float dist = 0;
 
 	cv::Ptr<cv::DescriptorMatcher> matcher = Image::get_matcher();
-	std::vector<std::vector<cv::DMatch>> matches;
-	matcher->knnMatch(node2->get_descriptors(), this->get_descriptors(), matches, 16);
 
-	int n = 0;
-	for (std::vector<cv::DMatch> match_list : matches) {
-		for (cv::DMatch match : match_list) {
-			n++;
-			dist += match.distance;
-		}
+	std::vector<cv::DMatch> matches; 
+	
+	matcher->match(node2->get_descriptors(), this->get_descriptors(), matches);
+
+	for (cv::DMatch match : matches) {
+		dist += match.distance;
 	}
 
-	dist /= n;
-	std::cout << "Distance from " << this << " to " << node2 << ": " << dist << " with " << n << " matches." << std::endl;
+	dist /= matches.size();
+	
+	//std::cout << "Distance from " << this << " to " << node2 << ": " << dist << " with " << n << " matches." << std::endl;
+
 	return dist;
 }
 

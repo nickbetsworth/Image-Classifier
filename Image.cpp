@@ -46,6 +46,8 @@ std::vector<cv::KeyPoint> Image::calculate_key_points(cv::Mat image_data) {
 	std::vector<cv::KeyPoint> key_points;
 	detector->detect(image_data, key_points);
 
+	cv::KeyPointsFilter::retainBest(key_points, Image::MAX_KEY_POINTS);
+
 	return key_points;
 }
 
@@ -91,8 +93,8 @@ void Image::generate_thumbnail() {
 cv::Ptr<cv::FeatureDetector> Image::get_detector() {
 	if (detector == 0) {
 		cv::initModule_nonfree();
-		//detector = cv::FeatureDetector::create("SIFT");
-		detector = new cv::SiftFeatureDetector(Image::MAX_KEY_POINTS);
+		detector = cv::FeatureDetector::create("SURF");
+		//detector = new cv::SiftFeatureDetector(Image::MAX_KEY_POINTS);
 		//detector->set("nfeatures", Image::MAX_KEY_POINTS);
 	}
 
@@ -101,14 +103,14 @@ cv::Ptr<cv::FeatureDetector> Image::get_detector() {
 cv::Ptr<cv::DescriptorExtractor> Image::get_extractor() {
 	if (extractor == 0) {
 		cv::initModule_nonfree();
-		extractor = cv::DescriptorExtractor::create("SIFT");
+		extractor = cv::DescriptorExtractor::create("SURF");
 	}
 
 	return extractor;
 }
 cv::Ptr<cv::DescriptorMatcher> Image::get_matcher() {
 	if (matcher == 0)
-		matcher = cv::DescriptorMatcher::create("FlannBased");
+		matcher = cv::DescriptorMatcher::create("BruteForce-L1");
 
 	return matcher;
 }

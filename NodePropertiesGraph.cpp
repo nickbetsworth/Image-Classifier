@@ -1,5 +1,5 @@
 #include "NodePropertiesGraph.h"
-
+#include <chrono>
 
 NodePropertiesGraph::NodePropertiesGraph()
 {
@@ -45,7 +45,8 @@ void NodePropertiesGraph::calculate_edges(const Node node) {
 
 	// Set the edge to itself to -1 (no edge)
 	m_mat[node][node] = NO_EDGE;
-	// Loop through all existing nodes
+	auto begin = std::chrono::high_resolution_clock::now();
+	
 	for (NodeProperties* existing_node : m_nodes) {
 		// Ensure that we do not calculate the edge to itself
 		if (node != existing_node) {
@@ -54,6 +55,13 @@ void NodePropertiesGraph::calculate_edges(const Node node) {
 			m_mat[existing_node][node] = val;
 		}
 	}
+
+	// Loop through all existing nodes
+	auto end = std::chrono::high_resolution_clock::now();
+	auto dur = end - begin;
+	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
+
+	std::cout << "Runtime for " << m_nodes.size() << " nodes: " << ms << " milliseconds" << std::endl;
 }
 
 void NodePropertiesGraph::remove_edges(Node node) {

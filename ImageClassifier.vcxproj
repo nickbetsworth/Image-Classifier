@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="ClassifierManager.cpp" />
     <ClCompile Include="EMDTest.cpp" />
+    <ClCompile Include="FeatureExtractor.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_ImageSelector.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_LoadingScreen.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryView.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="ImageClusterer.cpp" />
     <ClCompile Include="ImageClustererKMeans.cpp" />
     <ClCompile Include="ImageConversion.cpp" />
+    <ClCompile Include="ImageFactory.cpp" />
     <ClCompile Include="ImageSelector.cpp" />
     <ClCompile Include="ImageTest.cpp" />
     <ClCompile Include="LoadingScreen.cpp" />
@@ -177,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassifierManager.h" />
+    <ClInclude Include="FeatureExtractor.h" />
     <ClInclude Include="GeneratedFiles\ui_ImageSelector.h" />
     <ClInclude Include="GeneratedFiles\ui_LoadingScreen.h" />
     <ClInclude Include="EMDTest.h" />
@@ -203,6 +206,7 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneratedFiles\debug\moc_QLoadingSplashScreen.cpp;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QLoadingSplashScreen.h;%(AdditionalInputs)</AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="ImageFactory.h" />
     <ClInclude Include="SiftTest.h" />
     <ClInclude Include="Testing.h" />
     <CustomBuild Include="ImageSelector.h">

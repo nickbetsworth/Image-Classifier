@@ -1,5 +1,5 @@
 #include "ImageClustererKMeans.h"
-
+#include "FeatureExtractor.h"
 ImageClustererKMeans::ImageClustererKMeans(vector<Image*> images, int n_clusters) : ImageClusterer(images)
 {
 	m_n_clusters = n_clusters;
@@ -19,7 +19,7 @@ void ImageClustererKMeans::cluster_images() {
 	
 	cv::Mat vocabulary = trainer.cluster();
 	std::cout << "Vocab: " << vocabulary << std::endl;
-	cv::BOWImgDescriptorExtractor extractor(Image::get_extractor(), Image::get_matcher());
+	cv::BOWImgDescriptorExtractor extractor(FeatureExtractor::get_extractor(), FeatureExtractor::get_matcher());
 	extractor.setVocabulary(vocabulary);
 
 	vector<ImageClass*> image_classes;

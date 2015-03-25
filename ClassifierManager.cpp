@@ -1,5 +1,7 @@
 #include "ClassifierManager.h"
 #include "ImageClustererKMeans.h"
+#include "ImageFactory.h"
+
 ClassifierManager::ClassifierManager()
 {
 	m_classifier = new ImageClassifierRF();
@@ -11,7 +13,7 @@ ClassifierManager::~ClassifierManager()
 }
 
 Image* ClassifierManager::load_image(string file_path) {
-	Image* image = new Image(file_path);
+	Image* image = ImageFactory::create_image(file_path, Property::SIFT);
 	if (image->has_loaded()) {
 		return image;
 	}

@@ -1,5 +1,6 @@
 #include "NodeProperties.h"
 #include "Histograms.h"
+#include "FeatureExtractor.h"
 #include <chrono>
 
 void NodeProperties::set_histogram(cv::Mat hist) {
@@ -80,7 +81,7 @@ float NodeProperties::calculate_distance_histogram(NodeProperties* node2) const 
 float NodeProperties::calculate_distance_descriptors(NodeProperties* node2) const {
 	float dist = 0;
 
-	cv::Ptr<cv::DescriptorMatcher> matcher = Image::get_matcher();
+	cv::Ptr<cv::DescriptorMatcher> matcher = FeatureExtractor::get_matcher();
 
 	std::vector<cv::DMatch> matches; 
 	

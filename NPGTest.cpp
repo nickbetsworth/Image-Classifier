@@ -26,7 +26,7 @@ void test_NPG() {
 			cout << "Unable to load image: " << filepath << endl;
 	}
 
-	cout << images.size() << " imags loaded in" << endl;
+	cout << images.size() << " images loaded" << endl;
 	// Load in some images
 	// Add the last n - 1 as nodes
 	for (auto k = images.begin() + 1; k != images.end(); k++) {

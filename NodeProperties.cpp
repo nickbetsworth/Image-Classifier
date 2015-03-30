@@ -110,7 +110,7 @@ float NodeProperties::calculate_distance_descriptors(NodeProperties* node2) cons
 }
 
 float NodeProperties::calculate_distance_PCA_descriptors(NodeProperties* node2) const {
-	float dist = FeatureExtractor::calculate_descriptor_distance(this->get_PCA_descriptors(), node2->get_PCA_descriptors());
+	float dist = FeatureExtractor::calculate_descriptor_distance(this->get_PCA_descriptors(), node2->get_PCA_descriptors(), true);
 
 	return dist;
 }

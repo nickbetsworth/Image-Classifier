@@ -5,7 +5,8 @@
 enum Property {
 	Histogram = 1,
 	SIFT = 2,
-	PCA_SIFT = 4
+	PCA_SIFT = 4,
+	BOW = 8
 };
 inline Property operator|(const Property a, const Property b) {
 	return static_cast<Property>(static_cast<int>(a) | static_cast<int>(b));
@@ -39,6 +40,7 @@ public:
 	float calculate_distance_histogram(NodeProperties* node2) const;
 	float calculate_distance_descriptors(NodeProperties* node2) const;
 	float calculate_distance_PCA_descriptors(NodeProperties* node2) const;
+	float calculate_distance_BOW_histogram(NodeProperties* node2) const;
 	float calculate_distance(NodeProperties* node2) const;
 
 	bool has_flag(Property flags) const;
@@ -53,5 +55,6 @@ private:
 	std::vector<cv::KeyPoint> m_key_points;
 	cv::Mat m_descriptors;
 	cv::Mat m_PCA_descriptors;
+	cv::Mat m_BOW_histogram;
 };
 

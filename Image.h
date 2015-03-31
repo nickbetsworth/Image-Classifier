@@ -22,7 +22,7 @@ public:
 	static const int HIST_BINS = 8;
 	/** @brief	The number of colour channels the image has. */
 	static const int NUM_CHANNELS = 3;
-	static const int MAX_KEY_POINTS = 200;
+	static const int MAX_KEY_POINTS = 250;
 
 	/**
 	 * @fn	Image::Image(const string &filepath);
@@ -85,9 +85,6 @@ public:
 	 */
 
 	cv::Mat get_fullres_image() const;
-
-	void set_probs(cv::Mat probs) { m_probs = probs; };
-	cv::Mat get_probs() { return m_probs; };
 private:
 	void generate_thumbnail();
 
@@ -95,6 +92,5 @@ private:
 	std::string m_filepath;
 	/** @brief	Stores the image thumbnail data */
 	cv::Mat m_image_data;
-	cv::Mat m_probs;
 };
 

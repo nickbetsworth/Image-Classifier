@@ -13,6 +13,7 @@ NodePropertiesGraph::~NodePropertiesGraph()
 }
 
 bool NodePropertiesGraph::add_node(Node node) {
+	
 	pair<set<NodeProperties*>::iterator, bool> result = m_nodes.insert(node);
 	// If the new node was successfully added
 	// (It did not already exist within the list)
@@ -78,16 +79,6 @@ void NodePropertiesGraph::remove_edges(Node node) {
 	}
 }
 
-
-
-	/**
-	* @fn	multimap<T, T> Graph::get_minimum_spanning_tree()
-	*
-	* @brief	Gets minimum spanning tree.
-	*
-	* @return	A multimap from a single node to its connected nodes.
-	*/
-
 float NodePropertiesGraph::get_edge_weight(Node node1, Node node2) {
 	try {
 		return m_mat.at(node1).at(node2);
@@ -137,6 +128,7 @@ NodeList NodePropertiesGraph::get_n_nearest_nodes(Node node, int n) {
 
 	return nearest_nodes;
 }
+
 SpanningTree NodePropertiesGraph::get_minimum_spanning_tree(Node root_node) {
 	// Check if there is a cached version of the requested spanning tree
 	if (!has_graph_changed() && is_previous_root(root_node)) {

@@ -10,11 +10,7 @@ Image* ImageFactory::create_image(const std::string &filepath, Property properti
 
 	Image* image = new Image(filepath, image_data);
 
-	if (properties & Property::Histogram) {
-		image->set_histogram(FeatureExtractor::calculate_histogram(image_data));
-	}
-		
-	if (properties & Property::SIFT) {
+	if (properties & (Property::BOW | Property::SIFT | Property::PCA_SIFT)) {
 		std::vector<cv::KeyPoint> key_points = FeatureExtractor::calculate_key_points(image_data);
 		cv::Mat descriptors = FeatureExtractor::calculate_descriptors(image_data, key_points);
 
@@ -23,7 +19,10 @@ Image* ImageFactory::create_image(const std::string &filepath, Property properti
 		cv::Mat PCA_descriptors = FeatureExtractor::PCA_descriptors(descriptors, 0.95);
 		image->set_PCA_descriptors(PCA_descriptors);
 	}
-	
+
+	if (properties & Property::Histogram) {
+		image->set_histogram(FeatureExtractor::calculate_histogram(image_data));
+	}
 
 	// We can safely release the image data here, as Image makes a clone of it
 	image_data.release();

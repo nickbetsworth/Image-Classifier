@@ -179,6 +179,12 @@
     <ClCompile Include="Test_PCA.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="BOWExtractor.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="NodePropertiesGraphBOW.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Histograms.h">
@@ -255,6 +261,12 @@
     </ClInclude>
     <ClInclude Include="Test_PCA.h">
       <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="BOWExtractor.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="NodePropertiesGraphBOW.h">
+      <Filter>Header Files\Library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

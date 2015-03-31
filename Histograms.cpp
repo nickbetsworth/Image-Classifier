@@ -26,13 +26,15 @@ cv::Mat get_1d_histogram(cv::Mat image_data, int bins) {
 }
 
 float compare_histograms(cv::Mat hist1, cv::Mat hist2) {
+	assert(hist1.rows == hist2.rows);
+
 	// Make a copy of the histograms as we will be adding columns
 	cv::Mat hist1copy = hist1.clone();
 	cv::Mat hist2copy = hist2.clone();
 
 	// Append an index of the corresponding row of each histogram bin, for EMD
-	cv::Mat emd_cols = cv::Mat::zeros(Image::HIST_BINS * Image::NUM_CHANNELS, 1, CV_32F);
-	for (int i = 0; i < Image::HIST_BINS * Image::NUM_CHANNELS; i++) {
+	cv::Mat emd_cols = cv::Mat::zeros(hist1.rows, 1, CV_32F);
+	for (int i = 0; i < hist1.rows; i++) {
 		emd_cols.at<float>(i, 0) = i + 1;
 	}
 

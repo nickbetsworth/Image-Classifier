@@ -80,6 +80,22 @@ cv::Mat NodeProperties::get_PCA_descriptors() const {
 	}
 }
 
+void NodeProperties::set_BOW_histogram(cv::Mat bow_hist) {
+	if (!bow_hist.empty())
+		add_flag(Property::BOW);
+
+	m_BOW_histogram = bow_hist;
+}
+cv::Mat NodeProperties::get_BOW_histogram() const {
+	if (has_flag(Property::BOW)) {
+		return m_BOW_histogram;
+	}
+	else {
+		std::cout << "Error: attempted to retrieve descriptors from NodeProperties whilst BOW flag is disabled" << std::endl;
+		return cv::Mat();
+	}
+}
+
 cv::Mat NodeProperties::get_feature_vector() const {
 	return get_histogram();
 }
@@ -115,12 +131,26 @@ float NodeProperties::calculate_distance_PCA_descriptors(NodeProperties* node2) 
 	return dist;
 }
 
+float NodeProperties::calculate_distance_BOW_histogram(NodeProperties* node2) const {
+	// Compare histogram function takes 2 column vectors, so we need to transpose our histograms
+	cv::Mat node1T = this->get_BOW_histogram().clone().t();
+	cv::Mat node2T = node2->get_BOW_histogram().clone().t();
+
+
+	float dist = compare_histograms(node1T, node2T);
+
+	node1T.release();
+	node2T.release();
+
+	return dist;
+}
+
 float NodeProperties::calculate_distance(NodeProperties* node2) const {
 	float total = 0;
 	
-	//if (has_flag(Property::Histogram) && node2->has_flag(Property::Histogram))
-		//total += calculate_distance_histogram(node2);
-	if (has_flag(Property::PCA_SIFT) && node2->has_flag(Property::PCA_SIFT))
+	if (has_flag(Property::BOW) && node2->has_flag(Property::BOW))
+		total = calculate_distance_BOW_histogram(node2);
+	else if (has_flag(Property::PCA_SIFT) && node2->has_flag(Property::PCA_SIFT))
 		total = calculate_distance_PCA_descriptors(node2);
 	// Only calculate the SIFT distance if the PCA distance is not calculated
 	// This is because PCA Sift is typically done to reduce calculation times

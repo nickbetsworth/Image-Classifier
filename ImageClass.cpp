@@ -1,5 +1,5 @@
 #include "ImageClass.h"
-
+#include "NodePropertiesGraphBOW.h"
 
 ImageClass::ImageClass()
 {
@@ -8,12 +8,24 @@ ImageClass::ImageClass()
 	m_graph = new NodePropertiesGraph();
 }
 
-ImageClass::ImageClass(vector<Image*> images) : ImageClass()
+ImageClass::ImageClass(vector<Image*> images)
 {
+	m_icon = 0;
+
+	// Convert the array of images to array of Nodes
+	// So we can pass it to the Graph
+	std::vector<Node> nodes;
+	for (Image* image : images) {
+		nodes.push_back(static_cast<Node>(image));
+	}
+
+	m_graph = new NodePropertiesGraphBOW(nodes);
 	// Loop through each of the images so we can tally the histograms
 	for (Image* image : images) {
 		add_image(image);
 	}
+
+	
 }
 
 ImageClass::~ImageClass()

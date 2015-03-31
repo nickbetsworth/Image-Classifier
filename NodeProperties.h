@@ -24,7 +24,6 @@ class NodeProperties
 public:
 	void set_histogram(cv::Mat hist);
 	cv::Mat get_histogram() const;
-
 	
 	void set_keypoint_descriptors(std::vector<cv::KeyPoint> key_points, cv::Mat descriptors);
 	std::vector<cv::KeyPoint> get_key_points() const;
@@ -33,6 +32,9 @@ public:
 
 	void set_PCA_descriptors(cv::Mat descriptors);
 	cv::Mat get_PCA_descriptors() const;
+
+	void set_BOW_histogram(cv::Mat bow_hist);
+	cv::Mat get_BOW_histogram() const;
 
 	cv::Mat get_feature_vector() const;
 	//int get_feature_length(Property flags);

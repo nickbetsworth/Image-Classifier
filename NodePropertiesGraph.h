@@ -15,14 +15,14 @@ public:
 	static const int NO_EDGE = -1;
 	NodePropertiesGraph();
 	virtual ~NodePropertiesGraph();
-	bool add_node(Node node);
-	bool remove_node(Node node);
-	AdjacencyMatrix get_adjacency_matrix() { return m_mat; };
-	SpanningTree get_minimum_spanning_tree(Node root_node = 0);
-	float get_edge_weight(Node node1, Node node2);
+	virtual bool add_node(Node node);
+	virtual bool remove_node(Node node);
+	virtual AdjacencyMatrix get_adjacency_matrix() { return m_mat; };
+	virtual SpanningTree get_minimum_spanning_tree(Node root_node = 0);
+	virtual float get_edge_weight(Node node1, Node node2);
 
-	NodeList get_nodes() { return m_nodes; };
-	NodeList get_n_nearest_nodes(Node node, int n);
+	virtual NodeList get_nodes() { return m_nodes; };
+	virtual NodeList get_n_nearest_nodes(Node node, int n);
 private:
 
 	/**

@@ -26,36 +26,36 @@ cv::Mat NodeProperties::get_histogram() const {
 
 void NodeProperties::set_descriptors(cv::Mat descriptors) {
 	if (!descriptors.empty())
-		add_flag(Property::SIFT);
+		add_flag(Property::SURF);
 	else
-		remove_flag(Property::SIFT);
+		remove_flag(Property::SURF);
 
 	m_descriptors = descriptors;
 }
 
 cv::Mat NodeProperties::get_descriptors() const {
-	if (has_flag(Property::SIFT)) {
+	if (has_flag(Property::SURF)) {
 		return m_descriptors;
 	}
 	else {
-		std::cout << "Error: attempted to retrieve descriptors from NodeProperties whilst SIFT flag is disabled" << std::endl;
+		std::cout << "Error: attempted to retrieve descriptors from NodeProperties whilst SURF flag is disabled" << std::endl;
 		return cv::Mat();
 	}
 }
 
 void NodeProperties::set_PCA_descriptors(cv::Mat descriptors) {
 	if (!descriptors.empty())
-		add_flag(Property::PCA_SIFT);
+		add_flag(Property::PCA_SURF);
 
 	m_PCA_descriptors = descriptors;
 }
 
 cv::Mat NodeProperties::get_PCA_descriptors() const {
-	if (has_flag(Property::PCA_SIFT)) {
+	if (has_flag(Property::PCA_SURF)) {
 		return m_PCA_descriptors;
 	}
 	else {
-		std::cout << "Error: attempted to retrieve descriptors from NodeProperties whilst PCA_SIFT flag is disabled" << std::endl;
+		std::cout << "Error: attempted to retrieve descriptors from NodeProperties whilst PCA_SURF flag is disabled" << std::endl;
 		return cv::Mat();
 	}
 }
@@ -130,11 +130,11 @@ float NodeProperties::calculate_distance(NodeProperties* node2) const {
 	
 	if (has_flag(Property::BOW) && node2->has_flag(Property::BOW))
 		total = calculate_distance_BOW_histogram(node2);
-	else if (has_flag(Property::PCA_SIFT) && node2->has_flag(Property::PCA_SIFT))
+	else if (has_flag(Property::PCA_SURF) && node2->has_flag(Property::PCA_SURF))
 		total = calculate_distance_PCA_descriptors(node2);
-	// Only calculate the SIFT distance if the PCA distance is not calculated
-	// This is because PCA Sift is typically done to reduce calculation times
-	else if (has_flag(Property::SIFT) && node2->has_flag(Property::SIFT))
+	// Only calculate the SURF distance if the PCA distance is not calculated
+	// This is because PCA SURF is typically done to reduce calculation times
+	else if (has_flag(Property::SURF) && node2->has_flag(Property::SURF))
 		total = calculate_distance_descriptors(node2);
 	else if (has_flag(Property::Histogram) && node2->has_flag(Property::Histogram))
 		total = calculate_distance_histogram(node2);

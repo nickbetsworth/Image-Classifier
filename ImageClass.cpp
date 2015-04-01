@@ -72,10 +72,10 @@ void ImageClass::calculate_icon() {
 
 	int dims = 0;
 	
-	if (ex_img->has_flag(Property::PCA_SIFT)) {
+	if (ex_img->has_flag(Property::PCA_SURF)) {
 		dims = ex_img->get_PCA_descriptors().cols;
 	}
-	else if (ex_img->has_flag(Property::SIFT)) {
+	else if (ex_img->has_flag(Property::SURF)) {
 		dims = ex_img->get_descriptors().cols;
 	}
 	else if (ex_img->has_flag(Property::Histogram)) {
@@ -106,10 +106,10 @@ void ImageClass::calculate_icon() {
 	// Generate a large matrix, where each row represents an observation
 	// with `dims` number of columns
 	for (Image* image : m_images) {
-		if (ex_img->has_flag(Property::PCA_SIFT)) {
+		if (ex_img->has_flag(Property::PCA_SURF)) {
 			data.push_back(image->get_PCA_descriptors());
 		}
-		else if (ex_img->has_flag(Property::SIFT)) {
+		else if (ex_img->has_flag(Property::SURF)) {
 			data.push_back(image->get_descriptors());
 		}
 		else if (ex_img->has_flag(Property::Histogram)) {
@@ -138,10 +138,10 @@ void ImageClass::calculate_icon() {
 	// Create a node which represents the center of this cluster
 	NodeProperties* center_node = new NodeProperties();
 
-	if (ex_img->has_flag(Property::PCA_SIFT)) {
+	if (ex_img->has_flag(Property::PCA_SURF)) {
 		center_node->set_PCA_descriptors(centers);
 	}
-	else if (ex_img->has_flag(Property::SIFT)) {
+	else if (ex_img->has_flag(Property::SURF)) {
 		center_node->set_descriptors(centers);
 	}
 	else if (ex_img->has_flag(Property::Histogram)) {
@@ -170,10 +170,10 @@ void ImageClass::calculate_icon() {
 	m_icon = center_image;
 
 
-	if (ex_img->has_flag(Property::PCA_SIFT)) {
+	if (ex_img->has_flag(Property::PCA_SURF)) {
 		this->set_PCA_descriptors(m_icon->get_PCA_descriptors());
 	}
-	else if (ex_img->has_flag(Property::SIFT)) {
+	else if (ex_img->has_flag(Property::SURF)) {
 		this->set_descriptors(m_icon->get_descriptors());
 	}
 	else if (ex_img->has_flag(Property::Histogram)) {

@@ -13,7 +13,7 @@ ClassifierManager::~ClassifierManager()
 }
 
 Image* ClassifierManager::load_image(string file_path) {
-	Image* image = ImageFactory::create_image(file_path, Property::Histogram | Property::SIFT);
+	Image* image = ImageFactory::create_image(file_path, Property::Histogram | Property::SURF);
 	if (image->has_loaded()) {
 		return image;
 	}
@@ -47,7 +47,7 @@ void ClassifierManager::cluster_images(int n_clusters) {
 	
 	ImageClusterer* clusterer;
 	
-	if (m_images.front()->has_flag(Property::SIFT))
+	if (m_images.front()->has_flag(Property::SURF))
 		clusterer = new ImageClustererKMeans(m_images, n_clusters);
 	else
 		clusterer = new ImageClustererGMM(m_images, n_clusters);

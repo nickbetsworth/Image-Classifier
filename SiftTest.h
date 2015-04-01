@@ -1,2 +1,2 @@
 #pragma once
-void test_sift();
+void test_SURF();

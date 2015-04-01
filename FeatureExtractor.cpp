@@ -64,8 +64,6 @@ cv::Ptr<cv::FeatureDetector> FeatureExtractor::get_detector() {
 	if (detector == 0) {
 		cv::initModule_nonfree();
 		detector = cv::FeatureDetector::create("SURF");
-		//detector = new cv::SiftFeatureDetector(Image::MAX_KEY_POINTS);
-		//detector->set("nfeatures", Image::MAX_KEY_POINTS);
 	}
 
 	return detector;

@@ -10,14 +10,34 @@ Image* ImageFactory::create_image(const std::string &filepath, Property properti
 
 	Image* image = new Image(filepath, image_data);
 
-	if (properties & (Property::BOW | Property::SIFT | Property::PCA_SIFT)) {
-		std::vector<cv::KeyPoint> key_points = FeatureExtractor::calculate_key_points(image_data);
-		cv::Mat descriptors = FeatureExtractor::calculate_descriptors(image_data, key_points);
+	if (properties & (Property::SURF)) {
+		std::string data_filepath = filepath + ".yml";
+		// Attempt to load in descriptors
+		cv::FileStorage r_fs(data_filepath, cv::FileStorage::READ);
+		cv::Mat descriptors;
 
+		// If the file exists and we are able to open it
+		if (r_fs.isOpened()) {
+			r_fs["surf_descriptors"] >> descriptors;
+		}
+		else {
+			std::vector<cv::KeyPoint> key_points = FeatureExtractor::calculate_key_points(image_data);
+			descriptors = FeatureExtractor::calculate_descriptors(image_data, key_points);
+
+			// Save the descriptors to the file
+			cv::FileStorage w_fs(data_filepath, cv::FileStorage::WRITE);
+			w_fs << "descriptors" << descriptors;
+
+			w_fs.release();
+		}
+
+		r_fs.release();
 		image->set_descriptors(descriptors);
 
-		cv::Mat PCA_descriptors = FeatureExtractor::PCA_descriptors(descriptors, 0.95);
-		image->set_PCA_descriptors(PCA_descriptors);
+		if (properties & (Property::PCA_SURF)) {
+			cv::Mat PCA_descriptors = FeatureExtractor::PCA_descriptors(descriptors);
+			image->set_PCA_descriptors(PCA_descriptors);
+		}
 	}
 
 	if (properties & Property::Histogram) {

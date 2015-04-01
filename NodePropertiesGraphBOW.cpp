@@ -5,13 +5,13 @@ NodePropertiesGraphBOW::NodePropertiesGraphBOW(std::vector<Node> nodes) : NodePr
 
 	// Get an example node, to work out how many columns / what type of mat we need
 	Node example_node = nodes.front();
-	assert(example_node->has_flag(Property::SIFT));
+	assert(example_node->has_flag(Property::SURF));
 
 	cv::Mat descs = cv::Mat(0, example_node->get_descriptors().cols, example_node->get_descriptors().type());
 
 	// Construct bag of words from 
 	for (Node node : nodes) {
-		assert(node->has_flag(Property::SIFT));
+		assert(node->has_flag(Property::SURF));
 		descs.push_back(node->get_descriptors());
 	}
 
@@ -32,7 +32,7 @@ bool NodePropertiesGraphBOW::add_node(Node node) {
 }
 
 void NodePropertiesGraphBOW::generate_BOW_hist(Node node) {
-	assert(node->has_flag(Property::SIFT));
+	assert(node->has_flag(Property::SURF));
 	cv::Mat bow_hist;
 	m_BOW_extractor->get_BOW_hist(node->get_descriptors(), bow_hist);
 	node->set_BOW_histogram(bow_hist);

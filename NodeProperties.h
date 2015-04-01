@@ -4,8 +4,8 @@
 
 enum Property {
 	Histogram = 1,
-	SIFT = 2,
-	PCA_SIFT = 4,
+	SURF = 2,
+	PCA_SURF = 4,
 	BOW = 8
 };
 inline Property operator|(const Property a, const Property b) {

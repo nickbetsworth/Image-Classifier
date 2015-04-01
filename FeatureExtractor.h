@@ -33,13 +33,13 @@ public:
 	static std::vector<cv::KeyPoint> calculate_key_points(cv::Mat image_data);
 
 	/**
-	* @fn	static cv::Mat Image::calculate_SIFT_descriptors(cv::Mat image_data);
+	* @fn	static cv::Mat Image::calculate_SURF_descriptors(cv::Mat image_data);
 	*
-	* @brief	Calculates a set of SIFT descriptors for
+	* @brief	Calculates a set of SURF descriptors for
 	*
 	* @param	image_data	Information describing the image.
 	*
-	* @return	A set of SIFT descriptors.
+	* @return	A set of SURF descriptors.
 	*/
 
 	static cv::Mat calculate_descriptors(cv::Mat image_data, std::vector<cv::KeyPoint>& key_points);

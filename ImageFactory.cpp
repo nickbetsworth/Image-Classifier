@@ -14,7 +14,7 @@ Image* ImageFactory::create_image(const std::string &filepath, Property properti
 		std::vector<cv::KeyPoint> key_points = FeatureExtractor::calculate_key_points(image_data);
 		cv::Mat descriptors = FeatureExtractor::calculate_descriptors(image_data, key_points);
 
-		image->set_keypoint_descriptors(key_points, descriptors);
+		image->set_descriptors(descriptors);
 
 		cv::Mat PCA_descriptors = FeatureExtractor::PCA_descriptors(descriptors, 0.95);
 		image->set_PCA_descriptors(PCA_descriptors);

@@ -25,8 +25,6 @@ public:
 	void set_histogram(cv::Mat hist);
 	cv::Mat get_histogram() const;
 	
-	void set_keypoint_descriptors(std::vector<cv::KeyPoint> key_points, cv::Mat descriptors);
-	std::vector<cv::KeyPoint> get_key_points() const;
 	void set_descriptors(cv::Mat descriptors);
 	cv::Mat get_descriptors() const;
 
@@ -54,7 +52,6 @@ private:
 	/** @brief	Stores the properties that this node holds. */
 	Property m_properties = static_cast<Property>(0);
 	cv::Mat m_histogram;
-	std::vector<cv::KeyPoint> m_key_points;
 	cv::Mat m_descriptors;
 	cv::Mat m_PCA_descriptors;
 	cv::Mat m_BOW_histogram;

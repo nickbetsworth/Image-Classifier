@@ -175,7 +175,6 @@
     <ClCompile Include="RFTest.cpp" />
     <ClCompile Include="imageclassifierwindow.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SiftTest.cpp" />
     <ClCompile Include="Testing.cpp" />
     <ClCompile Include="Test_PCA.cpp" />
   </ItemGroup>
@@ -212,7 +211,6 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QLoadingSplashScreen.h;%(AdditionalInputs)</AdditionalInputs>
     </CustomBuild>
     <ClInclude Include="ImageFactory.h" />
-    <ClInclude Include="SiftTest.h" />
     <ClInclude Include="Testing.h" />
     <CustomBuild Include="ImageSelector.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore ImageSelector.h -o GeneratedFiles\debug\moc_ImageSelector.cpp</Command>

@@ -5,6 +5,7 @@
 // In charge of generating the required image with the specified features
 class ImageFactory {
 public:
+	static const int FEATURE_VERSION = 1;
 	// Checks if the specified features are already in database
 	// If so re-uses them
 	static Image* create_image(const std::string &filepath, Property properties);

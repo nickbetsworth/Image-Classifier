@@ -167,9 +167,6 @@
     <ClCompile Include="ImageClustererKMeans.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="SiftTest.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
     <ClCompile Include="ImageFactory.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
@@ -249,9 +246,6 @@
     </ClInclude>
     <ClInclude Include="ImageClustererKMeans.h">
       <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="SiftTest.h">
-      <Filter>Header Files\Tests</Filter>
     </ClInclude>
     <ClInclude Include="ImageFactory.h">
       <Filter>Header Files\Library</Filter>

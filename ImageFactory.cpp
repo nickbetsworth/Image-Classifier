@@ -14,18 +14,27 @@ Image* ImageFactory::create_image(const std::string &filepath, Property properti
 		std::string data_filepath = filepath + ".yml";
 		// Attempt to load in descriptors
 		cv::FileStorage r_fs(data_filepath, cv::FileStorage::READ);
+		
 		cv::Mat descriptors;
 
 		// If the file exists and we are able to open it
 		if (r_fs.isOpened()) {
-			r_fs["surf_descriptors"] >> descriptors;
+			// Ensure that we have the correct version of features
+			int version = 0;
+			r_fs["version"] >> version;
+			if (version == FEATURE_VERSION)
+				r_fs["descriptors"] >> descriptors;
 		}
-		else {
+
+		// If the descriptors are still empty, that means either the file does not exist
+		// or it has incorrect formatting
+		if (descriptors.empty()) {
 			std::vector<cv::KeyPoint> key_points = FeatureExtractor::calculate_key_points(image_data);
 			descriptors = FeatureExtractor::calculate_descriptors(image_data, key_points);
 
 			// Save the descriptors to the file
 			cv::FileStorage w_fs(data_filepath, cv::FileStorage::WRITE);
+			w_fs << "version" << FEATURE_VERSION;
 			w_fs << "descriptors" << descriptors;
 
 			w_fs.release();

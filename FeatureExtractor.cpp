@@ -10,7 +10,7 @@ std::vector<cv::KeyPoint> FeatureExtractor::calculate_key_points(cv::Mat image_d
 	std::vector<cv::KeyPoint> key_points;
 	detector->detect(image_data, key_points);
 
-	cv::KeyPointsFilter::retainBest(key_points, Image::MAX_KEY_POINTS);
+	//cv::KeyPointsFilter::retainBest(key_points, Image::MAX_KEY_POINTS);
 
 	return key_points;
 }
@@ -63,7 +63,8 @@ float FeatureExtractor::calculate_descriptor_distance(cv::Mat descriptors1, cv::
 cv::Ptr<cv::FeatureDetector> FeatureExtractor::get_detector() {
 	if (detector == 0) {
 		cv::initModule_nonfree();
-		detector = cv::FeatureDetector::create("SURF");
+		//detector = cv::FeatureDetector::create("SURF");
+		detector = new cv::SurfFeatureDetector(800);
 	}
 
 	return detector;

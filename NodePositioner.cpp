@@ -103,7 +103,8 @@ map<Node, cv::Point> NodePositioner::get_node_positions_fmmm(double node_width, 
 			Node node2 = *k;
 
 			ogdf::edge e = g.newEdge(node_to_ogdf_map[node1], node_to_ogdf_map[node2]);
-			weight[e] = m_graph->get_edge_weight(node1, node2);
+			weight[e] = m_graph->get_edge_weight(node1, node2) / 100;
+			std::cout << "Edge weight: " << weight[e] << std::endl;
 		}
 	}
 

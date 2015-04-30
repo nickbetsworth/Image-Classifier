@@ -9,6 +9,6 @@ public:
 	virtual bool add_node(Node node);
 	void generate_BOW_hist(Node node);
 private:
-	static const int NUM_WORDS = 16;
+	static const int NUM_WORDS = 80;
 	BOWExtractor* m_BOW_extractor;
 };

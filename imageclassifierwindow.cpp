@@ -37,14 +37,19 @@ ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidge
 	// Set up the event handler for the status checker
 	connect(m_status_checker, SIGNAL(timeout()), this, SLOT(checkStatus()));
 	// Set up the event hander for when a user drag & drops files to be classified
-	std::cout << "filesDropped->addImages connection status: " << connect(ui.view, SIGNAL(filesDropped(const QStringList&)), this, SLOT(addImages(const QStringList&))) << std::endl;
+	connect(ui.view, SIGNAL(filesDropped(const QStringList&)), this, SLOT(addImages(const QStringList&)));
 
+	// Create the 3 separate graphics scenes
+	// When a user is browsing all classes at once
 	m_scene_classes = new QGraphicsScene(this);
+	// When a user is browsing images in a single class
 	m_scene_class = new QGraphicsScene(this);
+	// When a user is browsing a single image
 	m_scene_image = new QGraphicsScene(this);
 
 	srand(time(NULL));
 	
+	// Default state is browsing all classes
 	m_state = BrowseState::CLASSES;
 	
 	setup_classes();
@@ -66,24 +71,15 @@ void ImageClassifierWindow::setup_classes() {
 	for (ImageClass* image_class : get_image_classes()) {
 		image_class->calculate_icon();
 		graph->add_node(image_class);
+
 		// Create the icon for the category
 		QCategoryDisplayer* cluster = new QCategoryDisplayer(image_class);
-		// If this category contains a new image
-
-		// Create the wheel that is displayed on mouse over
-		//QWheelDisplay* wheel = new QWheelDisplay(cat);
-		//m_wheels.push_back(wheel);
 		m_clusters.push_back(cluster);
 
-		// Add a mapping from the QCategoryDisplayer to ImageClass, for later use when drawing edges
+		// Add a mapping from the QCategoryDisplayer to ImageClass, for easy access to the display component for current class
 		m_class_to_displayer[image_class] = cluster;
 		// Add both components to the scene
-		//m_scene_classes->addItem(wheel);
 		m_scene_classes->addItem(cluster);
-
-		// Create event handlers for when a user mouses in and out of a category
-		//connect(cat, SIGNAL(mouseEntered()), wheel, SLOT(show()));
-		//connect(cat, SIGNAL(mouseLeft()), wheel, SLOT(hide()));
 
 		// Create an event handler for when a category is clicked on screen
 		connect(cluster, SIGNAL(classClicked(ImageClass*)), this, SLOT(classClicked(ImageClass*)));
@@ -92,8 +88,7 @@ void ImageClassifierWindow::setup_classes() {
 	// Calculate the positions of each of the image classes
 	NodePositioner* positioner = new NodePositioner(graph);
 	// Use a force based layout
-	// We add some padding to the total radius, so it doesn't come so close to
-	// other categories
+	// We add some padding to the total radius, so it doesn't come so close to other categories
 	int category_radius = QCategoryDisplayer::get_total_diameter() + 200;
 	map<NodeProperties*, cv::Point> positions = positioner->get_node_positions_fmmm(category_radius, category_radius);
 
@@ -110,8 +105,10 @@ void ImageClassifierWindow::setup_classes() {
 }
 
 void ImageClassifierWindow::render_class() {
+	// Obtain the positions of the nodes from the graph layout algorithm
 	NodePositioner* np = m_positioner.result();
 	NodePositions positions = np->get_previous_node_positions();
+	// Store the edges from the graph for later drawing
 	NodeEdges edges = np->get_edges();
 
 	// Determines whether or not edges will be drawn between the nodes
@@ -280,6 +277,8 @@ NodePositioner* ImageClassifierWindow::calculate_image_positions(ImageClass* ima
 
 void ImageClassifierWindow::classClicked(ImageClass* class_clicked) {
 	m_current_class = class_clicked;
+	// Begin running the task to calculate node positions and let the system know
+	// the calculation is taking place, so that it can check when it finishes (checkStatus)
 	m_positioner = QtConcurrent::run(this, &ImageClassifierWindow::calculate_image_positions, class_clicked);
 	start_task(ProgramTask::POSITIONING);
 }
@@ -316,13 +315,6 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 	else {
 		m_scene_image->clear();
 
-		// DEBUGGING MESSAGES
-		/*cout << image->get_filepath() << endl;
-		Mat hist = get_1d_histogram(image->get_image_data(), Image::HIST_BINS);
-		Mat hist_t = hist.t();
-		cout << "Hist: " << hist_t << endl;*/
-		// END OF DEBUGGING MESSAGES
-
 		QPixmap* pm = new QPixmap(Conv::cvMatToQPixmap(image->get_fullres_image()));
 		QGraphicsItem* item = new QGraphicsPixmapItem(*pm);
 		// Center the image in the co-ordinate system
@@ -332,6 +324,7 @@ void ImageClassifierWindow::imageClicked(Image* image, bool rightClick) {
 		setState(BrowseState::IMAGE);
 
 		ui.view->resetMatrix();
+		// Center the view on the image clicked
 		m_scene_image->addItem(item);
 		ui.view->centerOn(item);;
 	}
@@ -354,9 +347,6 @@ void ImageClassifierWindow::keyPressEvent(QKeyEvent* e) {
 		cout << "Re-training Random Forest" << endl;
 		get_classifier()->train(get_image_classes());
 		cout << "Training Finished" << endl;
-	}
-	else if (e->key() == Qt::Key::Key_R) {
-		//ui.view->update();
 	}
 }
 
@@ -442,7 +432,7 @@ void ImageClassifierWindow::menuBarClicked(QAction* action) {
 }
 
 void ImageClassifierWindow::addImages(const QStringList& image_files) {
-	std::cout << "Signal received" << std::endl;
+	// Begin loading and classifying the new images
 	m_classifierProcess = QtConcurrent::run(this, &ImageClassifierWindow::classify_images, image_files);
 	start_task(ProgramTask::CLASSIFYING);
 }
@@ -482,11 +472,14 @@ void ImageClassifierWindow::highlight_classes() {
 }
 
 void ImageClassifierWindow::remove_highlight(ImageClass* image_class) {
+	// Remove the ring from all images in this cluster
 	m_new_image_map[image_class].clear();
+	// Remove highlight from cluster icon
 	m_class_to_displayer[image_class]->set_highlighted(false);
 }
 
 void ImageClassifierWindow::update_class(ImageClass* image_class) {
+	// Only attempt to calculate the icon if there is at least one image in the class
 	if (image_class->get_image_count() > 0) {
 		image_class->calculate_icon();
 		m_class_to_displayer[image_class]->update_images();

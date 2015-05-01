@@ -117,7 +117,7 @@ float NodeProperties::calculate_distance_BOW_histogram(NodeProperties* node2) co
 	cv::Mat node2T = node2->get_BOW_histogram().clone().t();
 
 
-	float dist = compare_histograms(node1T, node2T);
+	float dist = norm(node1T, node2T, cv::NORM_L2);
 
 	node1T.release();
 	node2T.release();

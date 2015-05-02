@@ -1,5 +1,6 @@
 #include "ClassifierManager.h"
 #include "ImageClustererKMeans.h"
+#include "ImageClustererGMM.h"
 #include "ImageFactory.h"
 
 ClassifierManager::ClassifierManager(FeatureType type) : m_feature_type(type)
@@ -43,7 +44,7 @@ void ClassifierManager::cluster_images(int n_clusters) {
 		return;
 	}
 
-	cout << "Using GMM with " << n_clusters << " clusters." << endl;
+	cout << "Clustering with k = " << n_clusters << endl;
 	
 	ImageClusterer* clusterer;
 	
@@ -54,6 +55,7 @@ void ClassifierManager::cluster_images(int n_clusters) {
 		clusterer = new ImageClustererGMM(m_images, n_clusters, m_feature_type);
 
 	clusterer->cluster_images();
+
 	m_image_classes = clusterer->get_clusters();
 }
 

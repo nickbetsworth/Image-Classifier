@@ -25,6 +25,11 @@ int BOWExtractor::get_descriptor_type() {
 }
 
 void BOWExtractor::get_BOW_hist(cv::Mat descriptors, cv::Mat& bow_hist) {
+	// This was developed in reference to the existing BOWDescriptorExtractor class
+	// in OpenCV. This version allows the descriptors to be pre-computed and passed
+	// to the function, as opposed to being re-calculated upon each call to the BOW
+	// functions..
+	
 	int clusterCount = this->get_descriptor_size(); // = vocabulary.rows
 
 	// Match keypoint descriptors to cluster center (to vocabulary)

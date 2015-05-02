@@ -1,6 +1,5 @@
 #pragma once
 #include "Image.h"
-#include "ImageClustererGMM.h"
 #include "ImageClassifierRF.h"
 #include "FeatureManager.h"
 #include <vector>

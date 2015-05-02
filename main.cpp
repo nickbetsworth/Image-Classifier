@@ -9,7 +9,6 @@
 #include <Windows.h>
 #include <sstream>
 #include <iostream>
-#include "Testing.h"
 
 void ShowConsole()
 {
@@ -28,7 +27,6 @@ void ShowConsole()
 int main(int argc, char *argv[])
 {
 	ShowConsole();
-	perform_tests();
 	QApplication a(argc, argv);
 	ImageSelector selector;
 	selector.show();

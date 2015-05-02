@@ -1,5 +1,6 @@
 Debug/
 GeneratedFiles/
+testing/
 OGDF.props
 OpenCV.props
 Makefile

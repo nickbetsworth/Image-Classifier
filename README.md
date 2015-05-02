@@ -17,6 +17,8 @@ Clusters and positions databases of images with respect to their visual similari
 * Open Graph Drawing Framework
 
 #### Screenshots
-<img src="http://puu.sh/hy2SD/ae824edde5.jpg" width="400" height="400"> 
-<img src="http://puu.sh/hxKWM/f2b26b1ead.jpg" width="450" height="400"> 
+Histogram Clustering             |  Local Descriptor(SURF) Clustering
+:-------------------------:|:-------------------------:
+![Clusters formed with colour histogram](http://puu.sh/hy2SD/ae824edde5.jpg)  |  ![Cluster formed with SURF descriptors](http://puu.sh/hxKWM/f2b26b1ead.jpg)
+
 <img src="http://puu.sh/hyW0V/f15b237309.jpg">

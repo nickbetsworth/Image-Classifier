@@ -21,4 +21,6 @@ Histogram Clustering             |  Local Descriptor(SURF) Clustering
 :-------------------------:|:-------------------------:
 ![Clusters formed with colour histogram](http://puu.sh/hy2SD/ae824edde5.jpg)  |  ![Cluster formed with SURF descriptors](http://puu.sh/hxKWM/f2b26b1ead.jpg)
 
-<img src="http://puu.sh/hyW0V/f15b237309.jpg">
+Browsing Inside A Cluster|
+--------------------------|
+<img src="http://puu.sh/hyW0V/f15b237309.jpg">|

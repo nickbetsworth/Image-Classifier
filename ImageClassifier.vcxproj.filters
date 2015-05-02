@@ -80,21 +80,6 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryView.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="testing\EMDTest.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="testing\NPGTest.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="testing\RFTest.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="testing\Test_PCA.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="testing\Testing.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
     <ClCompile Include="library\BOWExtractor.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
@@ -177,21 +162,6 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ImageSelector.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="testing\EMDTest.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="testing\NPGTest.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="testing\RFTest.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="testing\Test_PCA.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="testing\Testing.h">
-      <Filter>Header Files\Tests</Filter>
     </ClInclude>
     <ClInclude Include="library\BOWExtractor.h">
       <Filter>Header Files\Library</Filter>

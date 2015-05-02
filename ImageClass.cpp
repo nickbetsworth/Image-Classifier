@@ -7,6 +7,8 @@ ImageClass::ImageClass(vector<Image*> images, FeatureType type)
 	m_type = type;
 	m_icon = 0;
 
+	// Determine which type of graph we will use, with respect to the type of feature used
+	// (Local feature descriptors are better compared with BOW Graph)
 	switch (type) {
 	case FeatureType::COLOUR_HISTOGRAM:
 		m_graph = new Graph();
@@ -57,7 +59,6 @@ void ImageClass::remove_image(Image* image) {
 	m_images.erase(remove(m_images.begin(), m_images.end(), image), m_images.end());
 }
 
-// Calculates the icon
 void ImageClass::calculate_icon() {
 	if (m_images.size() == 0)
 		return;
@@ -127,8 +128,6 @@ void ImageClass::calculate_icon() {
 
 	// Store the image which is closest to the center point of each dimension
 	m_icon = center_image;
-
-	m_feature = m_icon->get_feature();
 }
 
 Image* ImageClass::get_icon() {

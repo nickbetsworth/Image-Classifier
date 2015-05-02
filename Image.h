@@ -20,16 +20,26 @@ public:
 	static const int THUMB_HEIGHT = 200;
 
 	/**
-	 * @fn	Image::Image(const string &filepath);
+	 * @fn	Image::Image(const std::string &filepath, Feature* feature);
 	 *
 	 * @brief	Creates a new instance of an image from the specified file.
 	 *
-	 * @param	filepath	filepath of the image to be loaded in.
+	 * @param	filepath	   	filepath of the image to be loaded in.
+	 * @param [in,out]	feature	A feature vector describing this image.
 	 */
 
 	Image(const std::string &filepath, Feature* feature);
 
-	// Allow the image data to be pre-loaded in
+	/**
+	 * @fn	Image::Image(const std::string &filepath, cv::Mat image_data, Feature* feature);
+	 *
+	 * @brief	Image construct to allow the image data to be pre-loaded in.
+	 *
+	 * @param	filepath	   	The filepath.
+	 * @param	image_data	   	Pixel data for this image.
+	 * @param [in,out]	feature	A feature vector describing this image.
+	 */
+
 	Image(const std::string &filepath, cv::Mat image_data, Feature* feature);
 	~Image();
 
@@ -44,7 +54,7 @@ public:
 	bool has_loaded() const { return m_image_data.data != 0; };
 
 	/**
-	 * @fn	string Image::get_filepath() const
+	 * @fn	std::string Image::get_filepath() const
 	 *
 	 * @brief	Returns the filepath of the loaded image.
 	 *
@@ -54,7 +64,7 @@ public:
 	std::string get_filepath() const { return m_filepath; };
 
 	/**
-	 * @fn	Mat Image::get_image_data() const
+	 * @fn	cv::Mat Image::get_image_data() const
 	 *
 	 * @brief	Gets image data.
 	 *
@@ -62,14 +72,6 @@ public:
 	 */
 
 	cv::Mat get_image_data() const { return m_image_data; };
-
-	/**
-	 * @fn	Mat Image::get_histogram() const
-	 *
-	 * @brief	Gets the histogram of this image.
-	 *
-	 * @return	The histogram.
-	 */
 
 	/**
 	 * @fn	cv::Mat Image::get_fullres_image() const;
@@ -81,8 +83,23 @@ public:
 
 	cv::Mat get_fullres_image() const;
 
+	/**
+	 * @fn	Feature* Image::get_feature() const
+	 *
+	 * @brief	Gets the feature that represents this image.
+	 *
+	 * @return	The feature.
+	 */
+
 	Feature* get_feature() const { return m_feature; };
 private:
+
+	/**
+	 * @fn	void Image::generate_thumbnail();
+	 *
+	 * @brief	Scales the existing m_image_data to thumbnail size.
+	 */
+
 	void generate_thumbnail();
 
 	/** @brief	Stores the filepath this image belongs to */

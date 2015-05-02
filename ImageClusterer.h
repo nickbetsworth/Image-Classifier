@@ -7,9 +7,8 @@
 /**
  * @class	ImageClusterer
  *
- * @brief	This class is in charge of clustering together an arbitrarily sized
- * 			set of images.
- * 			Each cluster is represented by an ImageClass
+ * @brief	This class is in charge of clustering together an arbitrarily sized set of Features.
+ * 			Each cluster is represented by an ImageClass.
  */
 
 class ImageClusterer
@@ -29,7 +28,7 @@ public:
 	int get_cluster_count();
 
 	/**
-	 * @fn	vector<ImageClass*> ImageClusterer::get_clusters();
+	 * @fn	const vector<ImageClass*>& ImageClusterer::get_clusters() const;
 	 *
 	 * @brief	Gets the clusters that have been generated.
 	 *
@@ -73,14 +72,27 @@ protected:
 	 *
 	 * @brief	Adds an image to the specified cluster.
 	 *
+	 * @param [in,out]	image  	The image to be added.
+	 * @param [in,out]	cluster	The cluster to add the image to.
 	 */
 
 	void add_image_to_cluster(Image* image, ImageClass* cluster);
 
+	/**
+	 * @fn	FeatureType ImageClusterer::get_feature_type()
+	 *
+	 * @brief	Get the type of feature we are clustering by.
+	 *
+	 * @return	The feature type.
+	 */
+
 	FeatureType get_feature_type() { return m_type; };
 private:
+	/** @brief	The images to be clustered. */
 	vector<Image*> m_images;
+	/** @brief	The list of produced clusters. */
 	vector<ImageClass*> m_clusters;
+	/** @brief	The feature type by which we are clustering. */
 	FeatureType m_type;
 };
 

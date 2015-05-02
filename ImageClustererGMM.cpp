@@ -16,12 +16,16 @@ ImageClustererGMM::~ImageClustererGMM()
 }
 
 void ImageClustererGMM::cluster_images() {
+	// Get an example feature to determine how many columns each feature vector has
 	Feature* ex_fv = get_images().front()->get_feature();
 	int num_cols = ex_fv->get_feature_vector().cols;
+
 	int img_count = get_images().size();
 	int current_img = 0;
 
+	// Stores all available feature vectors / descriptors to be clustered
 	cv::Mat samples = cv::Mat::zeros(0, num_cols, CV_32F);
+	// Store the image ID that each row from samples corresponds to
 	cv::Mat sampleIDToImg = cv::Mat(0, 1, CV_32SC1);
 
 	for (Image* image : this->get_images()) {
@@ -64,7 +68,6 @@ void ImageClustererGMM::cluster_images() {
 		// Index we are interested in is maxID[1] and maxID[0] is always 0 (row)
 		int max_index = maxID[1];
 
-		int label = labels.at<int>(i, 0);
 		label_to_class_map[max_index].push_back(get_images().at(i));
 	}
 

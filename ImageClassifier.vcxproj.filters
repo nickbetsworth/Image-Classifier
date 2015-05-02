@@ -116,12 +116,6 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_QImageLister.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingScreen.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_LoadingScreen.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="EMDTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
@@ -207,9 +201,6 @@
     </ClInclude>
     <ClInclude Include="ImageConversion.h">
       <Filter>Header Files\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_LoadingScreen.h">
-      <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="EMDTest.h">
       <Filter>Header Files\Tests</Filter>
@@ -310,9 +301,6 @@
     </CustomBuild>
     <CustomBuild Include="LoadingScreen.ui">
       <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="LoadingScreen.h">
-      <Filter>Header Files\Interface</Filter>
     </CustomBuild>
     <CustomBuild Include="QLoadingSplashScreen.h">
       <Filter>Header Files\Interface</Filter>

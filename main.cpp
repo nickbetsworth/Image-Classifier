@@ -1,6 +1,5 @@
 #include "imageclassifierwindow.h"
 #include "ImageSelector.h"
-#include "LoadingScreen.h"
 #include <QtWidgets/QApplication>
 #include <QMessageBox>
 #include <QWidget>

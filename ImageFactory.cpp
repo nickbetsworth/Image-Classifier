@@ -4,6 +4,7 @@
 #include <opencv/highgui.h>
 
 Image* ImageFactory::create_image(const std::string &filepath, FeatureType type) {
+	// Determines if local feature descriptors should be reduced
 	const bool is_PCA_Enabled = false;
 
 	// Load in the image data from the provided filepath
@@ -16,7 +17,7 @@ Image* ImageFactory::create_image(const std::string &filepath, FeatureType type)
 
 	// If the file exists and we are able to open it
 	if (r_fs.isOpened()) {
-		// Ensure that we have the correct version of features
+		// Ensure that we have the correct version of features and the correct feature type
 		int version = 0;
 		std::string saved_type;
 		r_fs["version"] >> version;

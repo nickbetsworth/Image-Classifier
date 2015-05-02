@@ -3,6 +3,7 @@
 #include "ogdf/basic/GraphAttributes.h"
 #include "ogdf/tree/TreeLayout.h"
 #include "ogdf/energybased/FMMMLayout.h"
+
 NodePositioner::NodePositioner(Graph* graph)
 {
 	m_graph = graph;
@@ -19,7 +20,6 @@ map<Node, cv::Point> NodePositioner::get_node_positions_tree(Node root_node, dou
 	// Store the spanning tree as a list of edges, for later use
 	m_edges = multimap_to_vector(spanning_tree);
 
-	//map<NodeProperties*, Point> class_positions = m_graph.calculate_node_positions(root_node, graph_edges, graph_scale);
 	// Create the map that will store the node positions
 	map<Node, cv::Point> pos_map;
 
@@ -93,7 +93,7 @@ map<Node, cv::Point> NodePositioner::get_node_positions_fmmm(double node_width, 
 	ga.setAllWidth(node_width);
 	ga.setAllHeight(node_height);
 
-	// Now add all of the edges to the ogdf graph
+	// Add all of the edges to the ogdf graph
 	NodeList nodes = m_graph->get_nodes();
 	auto endMinusOne = std::prev(nodes.end(), 1);
 	for (auto v = nodes.begin(); v != endMinusOne; v++) {
@@ -104,7 +104,7 @@ map<Node, cv::Point> NodePositioner::get_node_positions_fmmm(double node_width, 
 
 			ogdf::edge e = g.newEdge(node_to_ogdf_map[node1], node_to_ogdf_map[node2]);
 			weight[e] = m_graph->get_edge_weight(node1, node2) / 100;
-			std::cout << "Edge weight: " << weight[e] << std::endl;
+			//std::cout << "Edge weight: " << weight[e] << std::endl;
 		}
 	}
 
@@ -115,7 +115,7 @@ map<Node, cv::Point> NodePositioner::get_node_positions_fmmm(double node_width, 
 	// this makes the graph deterministic
 	fm.newInitialPlacement(false);
 	fm.qualityVersusSpeed(ogdf::FMMMLayout::qvsGorgeousAndEfficient);
-	// Call the layout manager with the weight of each edge
+	// Call the layout manager with the weighted edges
 	fm.call(ga, weight);
 
 	// Create a map from each node to its respective position

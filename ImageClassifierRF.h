@@ -2,6 +2,12 @@
 #include "ImageClassifier.h"
 #include <opencv\ml.h>
 
+/**
+ * @class	ImageClassifierRF
+ *
+ * @brief	Random forest classifier.
+ */
+
 class ImageClassifierRF :
 	public ImageClassifier
 {

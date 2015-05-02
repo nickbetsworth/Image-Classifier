@@ -1,6 +1,5 @@
 #include "ImageSelector.h"
 #include "imageclassifierwindow.h"
-#include "LoadingScreen.h"
 #include "ClassifierManager.h"
 #include <QFileDialog>
 #include <QMessageBox>
@@ -21,7 +20,7 @@ ImageSelector::ImageSelector(QWidget *parent) : QWidget(parent)
 	ui.lstImages->setViewMode(QListView::ViewMode::ListMode);
 	
 	// Connect the slider to update the cluster count label
-	connect(ui.cluster_slider, SIGNAL(sliderMoved(int)), this, SLOT(updateClusterCount(int)));
+	connect(ui.cluster_slider, SIGNAL(valueChanged(int)), this, SLOT(updateClusterCount(int)));
 	// Connect the add button
 	connect(ui.btnAdd, SIGNAL(clicked()), this, SLOT(addImageClicked()));
 	// Connect the run button
@@ -46,13 +45,12 @@ void ImageSelector::updateClusterCount(int count) {
 	ui.lbl_cluster_count->setText("Number of Clusters: " + QString::number(count));
 }
 
-// Open up the file loader
 void ImageSelector::addImageClicked() {
 	addingStarted();
 
 	QStringList image_files = QFileDialog::getOpenFileNames(this, "Select images for clustering process", "C:/data/ProjectImages/FlickrDownloads/", "Images(*.png *.jpg *.gif)");
+	// Begin adding images on a new thread, to not block the UI
 	QtConcurrent::run(ui.lstImages, &QImageLister::add_files, image_files);
-	//ui.lstImages->add_files(image_files);
 
 	addingFinished();
 }
@@ -84,8 +82,7 @@ void ImageSelector::runClicked() {
 
 ClassifierManager* ImageSelector::load_classifier_manager() {
 	emit statusUpdate("Loading Images");
-	// Convert the QStringList to a vector<string>, as the image library
-	// has no Qt dependency
+	// Convert the QStringList to a vector<string>, as the image library has no Qt dependency
 	vector<string> std_file_paths;
 
 	for (QString qs_file_path : ui.lstImages->get_image_files()) {

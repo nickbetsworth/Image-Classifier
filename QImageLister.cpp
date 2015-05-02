@@ -97,8 +97,6 @@ void QImageLister::add_files(QStringList file_paths) {
 		emit incorrectFormat();
 	}
 
-	
-
 	emit addingFinished();
 }
 
@@ -161,8 +159,10 @@ void QImageLister::dropEvent(QDropEvent *e) {
 			file_paths.push_back(url.toLocalFile());
 		}
 
+		// List the files on a separate thread
 		QtConcurrent::run(this, &QImageLister::add_files, file_paths);
 		//add_files(file_paths);
+		// 
 		e->acceptProposedAction();
 	}
 }

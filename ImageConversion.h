@@ -12,7 +12,8 @@ namespace Conv {
 	/**
 	 * @fn	QImage cvMatToQImage(const cv::Mat &inMat);
 	 *
-	 * @brief	Converts an OpenCV matrix to a QImage
+	 * @brief	Converts an OpenCV matrix to a QImage.
+	 * @link	http://asmaloney.com/2013/11/code/converting-between-cvmat-and-qimage-or-qpixmap/
 	 *
 	 * @param	inMat	The in matrix.
 	 *
@@ -25,6 +26,7 @@ namespace Conv {
 	 * @fn	QPixmap cvMatToQPixmap(const cv::Mat &inMat);
 	 *
 	 * @brief	Converts an OpenCV matrix to a QImage
+	 * @link	http://asmaloney.com/2013/11/code/converting-between-cvmat-and-qimage-or-qpixmap/
 	 *
 	 * @param	inMat	The in matrix.
 	 *

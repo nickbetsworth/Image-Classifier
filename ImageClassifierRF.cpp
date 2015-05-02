@@ -73,7 +73,6 @@ ImageClass* ImageClassifierRF::predict(const Image* image) {
 		}
 		
 		
-		//cout << "Label: " << label << endl;
 		// Find the bin with highest frequency
 		int max_bin = 0;
 		for (int i = 1; i < pred_hist.cols; i++) {

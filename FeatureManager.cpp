@@ -22,7 +22,7 @@ cv::Mat FeatureManager::calculate_descriptors(cv::Mat image_data, std::vector<cv
 
 	cv::Mat descriptors;
 
-	std::cout << "Key points size: " << key_points.size() << std::endl;
+	//std::cout << "Key points size: " << key_points.size() << std::endl;
 	extractor->compute(image_data, key_points, descriptors);
 
 	return descriptors;

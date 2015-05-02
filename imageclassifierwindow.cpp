@@ -69,7 +69,7 @@ void ImageClassifierWindow::setup_classes() {
 	// For each image category, create a component to display itself
 	for (ImageClass* image_class : get_image_classes()) {
 		image_class->calculate_icon();
-		graph->add_node(image_class->get_feature());
+		graph->add_node(image_class->get_icon()->get_feature());
 
 		// Create the icon for the category
 		QCategoryDisplayer* cluster = new QCategoryDisplayer(image_class);
@@ -93,7 +93,7 @@ void ImageClassifierWindow::setup_classes() {
 
 	// Position each category and category wheel
 	for (QCategoryDisplayer* cluster : m_clusters) {
-		cv::Point cv_pos = positions[cluster->get_image_class()->get_feature()];
+		cv::Point cv_pos = positions[cluster->get_image_class()->get_icon()->get_feature()];
 		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
 		cluster->setPos(pos);
 	}

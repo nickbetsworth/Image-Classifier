@@ -15,8 +15,10 @@ float FeatureLocal::calculate_distance(Feature* feature2) {
 
 	std::vector<cv::DMatch> matches;
 
+	// For each descriptore in this feature set, find the closest matches from feature2
 	matcher->match(this->get_feature_vector(), feature2->get_feature_vector(), matches);
 
+	// Average the distance of the closest matches
 	float dist = 0;
 	for (cv::DMatch match : matches) {
 		dist += match.distance;

@@ -2,6 +2,13 @@
 #include "ImageClusterer.h"
 #include <opencv/cv.h>
 
+/**
+ * @class	ImageClustererKMeans
+ *
+ * @brief	Clusters a set of Features with k-means algorithm.
+ * 			This is best suited to sets of local feature descriptors - fast implementation.
+ */
+
 class ImageClustererKMeans :
 	public ImageClusterer
 {

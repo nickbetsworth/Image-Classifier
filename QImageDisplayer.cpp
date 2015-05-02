@@ -30,6 +30,7 @@ QImageDisplayer::~QImageDisplayer()
 }
 
 QRectF QImageDisplayer::boundingRect() const {
+	// If the image is highlighted, then its geometry will be larger (specified by HIGHLIGHT_SIZE)
 	if (is_highlighted()) {
 		return QRectF(-(m_diameter / 2 + HIGHLIGHT_SIZE), -(m_diameter / 2 + HIGHLIGHT_SIZE), m_diameter + HIGHLIGHT_SIZE * 2, m_diameter + HIGHLIGHT_SIZE * 2);
 	}
@@ -88,15 +89,6 @@ void QImageDisplayer::set_image(Image* image) {
 	m_pixmap = new QPixmap(pm->scaled(size, Qt::IgnoreAspectRatio, Qt::TransformationMode::SmoothTransformation));
 	// Free up the memory from the unscaled pixmap
 	delete pm;
-
-	// Need to load in full res first if diameter > thumbnail size
-	// f
-	// f
-	// f
-	// c
-	// c
-	// c
-	
 	
 	m_image = image;
 }
@@ -107,6 +99,7 @@ void QImageDisplayer::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 }
 
 void QImageDisplayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
+	// Determine how far away from the center of the image the mouse was released
 	QVector2D v1 = QVector2D(m_pos_clicked);
 	QVector2D v2 = QVector2D(event->pos());
 
@@ -137,18 +130,16 @@ void QImageDisplayer::set_hovering(bool hovering) {
 		this->setZValue(10);
 		emit(mouseEntered());
 	}
+	// Else leave the image at the back of the scene
 	else {
 		this->setZValue(1);
 		emit(mouseLeft());
 	}
-
-	// Let the renderer know the size of the image is about to change
-	
 }
 
 void QImageDisplayer::set_highlighted(bool highlighted) {
-	this->prepareGeometryChange();
-	m_highlighted = highlighted;
 	// Let the renderer know the size of the image is about to change
-	
+	this->prepareGeometryChange();
+
+	m_highlighted = highlighted;
 }

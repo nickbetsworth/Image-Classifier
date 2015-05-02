@@ -6,16 +6,18 @@ GraphBOW::GraphBOW(std::vector<Node> nodes) : Graph() {
 	// Get an example node, to work out how many columns / what type of mat we need
 	Node example_node = nodes.front();
 
+	// Add all descriptors, from all nodes, to a single matrix
 	cv::Mat descs = cv::Mat(0, example_node->get_feature_vector().cols, example_node->get_feature_vector().type());
 
-	// Construct bag of words from 
 	for (Node node : nodes) {
 		descs.push_back(node->get_feature_vector());
 	}
 
+	// Extract a vocabulary via k-means
 	cv::BOWKMeansTrainer kmt = cv::BOWKMeansTrainer(NUM_WORDS);
 	cv::Mat vocab = kmt.cluster(descs);
 
+	// Provide the vocabulary to the feature extractor
 	m_BOW_extractor = new BOWExtractor(vocab);
 }
 

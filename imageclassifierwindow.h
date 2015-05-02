@@ -108,19 +108,19 @@ public slots:
 	/**
 	 * @fn	void ImageClassifierWindow::checkStatus();
 	 *
-	 * @brief	Executed when a lengthy operation is taking place, to determine
-	 * 			whether or not it has been complete yet.
+	 * @brief	Executed when a lengthy operation is taking place, to determine whether or not it has
+	 * 			been complete yet.
 	 */
 
 	void checkStatus();
 
 	/**
-	 * @fn	void ImageClassifierWindow::addImages(QStringList& image_files);
+	 * @fn	void ImageClassifierWindow::addImages(const QStringList& image_files);
 	 *
 	 * @brief	Called when we are given a list of file paths to be classified (via drag &amp; drop
 	 * 			or file -> add new images)
 	 *
-	 * @param [in,out]	image_files	The files to be classified.
+	 * @param	image_files	The files to be classified.
 	 */
 
 	void addImages(const QStringList& image_files);
@@ -129,9 +129,9 @@ protected:
 	/**
 	 * @fn	void ImageClassifierWindow::keyPressEvent(QKeyEvent* e);
 	 *
-	 * @brief	Executed when the user presses a key
+	 * @brief	Executed when the user presses a key.
 	 *
-	 * @param [in,out]	e	If non-null, the QKeyEvent* to process.
+	 * @param [in,out]	e	The QKeyEvent to process.
 	 */
 
 	void keyPressEvent(QKeyEvent* e);
@@ -139,10 +139,9 @@ protected:
 	/**
 	 * @fn	void ImageClassifierWindow::setState(BrowseState state);
 	 *
-	 * @brief	Sets the current state of the program, with respect to BrowseState.
-	 * 			This will swap the graphics view to the correct scene, and also
-	 * 			perform additional operations such as moving the view point to the
-	 * 			position it was at whilst last in this BrowseState. 
+	 * @brief	Sets the current state of the program, with respect to BrowseState. This will swap
+	 * 			the graphics view to the correct scene, and also perform additional operations such
+	 * 			as moving the view point to the position it was at whilst last in this BrowseState.
 	 *
 	 * @param	state	The state.
 	 */
@@ -205,6 +204,7 @@ private:
 	 *
 	 * @brief	Removes the highlight around the specified image class.
 	 *
+	 * @param [in,out]	image_class	The image class to remove the highlight from.
 	 */
 
 	void remove_highlight(ImageClass* image_class);
@@ -214,12 +214,21 @@ private:
 	 *
 	 * @brief	Updates the class icon and neighbours for the given class.
 	 *
+	 * @param [in,out]	image_class	If non-null, the image class.
 	 */
 
 	void update_class(ImageClass* image_class);
 
 	vector<ImageClass*>& get_image_classes();
 	const vector<ImageClass*>& get_image_classes() const;
+
+	/**
+	 * @fn	ImageClassifier* ImageClassifierWindow::get_classifier();
+	 *
+	 * @brief	Gets the classifier used to classify new images.
+	 *
+	 * @return	null if it fails, else the classifier.
+	 */
 
 	ImageClassifier* get_classifier();
 

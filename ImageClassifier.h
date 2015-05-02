@@ -4,42 +4,44 @@
 #include <map>
 #include <vector>
 
+
+using namespace std;
+
 /**
  * @class	ImageClassifier
  *
  * @brief	Classifies new images in to an existing class.
- *
  */
-using namespace std;
+
 class ImageClassifier
 {
 public:
-	
+
 	/**
 	 * @fn	ImageClassifier::ImageClassifier();
 	 *
-	 * @brief	Creates a new instance of ImageClassifier
-	 *
+	 * @brief	Creates a new instance of ImageClassifier.
 	 */
+
 	ImageClassifier();
 	virtual ~ImageClassifier();
 
 	/**
-	 * @fn	virtual void ImageClassifier::train(vector<ImageClass*> training_data) = 0;
+	 * @fn	virtual void ImageClassifier::train(const vector<ImageClass*> training_data) = 0;
 	 *
 	 * @brief	Trains the classifier using the given training data.
 	 *
-	 * @param [in,out]	training_data	The data to train the classifier with.
+	 * @param	training_data	The data to train the classifier with.
 	 */
 
 	virtual void train(const vector<ImageClass*> training_data) = 0;
 
 	/**
-	 * @fn	virtual ImageClass* ImageClassifier::predict(Image* image) = 0;
+	 * @fn	virtual ImageClass* ImageClassifier::predict(const Image* image) = 0;
 	 *
 	 * @brief	Predicts which class an image belongs to.
 	 *
-	 * @param [in,out]	image	The image we are predicting the class for.
+	 * @param	image	The image we are predicting the class for.
 	 *
 	 * @return	The class that the model has predicted the image belongs to.
 	 */
@@ -62,6 +64,7 @@ protected:
 	 *
 	 * @brief	Sets whether or not the classifier has been trained.
 	 *
+	 * @param	has_trained	true if the classifier has trained.
 	 */
 
 	void set_trained_state(const bool has_trained) { m_has_trained = has_trained; };

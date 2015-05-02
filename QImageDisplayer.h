@@ -6,7 +6,7 @@
 /**
  * @class	QImageDisplayer
  *
- * @brief	This component is in charge of rendering an image.
+ * @brief	Renders a single Image in to the scene.
  */
 
 class QImageDisplayer :
@@ -30,9 +30,46 @@ public:
 	 */
 
 	Image* get_image() { return m_image; };
+
+	/**
+	 * @fn	void QImageDisplayer::set_image(Image* image);
+	 *
+	 * @brief	Sets the image which this component will render.
+	 * 			Note: this also re-loads in the pixmap.
+	 *
+	 * @param [in,out]	image	If non-null, the image.
+	 */
+
 	void set_image(Image* image);
+
+	/**
+	 * @fn	QPixmap* QImageDisplayer::get_pixmap()
+	 *
+	 * @brief	Gets the pixmap which is being used to render the image.
+	 *
+	 * @return	null if it fails, else the pixmap.
+	 */
+
 	QPixmap* get_pixmap() { return m_pixmap; };
+
+	/**
+	 * @fn	int QImageDisplayer::get_diameter() const
+	 *
+	 * @brief	Gets the diameter of the rendered image.
+	 *
+	 * @return	The diameter.
+	 */
+
 	int get_diameter() const { return m_diameter; };
+
+	/**
+	 * @fn	void QImageDisplayer::set_diameter(int diameter)
+	 *
+	 * @brief	Sets the diameter of the rendered image.
+	 *
+	 * @param	diameter	The diameter.
+	 */
+
 	void set_diameter(int diameter) { m_diameter = diameter; };
 
 	/**

@@ -40,7 +40,9 @@ protected:
 
 	virtual void drawContents(QPainter* painter);
 
+	/** @brief	Specifies the width of the splash screen. */
 	static const int FRAME_WIDTH = 360;
+	/** @brief	Specifies the height of the splash screen. */
 	static const int FRAME_HEIGHT = 200;
 	
 protected slots:

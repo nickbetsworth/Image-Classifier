@@ -9,6 +9,7 @@
 #include <QGraphicsItem>
 
 #include <iostream>
+
 QCategoryView::QCategoryView(QWidget* parent) : QGraphicsView(parent) { initialize(); }
 QCategoryView::QCategoryView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent) { initialize(); }
 
@@ -33,17 +34,16 @@ QCategoryView::~QCategoryView()
 {
 }
 
-// When a user scrolls, zoom in or out of the scene
 void QCategoryView::wheelEvent(QWheelEvent* e) {
-	//this->setTransformationAnchor(QGraphicsView::ViewportAnchor::AnchorUnderMouse);
-	// 
+	// Specify the  upper and lower bound on scaling
 	const double max_zoom = 1.0;
 	const double min_zoom = 0.2;
+
 	// How quickly the scale will change with respect to mouse scroling
 	const double zoom_speed = 0.15;
 
-	int mult = 0;
 	// Determine which way the user wishes to scroll
+	int mult = 0;
 	if (e->angleDelta().y() > 0)
 		mult = 1;
 	else if (e->angleDelta().y() < 0)
@@ -62,8 +62,6 @@ void QCategoryView::wheelEvent(QWheelEvent* e) {
 			t.m21(), new_zoom, t.m23(),
 			t.m31(), t.m32(), t.m33());
 	}
-
-	//std::cout << t.m11() << ", " << t.m22() << std::endl;
 
 	this->setTransform(t);
 
@@ -91,10 +89,10 @@ void QCategoryView::dragEnterEvent(QDragEnterEvent *e) {
 	if (e->mimeData()->hasFormat("text/uri-list")) {
 		e->acceptProposedAction();
 
-		std::cout << "User attempting to drag acceptable data" << std::endl;
+		//std::cout << "User attempting to drag acceptable data" << std::endl;
 	}
 	else {
-		std::cout << "User attempting to drag incorrect data type" << std::endl;
+		//std::cout << "User attempting to drag incorrect data type" << std::endl;
 	}
 
 }
@@ -114,7 +112,6 @@ void QCategoryView::dropEvent(QDropEvent *e) {
 			file_paths.push_back(url.toLocalFile());
 		}
 
-		std::cout << "Signal sent" << std::endl;
 		emit(filesDropped(file_paths));
 
 		e->acceptProposedAction();

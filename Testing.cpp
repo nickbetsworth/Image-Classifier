@@ -1,8 +1,6 @@
 #include "Testing.h"
 #include "EMDTest.h"
-#include "NodePropertiesFlagTest.h"
 #include "NPGTest.h"
-#include "ImageTest.h"
 #include "RFTest.h"
 #include "Test_PCA.h"
 

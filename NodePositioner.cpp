@@ -3,7 +3,7 @@
 #include "ogdf/basic/GraphAttributes.h"
 #include "ogdf/tree/TreeLayout.h"
 #include "ogdf/energybased/FMMMLayout.h"
-NodePositioner::NodePositioner(NodePropertiesGraph* graph)
+NodePositioner::NodePositioner(Graph* graph)
 {
 	m_graph = graph;
 }

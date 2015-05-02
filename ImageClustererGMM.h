@@ -1,13 +1,12 @@
 #pragma once
 #include "ImageClusterer.h"
-
 #include <opencv\ml.h>
 
 class ImageClustererGMM :
 	public ImageClusterer
 {
 public:
-	ImageClustererGMM(vector<Image*> images, int n_clusters);
+	ImageClustererGMM(vector<Image*> images, int n_clusters, FeatureType type);
 	~ImageClustererGMM();
 	virtual void cluster_images();
 

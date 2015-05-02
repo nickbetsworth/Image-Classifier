@@ -1,5 +1,5 @@
 #include "NPGTest.h"
-#include "NodePropertiesGraph.h"
+#include "Graph.h"
 #include "Image.h"
 #include <QDir>
 #include <QFileInfo>
@@ -9,7 +9,7 @@
 using namespace std;
 
 void test_NPG() {
-	NodePropertiesGraph* g = new NodePropertiesGraph();
+	/*Graph* g = new Graph();
 	vector<Image*> images;
 	QDir dir = QDir("C:/data/ProjectImages/Test/");
 	QStringList filters;
@@ -30,14 +30,14 @@ void test_NPG() {
 	// Load in some images
 	// Add the last n - 1 as nodes
 	for (auto k = images.begin() + 1; k != images.end(); k++) {
-		g->add_node(*k);
+		g->add_node((*k)->get_feature());
 	}
 	
 	AdjacencyMatrix m = g->get_adjacency_matrix();
 	NodeList node_list = g->get_nodes();
 	cout << node_list.size() << " nodes added to graph:" << endl;
-	for (NodeProperties* node1 : node_list) {
-		for (NodeProperties* node2 : node_list) {
+	for (Feature* node1 : node_list) {
+		for (Feature* node2 : node_list) {
 			cout << node1 << " to " << node2 << ": " << m[node1][node2] << endl;
 		}
 	}
@@ -49,8 +49,8 @@ void test_NPG() {
 	m = g->get_adjacency_matrix();
 	node_list = g->get_nodes();
 	cout << node_list.size() << " nodes in graph:" << endl;
-	for (NodeProperties* node1 : node_list) {
-		for (NodeProperties* node2 : node_list) {
+	for (Feature* node1 : node_list) {
+		for (Feature* node2 : node_list) {
 			cout << node1 << " to " << node2 << ": " << m[node1][node2] << endl;
 		}
 	}
@@ -61,8 +61,8 @@ void test_NPG() {
 	m = g->get_adjacency_matrix();
 	node_list = g->get_nodes();
 	cout << node_list.size() << " nodes in graph:" << endl;
-	for (NodeProperties* node1 : node_list) {
-		for (NodeProperties* node2 : node_list) {
+	for (Feature* node1 : node_list) {
+		for (Feature* node2 : node_list) {
 			cout << node1 << " to " << node2 << ": " << m[node1][node2] << endl;
 		}
 	}
@@ -75,9 +75,9 @@ void test_NPG() {
 	m = g->get_adjacency_matrix();
 	node_list = g->get_nodes();
 	cout << node_list.size() << " nodes in graph:" << endl;
-	for (NodeProperties* node1 : node_list) {
-		for (NodeProperties* node2 : node_list) {
+	for (Feature* node1 : node_list) {
+		for (Feature* node2 : node_list) {
 			cout << node1 << " to " << node2 << ": " << m[node1][node2] << endl;
 		}
-	}
+	}*/
 }

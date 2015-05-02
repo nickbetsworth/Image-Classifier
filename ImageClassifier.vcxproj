@@ -141,7 +141,9 @@
     <ClCompile Include="BOWExtractor.cpp" />
     <ClCompile Include="ClassifierManager.cpp" />
     <ClCompile Include="EMDTest.cpp" />
-    <ClCompile Include="FeatureExtractor.cpp" />
+    <ClCompile Include="FeatureHistogram.cpp" />
+    <ClCompile Include="FeatureLocal.cpp" />
+    <ClCompile Include="FeatureManager.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_ImageSelector.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_LoadingScreen.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryView.cpp" />
@@ -151,7 +153,6 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageClass.cpp" />
     <ClCompile Include="ImageClassifier.cpp" />
-    <ClCompile Include="ImageClustererBasic.cpp" />
     <ClCompile Include="ImageClustererGMM.cpp" />
     <ClCompile Include="ImageClassifierRF.cpp" />
     <ClCompile Include="ImageClusterer.cpp" />
@@ -159,13 +160,11 @@
     <ClCompile Include="ImageConversion.cpp" />
     <ClCompile Include="ImageFactory.cpp" />
     <ClCompile Include="ImageSelector.cpp" />
-    <ClCompile Include="ImageTest.cpp" />
     <ClCompile Include="LoadingScreen.cpp" />
     <ClCompile Include="NodePositioner.cpp" />
-    <ClCompile Include="NodeProperties.cpp" />
-    <ClCompile Include="NodePropertiesFlagTest.cpp" />
-    <ClCompile Include="NodePropertiesGraph.cpp" />
-    <ClCompile Include="NodePropertiesGraphBOW.cpp" />
+    <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="GraphBOW.cpp" />
+    <ClCompile Include="Feature.cpp" />
     <ClCompile Include="NPGTest.cpp" />
     <ClCompile Include="QCategoryDisplayer.cpp" />
     <ClCompile Include="QCategoryView.cpp" />
@@ -181,7 +180,9 @@
   <ItemGroup>
     <ClInclude Include="BOWExtractor.h" />
     <ClInclude Include="ClassifierManager.h" />
-    <ClInclude Include="FeatureExtractor.h" />
+    <ClInclude Include="FeatureHistogram.h" />
+    <ClInclude Include="FeatureLocal.h" />
+    <ClInclude Include="FeatureManager.h" />
     <ClInclude Include="GeneratedFiles\ui_ImageSelector.h" />
     <ClInclude Include="GeneratedFiles\ui_LoadingScreen.h" />
     <ClInclude Include="EMDTest.h" />
@@ -189,7 +190,6 @@
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageClass.h" />
     <ClInclude Include="ImageClassifier.h" />
-    <ClInclude Include="ImageClustererBasic.h" />
     <ClInclude Include="ImageClustererGMM.h" />
     <ClInclude Include="ImageClassifierRF.h" />
     <ClInclude Include="ImageClusterer.h" />
@@ -202,7 +202,8 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </AdditionalInputs>
     </ClInclude>
-    <ClInclude Include="NodePropertiesGraphBOW.h" />
+    <ClInclude Include="GraphBOW.h" />
+    <ClInclude Include="Feature.h" />
     <ClInclude Include="Test_PCA.h" />
     <CustomBuild Include="QLoadingSplashScreen.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QLoadingSplashScreen.h -o GeneratedFiles\debug\moc_QLoadingSplashScreen.cpp</Command>
@@ -225,7 +226,6 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC LoadingScreen.h</Message>
     </CustomBuild>
     <ClInclude Include="NodePositioner.h" />
-    <ClInclude Include="NodeProperties.h" />
     <CustomBuild Include="QCategoryDisplayer.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QCategoryDisplayer.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QCategoryDisplayer.h -o GeneratedFiles\debug\moc_QCategoryDisplayer.cpp</Command>
@@ -236,8 +236,7 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC QCategoryDisplayer.h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneratedFiles\release\moc_QCategoryDisplayer.cpp;%(Outputs)</Outputs>
     </CustomBuild>
-    <ClInclude Include="NodePropertiesFlagTest.h" />
-    <ClInclude Include="NodePropertiesGraph.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="NPGTest.h" />
     <CustomBuild Include="QCategoryView.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.3.2\5.3\msvc2013\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_WIDGETS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -IC:/Qt/Qt5.3.2/5.3/msvc2013/mkspecs/win32-msvc2013 -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier" -I"C:/Users/Nick/Dropbox/Programming/Visual Studio C++/ImageClassifier/ImageClassifier/GeneratedFiles/Debug" -IC:/Qt/Qt5.3.2/5.3/msvc2013/include -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtWidgets -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtGui -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtANGLE -IC:/Qt/Qt5.3.2/5.3/msvc2013/include/QtCore QCategoryView.h -o GeneratedFiles\debug\moc_QCategoryView.cpp</Command>
@@ -342,9 +341,6 @@
   <ItemGroup>
     <Image Include="Resources\b3.png" />
     <Image Include="Resources\b4.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ImageTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -2,7 +2,7 @@
 #include "ImageClustererKMeans.h"
 #include "ImageFactory.h"
 
-ClassifierManager::ClassifierManager()
+ClassifierManager::ClassifierManager(FeatureType type) : m_feature_type(type)
 {
 	m_classifier = new ImageClassifierRF();
 }
@@ -13,7 +13,7 @@ ClassifierManager::~ClassifierManager()
 }
 
 Image* ClassifierManager::load_image(string file_path) {
-	Image* image = ImageFactory::create_image(file_path, Property::Histogram | Property::SURF);
+	Image* image = ImageFactory::create_image(file_path, m_feature_type);
 	if (image->has_loaded()) {
 		return image;
 	}
@@ -47,10 +47,11 @@ void ClassifierManager::cluster_images(int n_clusters) {
 	
 	ImageClusterer* clusterer;
 	
-	if (m_images.front()->has_flag(Property::SURF))
-		clusterer = new ImageClustererKMeans(m_images, n_clusters);
+	// If we're dealing with local features, use k-means as it is far quicker
+	if (m_feature_type == FeatureType::LOCAL_FEATURE)
+		clusterer = new ImageClustererKMeans(m_images, n_clusters, m_feature_type);
 	else
-		clusterer = new ImageClustererGMM(m_images, n_clusters);
+		clusterer = new ImageClustererGMM(m_images, n_clusters, m_feature_type);
 
 	clusterer->cluster_images();
 	m_image_classes = clusterer->get_clusters();

@@ -1,7 +1,8 @@
 #pragma once
 #include "Image.h"
-#include "NodeProperties.h"
-#include "NodePropertiesGraph.h"
+#include "Feature.h"
+#include "Graph.h"
+#include "FeatureManager.h"
 #include <opencv\cv.h>
 #include <vector>
 /**
@@ -15,20 +16,9 @@
  * @date	25/10/2014
  */
 
-class ImageClass : public NodeProperties
+class ImageClass
 {
 public:
-
-	/**
-	 * @fn	ImageClass::ImageClass();
-	 *
-	 * @brief	Generates a new empty image class.
-	 *
-	 * @author	Nick
-	 * @date	25/10/2014
-	 */
-	ImageClass();
-
 	/**
 	 * @fn	ImageClass::ImageClass(vector<Image> images);
 	 *
@@ -36,7 +26,7 @@ public:
 	 *
 	 * @param	images	A list of images belonging to this class
 	 */
-	ImageClass(vector<Image*> images);
+	ImageClass(vector<Image*> images, FeatureType type);
 	~ImageClass();
 
 	/**
@@ -63,8 +53,9 @@ public:
 	vector<Image*>& get_images() { return m_images; };
 	int get_image_count() { return m_images.size(); };
 
-	NodePropertiesGraph* get_graph() { return m_graph; };
-	
+	Graph* get_graph() { return m_graph; };
+	Feature* get_feature() { return m_feature; };
+
 	Image* get_icon();
 	void calculate_icon();
 private:
@@ -73,8 +64,9 @@ private:
 	Image* m_icon;
 
 	// Manages the adjacency matrix between nodes of this class
-	NodePropertiesGraph* m_graph;
+	Graph* m_graph;
 
-	
+	FeatureType m_type;
+	Feature* m_feature;
 };
 

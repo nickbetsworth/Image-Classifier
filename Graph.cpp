@@ -1,20 +1,20 @@
-#include "NodePropertiesGraph.h"
+#include "Graph.h"
 #include <chrono>
 
-NodePropertiesGraph::NodePropertiesGraph()
+Graph::Graph()
 {
 	m_previous_root = 0;
 	remove_cache();
 }
 
 
-NodePropertiesGraph::~NodePropertiesGraph()
+Graph::~Graph()
 {
 }
 
-bool NodePropertiesGraph::add_node(Node node) {
+bool Graph::add_node(Node node) {
 	
-	pair<set<NodeProperties*>::iterator, bool> result = m_nodes.insert(node);
+	pair<set<Feature*>::iterator, bool> result = m_nodes.insert(node);
 	// If the new node was successfully added
 	// (It did not already exist within the list)
 	if (result.second) {
@@ -27,7 +27,7 @@ bool NodePropertiesGraph::add_node(Node node) {
 	}
 }
 
-bool NodePropertiesGraph::remove_node(Node node) {
+bool Graph::remove_node(Node node) {
 	int num_removed = m_nodes.erase(node);
 	// If the element was removed
 	if (num_removed) {
@@ -40,15 +40,14 @@ bool NodePropertiesGraph::remove_node(Node node) {
 	}
 }
 
-void NodePropertiesGraph::calculate_edges(const Node node) {
+void Graph::calculate_edges(const Node node) {
 	if (node == 0)
 		return;
 
 	// Set the edge to itself to -1 (no edge)
 	m_mat[node][node] = NO_EDGE;
-	auto begin = std::chrono::high_resolution_clock::now();
 	
-	for (NodeProperties* existing_node : m_nodes) {
+	for (Feature* existing_node : m_nodes) {
 		// Ensure that we do not calculate the edge to itself
 		if (node != existing_node) {
 			float val = node->calculate_distance(existing_node);
@@ -56,16 +55,9 @@ void NodePropertiesGraph::calculate_edges(const Node node) {
 			m_mat[existing_node][node] = val;
 		}
 	}
-
-	// Loop through all existing nodes
-	auto end = std::chrono::high_resolution_clock::now();
-	auto dur = end - begin;
-	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
-
-	std::cout << "Runtime for " << m_nodes.size() << " nodes: " << ms << " milliseconds" << std::endl;
 }
 
-void NodePropertiesGraph::remove_edges(Node node) {
+void Graph::remove_edges(Node node) {
 	remove_cache();
 	// First remove the key for this node
 	m_mat.erase(node);
@@ -79,7 +71,7 @@ void NodePropertiesGraph::remove_edges(Node node) {
 	}
 }
 
-float NodePropertiesGraph::get_edge_weight(Node node1, Node node2) {
+float Graph::get_edge_weight(Node node1, Node node2) {
 	try {
 		return m_mat.at(node1).at(node2);
 	}
@@ -90,7 +82,7 @@ float NodePropertiesGraph::get_edge_weight(Node node1, Node node2) {
 	}
 }
 
-NodeList NodePropertiesGraph::get_n_nearest_nodes(Node node, int n) {
+NodeList Graph::get_n_nearest_nodes(Node node, int n) {
 	set<Node> nearest_nodes;
 
 	// Make sure that the node is part of this graph
@@ -123,13 +115,13 @@ NodeList NodePropertiesGraph::get_n_nearest_nodes(Node node, int n) {
 		}
 	}
 	else {
-		cout << "NodePropertiesGraph::get_n_nearest_nodes: specified n was out of range (0..node count)" << endl;
+		cout << "Graph::get_n_nearest_nodes: specified n was out of range (0..node count)" << endl;
 	}
 
 	return nearest_nodes;
 }
 
-SpanningTree NodePropertiesGraph::get_minimum_spanning_tree(Node root_node) {
+SpanningTree Graph::get_minimum_spanning_tree(Node root_node) {
 	// Check if there is a cached version of the requested spanning tree
 	if (!has_graph_changed() && is_previous_root(root_node)) {
 		cout << "Loading spanning tree from cache" << endl;
@@ -225,7 +217,7 @@ SpanningTree NodePropertiesGraph::get_minimum_spanning_tree(Node root_node) {
 	
 }
 
-void NodePropertiesGraph::cache_minimum_spanning_tree(SpanningTree& tree, Node root_node) {
+void Graph::cache_minimum_spanning_tree(SpanningTree& tree, Node root_node) {
 	m_cached_spanning_tree = tree;
 	set_previous_root(root_node);
 	m_has_changed = false;

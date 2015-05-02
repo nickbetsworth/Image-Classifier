@@ -1,9 +1,9 @@
 #include "ImageClustererKMeans.h"
-#include "FeatureExtractor.h"
+#include "FeatureManager.h"
 #include "BOWExtractor.h"
 #include <opencv\ml.h>
 
-ImageClustererKMeans::ImageClustererKMeans(vector<Image*> images, int n_clusters) : ImageClusterer(images)
+ImageClustererKMeans::ImageClustererKMeans(vector<Image*> images, int n_clusters, FeatureType type) : ImageClusterer(images, type)
 {
 	m_n_clusters = n_clusters;
 }
@@ -14,13 +14,13 @@ ImageClustererKMeans::~ImageClustererKMeans()
 }
 
 void ImageClustererKMeans::cluster_images() {
-	Image* example_image = get_images().front();
-	cv::Mat data = cv::Mat(0, example_image->get_descriptors().cols, example_image->get_descriptors().type());
+	cv::Mat example_fv = get_images().front()->get_feature()->get_feature_vector();
+	cv::Mat data = cv::Mat(0, example_fv.cols, example_fv.type());
 
 	int n = 0;
 	int size = get_images().size();
 	for (Image* image : get_images()) {
-		data.push_back(image->get_descriptors());
+		data.push_back(image->get_feature()->get_feature_vector());
 		std::cout << "Added image " << n++ << " of " << size << " rows: " << data.rows << std::endl;
 	}
 
@@ -44,7 +44,7 @@ void ImageClustererKMeans::cluster_images() {
 
 	for (Image* image : get_images()) {
 		cv::Mat bow_descriptor;
-		extractor.get_BOW_hist(image->get_descriptors(), bow_descriptor);
+		extractor.get_BOW_hist(image->get_feature()->get_feature_vector(), bow_descriptor);
 
 		// Find the cluster with the highest frequency
 		int maxID[2];
@@ -59,7 +59,7 @@ void ImageClustererKMeans::cluster_images() {
 	for (std::vector<Image*> images : image_classes) {
 		// Only add the cluster if it has at least one image
 		if (images.size() > 0) {
-			ImageClass* image_class = new ImageClass(images);
+			ImageClass* image_class = new ImageClass(images, get_feature_type());
 			this->create_cluster(image_class);
 		}
 	}

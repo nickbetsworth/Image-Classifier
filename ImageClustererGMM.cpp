@@ -1,8 +1,9 @@
 #include "ImageClustererGMM.h"
 #include <opencv\cv.h>
 #include "Histograms.h"
+#include "FeatureManager.h"
 
-ImageClustererGMM::ImageClustererGMM(vector<Image*> images, int n_clusters) : ImageClusterer(images)
+ImageClustererGMM::ImageClustererGMM(vector<Image*> images, int n_clusters, FeatureType type) : ImageClusterer(images, type)
 {
 	m_em = new cv::EM(n_clusters);
 	m_n_clusters = n_clusters;
@@ -15,59 +16,65 @@ ImageClustererGMM::~ImageClustererGMM()
 }
 
 void ImageClustererGMM::cluster_images() {
+	Feature* ex_fv = get_images().front()->get_feature();
+	int num_cols = ex_fv->get_feature_vector().cols;
 	int img_count = get_images().size();
-	int current_row = 0;
-	const int bins = Image::HIST_BINS;
-	const int channels = Image::NUM_CHANNELS;
-	cv::Mat samples = cv::Mat::zeros(img_count, bins * channels, CV_32F);
+	int current_img = 0;
+
+	cv::Mat samples = cv::Mat::zeros(0, num_cols, CV_32F);
+	cv::Mat sampleIDToImg = cv::Mat(0, 1, CV_32SC1);
 
 	for (Image* image : this->get_images()) {
-		cv::Mat hist = image->get_histogram();
-		cv::Mat hist_t = hist.t();
-		//cout << hist_t << endl;
-		// Copy this row to the current_rowTH row of the samples matrix
-		hist_t.copyTo(samples.row(current_row));
-		hist.release();
-		current_row++;
+		cv::Mat fv = image->get_feature()->get_feature_vector();
+		samples.push_back(fv);
 
-		/*if (image->get_filepath().find("Car6") != string::npos) {
-			cout << "Filename: " << image->get_filepath() << endl;
-			cout << "Hist_t:" << hist_t << endl;
-		}*/
+		cv::Mat response = cv::Mat(fv.rows, 1, CV_32SC1, cv::Scalar(current_img));
+
+		sampleIDToImg.push_back(response);
+		// Copy this row to the current_rowTH row of the samples matrix
+		current_img++;
 	}
-	
+
 	cv::Mat likelihoods;
 	cv::Mat labels;
 	cv::Mat probs;
 
 	m_em->train(samples, likelihoods, labels, probs);
-	
-	map<int, ImageClass*> label_to_class_map;
 
 	// Create a mapping from each available label [1..m_n_clusters] to a separate image class
-	for (int i = 0; i < m_n_clusters; i++) {
-		label_to_class_map[i] = new ImageClass();
+	map<int, std::vector<Image*>> label_to_class_map;
+
+	cv::Mat gmm_votes = cv::Mat::zeros(img_count, m_n_clusters, CV_32SC1);
+	for (int i = 0; i < samples.rows; i++) {
+		// Get the voting for this row
+		int vote = labels.at<int>(i, 0);
+		// Convert the label to an image number
+		int image_no = sampleIDToImg.at<long>(i);
+		gmm_votes.at<long>(image_no, vote)++;
 	}
+
+	// Find the max bin for each image
 	for (int i = 0; i < img_count; i++) {
-		int label = labels.at<int>(i, 0);
-		ImageClass* image_class = label_to_class_map[label];
-		
-		/*Image* img = get_images().at(i);
-		if (img->get_filepath().find("Car6") != string::npos) {
-			cout << img->get_filepath() << " label " << label << endl;
-		}*/
-		
+		cv::Mat row = gmm_votes.row(i);
 
-		image_class->add_image(get_images().at(i));
+		// Find the cluster with the highest frequency
+		int maxID[2];
+		cv::minMaxIdx(row, 0, 0, 0, maxID);
+
+		// Index we are interested in is maxID[1] and maxID[0] is always 0 (row)
+		int max_index = maxID[1];
+
+		int label = labels.at<int>(i, 0);
+		label_to_class_map[max_index].push_back(get_images().at(i));
 	}
 
 	for (int i = 0; i < m_n_clusters; i++) {
-		ImageClass* image_class = label_to_class_map[i];
-		if (image_class->get_image_count() > 0)
+		if (label_to_class_map[i].size() > 0) {
+			ImageClass* image_class = new ImageClass(label_to_class_map[i], get_feature_type());
 			this->create_cluster(image_class);
-		else
-			delete image_class;
+		}
 	}
+
 	//cout << "Likelihoods:" << likelihoods << endl;
 	//cout << "Labels:" << labels << endl;
 	//cout << "Probs:" << probs << endl;

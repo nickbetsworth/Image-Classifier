@@ -1,9 +1,10 @@
 #include "ImageClusterer.h"
 
 
-ImageClusterer::ImageClusterer(vector<Image*> images)
+ImageClusterer::ImageClusterer(vector<Image*> images, FeatureType type)
 {
 	m_images = images;
+	m_type = type;
 }
 
 

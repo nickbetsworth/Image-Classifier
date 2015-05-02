@@ -1,10 +1,10 @@
 #include "imageclassifierwindow.h"
 #include "QCategoryDisplayer.h"
 #include "QCategoryView.h"
-#include "ImageClustererBasic.h"
 #include "ImageClustererGMM.h"
 #include "ImageClassifierRF.h"
 #include "ImageConversion.h"
+#include "ImageFactory.h"
 #include "RFTest.h"
 #include "Histograms.h"
 #include <QGraphicsScene>
@@ -16,7 +16,6 @@
 #include <QParallelAnimationGroup>
 #include <QScrollBar>
 #include <QtConcurrent/QtConcurrentRun>
-
 
 ImageClassifierWindow::ImageClassifierWindow(ClassifierManager* mananger, QWidget *parent)
 	: QMainWindow(parent)
@@ -65,12 +64,12 @@ ImageClassifierWindow::~ImageClassifierWindow()
 void ImageClassifierWindow::setup_classes() {
 	m_scene_classes->clear();
 
-	NodePropertiesGraph* graph = new NodePropertiesGraph();
+	Graph* graph = new Graph();
 
 	// For each image category, create a component to display itself
 	for (ImageClass* image_class : get_image_classes()) {
 		image_class->calculate_icon();
-		graph->add_node(image_class);
+		graph->add_node(image_class->get_feature());
 
 		// Create the icon for the category
 		QCategoryDisplayer* cluster = new QCategoryDisplayer(image_class);
@@ -90,11 +89,11 @@ void ImageClassifierWindow::setup_classes() {
 	// Use a force based layout
 	// We add some padding to the total radius, so it doesn't come so close to other categories
 	int category_radius = QCategoryDisplayer::get_total_diameter() + 200;
-	map<NodeProperties*, cv::Point> positions = positioner->get_node_positions_fmmm(category_radius, category_radius);
+	map<Feature*, cv::Point> positions = positioner->get_node_positions_fmmm(category_radius, category_radius);
 
 	// Position each category and category wheel
 	for (QCategoryDisplayer* cluster : m_clusters) {
-		cv::Point cv_pos = positions[cluster->get_image_class()];
+		cv::Point cv_pos = positions[cluster->get_image_class()->get_feature()];
 		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
 		cluster->setPos(pos);
 	}
@@ -125,6 +124,9 @@ void ImageClassifierWindow::render_class() {
 	m_image_displayers.clear();
 	m_image_to_displayer.clear();
 
+	// Create a map from features back to the image
+	std::map<Node, Image*> image_map;
+
 	// Loop through each of the images in the category that was clicked
 	for (Image* img : m_current_class->get_images()) {
 		// Create the component that will display the image
@@ -140,6 +142,8 @@ void ImageClassifierWindow::render_class() {
 		// Create a map from the image to its display component
 		// so we can easily obtain the respective objects later
 		m_image_to_displayer[img] = displayer;
+		// Map from the feature vector back to the image
+		image_map[img->get_feature()] = img;
 
 		// Add this display component to our list of display components
 		m_image_displayers.push_back(displayer);
@@ -147,7 +151,7 @@ void ImageClassifierWindow::render_class() {
 
 	for (QImageDisplayer* displayer : m_image_displayers) {
 		// Obtain the position for this image
-		cv::Point cv_pos = positions[displayer->get_image()];
+		cv::Point cv_pos = positions[displayer->get_image()->get_feature()];
 		// Convert the Point we have been given to a Qt friendly Point
 		QPointF pos = QPointF(cv_pos.x, cv_pos.y);
 		// Set the position of the image to the given point
@@ -155,7 +159,6 @@ void ImageClassifierWindow::render_class() {
 		// Add the image to the scene
 		m_scene_class->addItem(displayer);
 	}
-
 
 	// If we are drawing edges
 	if (edges_enabled) {
@@ -170,8 +173,9 @@ void ImageClassifierWindow::render_class() {
 		ui.view->setRenderHint(QPainter::Antialiasing);
 		for (NodePositioner::Edge e : edges) {
 			// Cast each node to an Image
-			Image* image1 = static_cast<Image*>(e.node1);
-			Image* image2 = static_cast<Image*>(e.node2);
+			Image* image1 = image_map[e.node1];
+			Image* image2 = image_map[e.node2];
+
 			// Work out which display component each of the Images is represented by
 			QImageDisplayer* class1 = m_image_to_displayer[image1];
 			QImageDisplayer* class2 = m_image_to_displayer[image2];
@@ -269,7 +273,7 @@ NodePositioner* ImageClassifierWindow::calculate_image_positions(ImageClass* ima
 	
 	NodePositioner* positioner = new NodePositioner(image_class->get_graph());
 	// Get the positions and edges, and make a copy of them
-	NodePositions positions = NodePositions(positioner->get_node_positions_tree(image_class->get_icon(), 100, 100));
+	NodePositions positions = NodePositions(positioner->get_node_positions_tree(image_class->get_icon()->get_feature(), 100, 100));
 	NodeEdges edges = NodeEdges(positioner->get_edges());
 
 	return positioner;
@@ -446,7 +450,7 @@ void ImageClassifierWindow::classify_images(QStringList image_files) {
 			image_file.endsWith(".png", Qt::CaseInsensitive) ||
 			image_file.endsWith(".gif", Qt::CaseInsensitive)) {
 			// Load in the image
-			Image* image = new Image(image_file.toStdString());
+			Image* image = ImageFactory::create_image(image_file.toStdString(), m_manager->get_feature_type());
 
 			// Check that the image has successfully loaded
 			if (image->has_loaded()) {

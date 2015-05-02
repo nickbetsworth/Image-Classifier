@@ -1,7 +1,7 @@
 #pragma once
 #include "Image.h"
 #include "ImageClass.h"
-
+#include "FeatureManager.h"
 #include <vector>
 
 /**
@@ -15,7 +15,7 @@
 class ImageClusterer
 {
 public:
-	ImageClusterer(vector<Image*> images);
+	ImageClusterer(vector<Image*> images, FeatureType type);
 	virtual ~ImageClusterer();
 
 	/**
@@ -76,8 +76,11 @@ protected:
 	 */
 
 	void add_image_to_cluster(Image* image, ImageClass* cluster);
+
+	FeatureType get_feature_type() { return m_type; };
 private:
 	vector<Image*> m_images;
 	vector<ImageClass*> m_clusters;
+	FeatureType m_type;
 };
 

@@ -122,17 +122,8 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_LoadingScreen.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="NodeProperties.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
     <ClCompile Include="EMDTest.cpp">
       <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="NodePropertiesFlagTest.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="NodePropertiesGraph.cpp">
-      <Filter>Source Files\Library</Filter>
     </ClCompile>
     <ClCompile Include="NPGTest.cpp">
       <Filter>Source Files\Tests</Filter>
@@ -146,9 +137,6 @@
     <ClCompile Include="ImageClustererGMM.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="ImageClustererBasic.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
     <ClCompile Include="ClassifierManager.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
@@ -157,9 +145,6 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QLoadingSplashScreen.cpp">
       <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageTest.cpp">
-      <Filter>Source Files\Tests</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryView.cpp">
       <Filter>Generated Files</Filter>
@@ -170,16 +155,28 @@
     <ClCompile Include="ImageFactory.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="FeatureExtractor.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
     <ClCompile Include="Test_PCA.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
     <ClCompile Include="BOWExtractor.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="NodePropertiesGraphBOW.cpp">
+    <ClCompile Include="FeatureManager.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="Feature.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphBOW.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="FeatureHistogram.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="FeatureLocal.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
   </ItemGroup>
@@ -202,9 +199,6 @@
     <ClInclude Include="NodePositioner.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
-    <ClInclude Include="NodeProperties.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
     <ClInclude Include="RFTest.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
@@ -220,12 +214,6 @@
     <ClInclude Include="EMDTest.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
-    <ClInclude Include="NodePropertiesFlagTest.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="NodePropertiesGraph.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
     <ClInclude Include="NPGTest.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
@@ -238,9 +226,6 @@
     <ClInclude Include="ImageClustererGMM.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
-    <ClInclude Include="ImageClustererBasic.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
     <ClInclude Include="ClassifierManager.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
@@ -250,16 +235,28 @@
     <ClInclude Include="ImageFactory.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
-    <ClInclude Include="FeatureExtractor.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
     <ClInclude Include="Test_PCA.h">
       <Filter>Header Files\Tests</Filter>
     </ClInclude>
     <ClInclude Include="BOWExtractor.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
-    <ClInclude Include="NodePropertiesGraphBOW.h">
+    <ClInclude Include="FeatureManager.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="Feature.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphBOW.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureLocal.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="FeatureHistogram.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
   </ItemGroup>
@@ -336,10 +333,5 @@
     <Image Include="Resources\b4.gif">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ImageTest.h">
-      <Filter>Header Files\Tests</Filter>
-    </None>
   </ItemGroup>
 </Project>

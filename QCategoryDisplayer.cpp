@@ -83,12 +83,18 @@ void QCategoryDisplayer::update_images() {
 	int class_image_count = get_image_class()->get_images().size() - 1;
 	int num_neighbours = min((int)class_image_count, MAX_NEIGHBOURS);
 
-	NodeList nodes = get_image_class()->get_graph()->get_n_nearest_nodes(get_image_class()->get_icon(), num_neighbours);
+	// Create a map from the feature vectors back to the images
+	std::map<Node, Image*> image_map;
+	for (Image* image : get_image_class()->get_images()) {
+		image_map[image->get_feature()] = image;
+	}
+
+	NodeList nodes = get_image_class()->get_graph()->get_n_nearest_nodes(get_image_class()->get_icon()->get_feature(), num_neighbours);
 	double multiplier = 360.0 / num_neighbours;
 	int i = 0;
 	// Create a QImageDisplayer for each neighbour
 	for (Node node : nodes) {
-		Image* image = static_cast<Image*>(node);
+		Image* image = image_map[node];
 		
 		QImageDisplayer* neighbour = new QImageDisplayer(image, NEIGHBOUR_DIAMETER, this);
 		double ang = qDegreesToRadians(i * multiplier);

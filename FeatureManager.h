@@ -2,15 +2,22 @@
 #include <opencv/cv.h>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/nonfree/nonfree.hpp>
+#include "Feature.h"
 
+enum class FeatureType { LOCAL_FEATURE, COLOUR_HISTOGRAM };
 // In charge of getting features from matrix data, (images)
 // Such as SURF / Colour Histograms
-class FeatureExtractor {
+class FeatureManager {
 public:
+	/** @brief	The number of bins each colour channel of the histogram will have. */
+	static const int HIST_BINS = 8;
+	/** @brief	The number of colour channels the image has. */
+	static const int NUM_CHANNELS = 3;
+
 	static cv::Ptr<cv::FeatureDetector> get_detector();
 	static cv::Ptr<cv::DescriptorExtractor> get_extractor();
 	static cv::Ptr<cv::DescriptorMatcher> get_matcher();
-
+	static Feature* create_feature(cv::Mat feature_vector, FeatureType type);
 	// The reason the following calculations are static is because this Image class does not
 	// store the entire image at runtime, after features have been calculated it stores only a thumbnail.
 	// This is done to prevent an error where a call may be made to calculate_x after the initial
@@ -58,6 +65,6 @@ private:
 	static cv::Ptr<cv::DescriptorExtractor> extractor;
 	static cv::Ptr<cv::DescriptorMatcher> matcher;
 
-	FeatureExtractor();
-	~FeatureExtractor();
+	FeatureManager();
+	~FeatureManager();
 };

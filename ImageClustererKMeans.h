@@ -6,7 +6,7 @@ class ImageClustererKMeans :
 	public ImageClusterer
 {
 public:
-	ImageClustererKMeans(vector<Image*> images, int n_clusters);
+	ImageClustererKMeans(vector<Image*> images, int n_clusters, FeatureType type);
 	virtual ~ImageClustererKMeans();
 
 	virtual void cluster_images();

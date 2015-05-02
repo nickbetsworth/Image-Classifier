@@ -27,5 +27,6 @@ private:
 	CvRTrees* m_rt;
 	CvRTParams* m_rt_params;
 	map<int, ImageClass*> m_label_to_class;
+	int m_num_classes;
 };
 

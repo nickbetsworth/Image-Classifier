@@ -23,7 +23,7 @@ signals:
 	void statusUpdate(QString status);
 	void finishedLoading();
 public slots:
-
+	void updateClusterCount(int count);
 	/**
 	 * @fn	void ImageSelector::addingStarted();
 	 *

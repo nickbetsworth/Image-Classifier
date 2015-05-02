@@ -8,7 +8,7 @@ RFTest::RFTest(vector<ImageClass*> image_classes)
 
 void RFTest::perform_test(int n_tests) {
 	// Totals across all tests
-	double test_total_positive = 0;
+	/*double test_total_positive = 0;
 	double test_total_negative = 0;
 
 	for (int i = 0; i < n_tests; i++) {
@@ -86,7 +86,7 @@ void RFTest::perform_test(int n_tests) {
 			/*ImageClass* negative_class = image_class;
 			while (negative_class == image_class) {
 				negative_class = testing_classes.at(rand() % testing_classes.size());
-			}*/
+			}
 
 			for (ImageClass* negative_class : testing_classes) {
 				// If the negative_class == image_class then it does not contain negative samples
@@ -131,7 +131,7 @@ void RFTest::perform_test(int n_tests) {
 
 	cout << "Testing has finished " << n_tests << " runs" << endl;
 	cout << "Average True Positive: " << avg_true_positive << "%" << endl;
-	cout << "Average True Negative: " << avg_true_negative << "%" << endl;
+	cout << "Average True Negative: " << avg_true_negative << "%" << endl;*/
 }
 
 RFTest::~RFTest()

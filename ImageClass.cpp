@@ -1,44 +1,48 @@
 #include "ImageClass.h"
-#include "NodePropertiesGraphBOW.h"
+#include "GraphBOW.h"
+#include "FeatureManager.h"
 
-ImageClass::ImageClass()
+ImageClass::ImageClass(vector<Image*> images, FeatureType type)
 {
+	m_type = type;
 	m_icon = 0;
 
-	m_graph = new NodePropertiesGraph();
-}
-
-ImageClass::ImageClass(vector<Image*> images)
-{
-	m_icon = 0;
-
-	// Convert the array of images to array of Nodes
-	// So we can pass it to the Graph
-	std::vector<Node> nodes;
-	for (Image* image : images) {
-		nodes.push_back(static_cast<Node>(image));
+	switch (type) {
+	case FeatureType::COLOUR_HISTOGRAM:
+		m_graph = new Graph();
+		break;
+	case FeatureType::LOCAL_FEATURE:
+		// Convert the array of images to array of Nodes
+		// So we can pass it to the Graph
+		std::vector<Node> nodes;
+		for (Image* image : images) {
+			nodes.push_back(image->get_feature());
+		}
+		m_graph = new GraphBOW(nodes);
+		break;
 	}
 
-	m_graph = new NodePropertiesGraphBOW(nodes);
-	// Loop through each of the images so we can tally the histograms
+	// Add all images to the graph
 	for (Image* image : images) {
 		add_image(image);
 	}
-
-	
 }
 
 ImageClass::~ImageClass()
 {
+	delete m_graph;
+
+	// Release all images
+	for (Image* image : m_images) {
+		delete image;
+	}
 }
 
 bool ImageClass::add_image(Image* image)
 {
 	// Only add successfully loaded images to the image list
 	if (image->has_loaded()) {
-		// Add up the histogram to the property sheet's total
-		//this->set_histogram(this->get_histogram() + image->get_histogram());
-		m_graph->add_node(image);
+		m_graph->add_node(image->get_feature());
 		m_images.push_back(image);
 		return true;
 	}
@@ -49,17 +53,8 @@ bool ImageClass::add_image(Image* image)
 }
 
 void ImageClass::remove_image(Image* image) {
-	//int initial_size = m_images.size();
-	m_graph->remove_node(image);
+	m_graph->remove_node(image->get_feature());
 	m_images.erase(remove(m_images.begin(), m_images.end(), image), m_images.end());
-	/*int size_difference = m_images.size() - initial_size;
-	// If the size has changed (the image existed in the class)
-	if (size_difference > 0) {
-		// It should typically be the case that only one image is removed
-		// But in the event that the image was duplicated in the list, we
-		// wish to remove the correct amount from the histogram
-		this->set_histogram(this->get_histogram() - (image->get_histogram() * size_difference));
-	}*/
 }
 
 // Calculates the icon
@@ -70,21 +65,7 @@ void ImageClass::calculate_icon() {
 	// Get the first image from the list to determine what features this set of images has
 	Image* ex_img = m_images.front();
 
-	int dims = 0;
-	
-	if (ex_img->has_flag(Property::PCA_SURF)) {
-		dims = ex_img->get_PCA_descriptors().cols;
-	}
-	else if (ex_img->has_flag(Property::SURF)) {
-		dims = ex_img->get_descriptors().cols;
-	}
-	else if (ex_img->has_flag(Property::Histogram)) {
-		dims = ex_img->get_histogram().rows;
-	}
-	else {
-		std::cout << "Error: Attempting to calculate icon on image set with no features" << std::endl;
-		return;
-	}
+	int dims = ex_img->get_feature()->get_feature_vector().cols;
 
 	// Find min and max out of all images, for each dimension
 	cv::Mat min = cv::Mat(1, dims, CV_32F);
@@ -106,19 +87,7 @@ void ImageClass::calculate_icon() {
 	// Generate a large matrix, where each row represents an observation
 	// with `dims` number of columns
 	for (Image* image : m_images) {
-		if (ex_img->has_flag(Property::PCA_SURF)) {
-			data.push_back(image->get_PCA_descriptors());
-		}
-		else if (ex_img->has_flag(Property::SURF)) {
-			data.push_back(image->get_descriptors());
-		}
-		else if (ex_img->has_flag(Property::Histogram)) {
-			cv::Mat hist_copy = image->get_histogram().clone();
-			cv::Mat hist_t = hist_copy.t();
-			data.push_back(hist_t);
-
-			//hist_copy.release();
-		}
+		data.push_back(image->get_feature()->get_feature_vector());
 	}
 
 	for (int i = 0; i < dims; i++) {
@@ -136,22 +105,12 @@ void ImageClass::calculate_icon() {
 	}
 
 	// Create a node which represents the center of this cluster
-	NodeProperties* center_node = new NodeProperties();
-
-	if (ex_img->has_flag(Property::PCA_SURF)) {
-		center_node->set_PCA_descriptors(centers);
-	}
-	else if (ex_img->has_flag(Property::SURF)) {
-		center_node->set_descriptors(centers);
-	}
-	else if (ex_img->has_flag(Property::Histogram)) {
-		center_node->set_histogram(centers.t());
-	}
+	Feature* center_node = FeatureManager::create_feature(centers, m_type);
 
 	// For each image, calculate the distance to the center point
 	// And determine if it is the closest image to the center point
 	for (Image* image : m_images) {
-		float distance = image->calculate_distance(center_node);
+		float distance = image->get_feature()->calculate_distance(center_node);
 
 		//cout << "Distance: " << distance << endl;
 		if (distance < closest_distance) {
@@ -169,16 +128,7 @@ void ImageClass::calculate_icon() {
 	// Store the image which is closest to the center point of each dimension
 	m_icon = center_image;
 
-
-	if (ex_img->has_flag(Property::PCA_SURF)) {
-		this->set_PCA_descriptors(m_icon->get_PCA_descriptors());
-	}
-	else if (ex_img->has_flag(Property::SURF)) {
-		this->set_descriptors(m_icon->get_descriptors());
-	}
-	else if (ex_img->has_flag(Property::Histogram)) {
-		this->set_histogram(m_icon->get_histogram());
-	}
+	m_feature = m_icon->get_feature();
 }
 
 Image* ImageClass::get_icon() {

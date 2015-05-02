@@ -1,5 +1,5 @@
 #include "Test_PCA.h"
-#include "FeatureExtractor.h"
+#include "FeatureManager.h"
 
 void test_PCA() {
 	cv::Mat test_mat = cv::Mat(10, 8, CV_32F);
@@ -13,5 +13,5 @@ void test_PCA() {
 
 	std::cout << "Before: " << test_mat << std::endl;
 
-	std::cout << "After: " << FeatureExtractor::PCA_descriptors(test_mat, 0.90) << std::endl;
+	std::cout << "After: " << FeatureManager::PCA_descriptors(test_mat, 0.90) << std::endl;
 }

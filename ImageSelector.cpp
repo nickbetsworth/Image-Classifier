@@ -20,7 +20,8 @@ ImageSelector::ImageSelector(QWidget *parent) : QWidget(parent)
 	// Set each list item to static, i.e no drag & drop of items
 	ui.lstImages->setViewMode(QListView::ViewMode::ListMode);
 	
-	//ui.lstImages->addAction(deleteAction);
+	// Connect the slider to update the cluster count label
+	connect(ui.cluster_slider, SIGNAL(sliderMoved(int)), this, SLOT(updateClusterCount(int)));
 	// Connect the add button
 	connect(ui.btnAdd, SIGNAL(clicked()), this, SLOT(addImageClicked()));
 	// Connect the run button
@@ -32,10 +33,17 @@ ImageSelector::ImageSelector(QWidget *parent) : QWidget(parent)
 
 	connect(ui.lstImages, SIGNAL(incorrectFormat()), this, SLOT(incorrectFormat()));
 	connect(ui.lstImages, SIGNAL(duplicateImage()), this, SLOT(duplicateImage()));
+
+	// Initialise the cluster count label
+	updateClusterCount(ui.cluster_slider->value());
 }
 
 ImageSelector::~ImageSelector()
 {
+}
+
+void ImageSelector::updateClusterCount(int count) {
+	ui.lbl_cluster_count->setText("Number of Clusters: " + QString::number(count));
 }
 
 // Open up the file loader
@@ -84,10 +92,21 @@ ClassifierManager* ImageSelector::load_classifier_manager() {
 		std_file_paths.push_back(qs_file_path.toStdString());
 	}
 
-	ClassifierManager* manager = new ClassifierManager();
+	// Determine the feature to be used from the radio button selection
+	FeatureType feature_type;
+	if(ui.rad_feature_histogram->isChecked()) {
+		feature_type = FeatureType::COLOUR_HISTOGRAM;
+	}
+	else if (ui.rad_feature_descriptor->isChecked()) {
+		feature_type = FeatureType::LOCAL_FEATURE;
+	}
+	// Determine the number of clusters from the slider
+	int n_clusters = ui.cluster_slider->value();
+
+	ClassifierManager* manager = new ClassifierManager(feature_type);
 	manager->load_images(std_file_paths);
 	emit statusUpdate("Clustering Images");
-	manager->cluster_images(6);
+	manager->cluster_images(n_clusters);
 	emit statusUpdate("Training Classifier");
 	manager->train_classifier();
 

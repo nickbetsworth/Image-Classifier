@@ -1,5 +1,5 @@
 #pragma once
-#include "NodeProperties.h"
+#include "Feature.h"
 #include <string>
 #include <opencv\cv.h>
 
@@ -12,17 +12,12 @@
  *			to check whether or not the image was successfully loaded.
  */
 
-class Image : public NodeProperties
+class Image
 {
 public:
 	/** @brief	Width and height of the thumbnail. */
 	static const int THUMB_WIDTH = 200;
 	static const int THUMB_HEIGHT = 200;
-	/** @brief	The number of bins each colour channel of the histogram will have. */
-	static const int HIST_BINS = 8;
-	/** @brief	The number of colour channels the image has. */
-	static const int NUM_CHANNELS = 3;
-	static const int MAX_KEY_POINTS = 250;
 
 	/**
 	 * @fn	Image::Image(const string &filepath);
@@ -32,10 +27,10 @@ public:
 	 * @param	filepath	filepath of the image to be loaded in.
 	 */
 
-	Image(const std::string &filepath);
+	Image(const std::string &filepath, Feature* feature);
 
 	// Allow the image data to be pre-loaded in
-	Image(const std::string &filepath, cv::Mat image_data);
+	Image(const std::string &filepath, cv::Mat image_data, Feature* feature);
 	~Image();
 
 	/**
@@ -85,6 +80,8 @@ public:
 	 */
 
 	cv::Mat get_fullres_image() const;
+
+	Feature* get_feature() const { return m_feature; };
 private:
 	void generate_thumbnail();
 
@@ -92,5 +89,7 @@ private:
 	std::string m_filepath;
 	/** @brief	Stores the image thumbnail data */
 	cv::Mat m_image_data;
+
+	Feature* m_feature;
 };
 

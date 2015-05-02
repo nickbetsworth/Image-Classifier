@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "ImageClustererGMM.h"
 #include "ImageClassifierRF.h"
+#include "FeatureManager.h"
 #include <vector>
 
 using namespace std;
@@ -21,7 +22,7 @@ using namespace std;
 class ClassifierManager
 {
 public:
-	ClassifierManager();
+	ClassifierManager(FeatureType type);
 	virtual ~ClassifierManager();
 
 	/**
@@ -79,6 +80,7 @@ public:
 	vector<ImageClass*>& get_image_classes() { return m_image_classes; };
 	const vector<ImageClass*>& get_image_classes() const { return m_image_classes; };
 	ImageClassifier* get_classifier() { return m_classifier; };
+	FeatureType get_feature_type() { return m_feature_type; };
 private:
 	/**
 	* @fn	Image* ClassifierManager::load_image(string file_path);
@@ -95,5 +97,6 @@ private:
 	vector<Image*> m_images;
 	vector<ImageClass*> m_image_classes;
 	ImageClassifier* m_classifier;
+	FeatureType m_feature_type;
 };
 

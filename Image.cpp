@@ -1,10 +1,7 @@
 #include "Image.h"
 #include <opencv\highgui.h>
-#include <opencv2\nonfree\features2d.hpp>
-#include <opencv2\nonfree\nonfree.hpp>
-#include "Histograms.h"
 
-Image::Image(const std::string &filepath) : m_filepath(filepath)
+Image::Image(const std::string &filepath, Feature* feature) : m_filepath(filepath), m_feature(feature)
 {
 	// If we have been provided with an empty string
 	if (filepath.length() == 0) {
@@ -19,7 +16,7 @@ Image::Image(const std::string &filepath) : m_filepath(filepath)
 	generate_thumbnail();
 }
 
-Image::Image(const std::string &filepath, cv::Mat image_data) : m_filepath(filepath), m_image_data(image_data.clone()) {
+Image::Image(const std::string &filepath, cv::Mat image_data, Feature* feature) : m_filepath(filepath), m_image_data(image_data.clone()), m_feature(feature) {
 	generate_thumbnail();
 }
 

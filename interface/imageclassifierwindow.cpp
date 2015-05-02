@@ -1,12 +1,6 @@
 #include "imageclassifierwindow.h"
-#include "QCategoryDisplayer.h"
-#include "QCategoryView.h"
-#include "ImageClustererGMM.h"
-#include "ImageClassifierRF.h"
 #include "ImageConversion.h"
 #include "ImageFactory.h"
-#include "RFTest.h"
-#include "Histograms.h"
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QMenuBar>

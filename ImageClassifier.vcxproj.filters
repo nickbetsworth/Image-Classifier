@@ -68,74 +68,11 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Histograms.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="Image.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageClass.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageClassifier.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageClassifierRF.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageConversion.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="QCategoryDisplayer.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="QCategoryView.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="QImageDisplayer.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="imageclassifierwindow.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="NodePositioner.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="RFTest.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageSelector.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ImageSelector.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="QImageLister.cpp">
-      <Filter>Source Files\Interface</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QImageLister.cpp">
       <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EMDTest.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="NPGTest.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Testing.cpp">
-      <Filter>Source Files\Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageClusterer.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageClustererGMM.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="ClassifierManager.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="QLoadingSplashScreen.cpp">
-      <Filter>Source Files\Interface</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QLoadingSplashScreen.cpp">
       <Filter>Generated Files</Filter>
@@ -143,111 +80,174 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_QCategoryView.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageClustererKMeans.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageFactory.cpp">
-      <Filter>Source Files\Library</Filter>
-    </ClCompile>
-    <ClCompile Include="Test_PCA.cpp">
+    <ClCompile Include="testing\EMDTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
-    <ClCompile Include="BOWExtractor.cpp">
+    <ClCompile Include="testing\NPGTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="testing\RFTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="testing\Test_PCA.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="testing\Testing.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="library\BOWExtractor.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="FeatureManager.cpp">
+    <ClCompile Include="library\ClassifierManager.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="Feature.cpp">
+    <ClCompile Include="library\Feature.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="Graph.cpp">
+    <ClCompile Include="library\FeatureHistogram.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="GraphBOW.cpp">
+    <ClCompile Include="library\FeatureLocal.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="FeatureHistogram.cpp">
+    <ClCompile Include="library\FeatureManager.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
-    <ClCompile Include="FeatureLocal.cpp">
+    <ClCompile Include="library\Graph.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\GraphBOW.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\Histograms.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\Image.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ImageClass.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ImageClassifier.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ImageClassifierRF.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ImageClusterer.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ImageClustererGMM.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ImageClustererKMeans.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="interface\QCategoryDisplayer.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="interface\QCategoryView.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="interface\QImageDisplayer.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="interface\QImageLister.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="interface\QLoadingSplashScreen.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="interface\ImageSelector.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="interface\ImageConversion.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="interface\imageclassifierwindow.cpp">
+      <Filter>Source Files\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="library\NodePositioner.cpp">
+      <Filter>Source Files\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ImageFactory.cpp">
       <Filter>Source Files\Library</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Histograms.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="Image.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageClass.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageClassifier.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageClassifierRF.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="NodePositioner.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="RFTest.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_ImageSelector.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImageConversion.h">
+    <ClInclude Include="testing\EMDTest.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="testing\NPGTest.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="testing\RFTest.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="testing\Test_PCA.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="testing\Testing.h">
+      <Filter>Header Files\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="library\BOWExtractor.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ClassifierManager.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\Feature.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\FeatureHistogram.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\FeatureLocal.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\FeatureManager.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\Graph.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\GraphBOW.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\Histograms.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\Image.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ImageClass.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ImageClassifier.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ImageClassifierRF.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ImageClusterer.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ImageClustererGMM.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ImageClustererKMeans.h">
+      <Filter>Header Files\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="interface\ImageConversion.h">
       <Filter>Header Files\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="EMDTest.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="NPGTest.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="Testing.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageClusterer.h">
+    <ClInclude Include="library\NodePositioner.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
-    <ClInclude Include="ImageClustererGMM.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="ClassifierManager.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageClustererKMeans.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageFactory.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="Test_PCA.h">
-      <Filter>Header Files\Tests</Filter>
-    </ClInclude>
-    <ClInclude Include="BOWExtractor.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="FeatureManager.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="Feature.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphBOW.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="FeatureLocal.h">
-      <Filter>Header Files\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="FeatureHistogram.h">
+    <ClInclude Include="library\ImageFactory.h">
       <Filter>Header Files\Library</Filter>
     </ClInclude>
   </ItemGroup>
@@ -278,47 +278,42 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="imageclassifierwindow.ui">
+    <CustomBuild Include="interface\QLoadingSplashScreen.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="interface\QCategoryDisplayer.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="interface\QCategoryView.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="interface\QImageDisplayer.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="interface\QImageLister.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="interface\ImageSelector.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
+    <CustomBuild Include="interface\ImageSelector.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="QCategoryDisplayer.h">
-      <Filter>Header Files\Interface</Filter>
-    </CustomBuild>
-    <CustomBuild Include="QImageDisplayer.h">
-      <Filter>Header Files\Interface</Filter>
-    </CustomBuild>
-    <CustomBuild Include="imageclassifierwindow.h">
-      <Filter>Header Files\Interface</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ImageSelector.ui">
+    <CustomBuild Include="interface\imageclassifierwindow.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="ImageSelector.h">
-      <Filter>Header Files\Interface</Filter>
-    </CustomBuild>
-    <CustomBuild Include="QImageLister.h">
-      <Filter>Header Files\Interface</Filter>
-    </CustomBuild>
-    <CustomBuild Include="LoadingScreen.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="QLoadingSplashScreen.h">
-      <Filter>Header Files\Interface</Filter>
-    </CustomBuild>
-    <CustomBuild Include="QCategoryView.h">
-      <Filter>Header Files\Interface</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="imageclassifierwindow.qrc">
+    <CustomBuild Include="interface\imageclassifierwindow.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="interface\imageclassifierwindow.h">
+      <Filter>Header Files\Interface</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\b3.png">
+    <Image Include="interface\Resources\b3.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Resources\b4.gif">
+    <Image Include="interface\Resources\b4.gif">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

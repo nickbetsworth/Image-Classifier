@@ -17,10 +17,10 @@ Clusters and positions databases of images with respect to their visual similari
 * Open Graph Drawing Framework
 
 #### Screenshots
-Histogram Clustering             |  Local Descriptor(SURF) Clustering
-:-------------------------:|:-------------------------:
-![Clusters formed with colour histogram](http://puu.sh/hy2SD/ae824edde5.jpg)  |  ![Cluster formed with SURF descriptors](http://puu.sh/hxKWM/f2b26b1ead.jpg)
+##### Histogram clustering
+<img src="https://i.imgur.com/NiazLOQ.jpg" width="640px" />
 
-Browsing Inside A Cluster|
---------------------------|
-<img src="http://puu.sh/hyW0V/f15b237309.jpg">|
+##### Browsing inside a cluster with local descriptor (SURF) clustering
+Note the various different types of category of motorcycle are grouped together.
+
+<img src="https://i.imgur.com/nsX9Plv.jpg" width="640px" />

@@ -18,9 +18,9 @@ Clusters and positions databases of images with respect to their visual similari
 
 #### Screenshots
 ##### Histogram clustering
-<img src="https://i.imgur.com/NiazLOQ.jpg" width="640px" />
+<img src="https://i.imgur.com/NiazLOQ.jpg" width="800px" />
 
 ##### Browsing inside a cluster with local descriptor (SURF) clustering
 Note the various different types of category of motorcycle are grouped together.
 
-<img src="https://i.imgur.com/nsX9Plv.jpg" width="640px" />
+<img src="https://i.imgur.com/nsX9Plv.jpg" width="800px" />
